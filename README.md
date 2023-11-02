@@ -1,21 +1,26 @@
-#Two Sum
-``` swift
+## Leet code challenge 🧠🧠🧠
+![Running Time](https://cs50.harvard.edu/x/2020/notes/3/running_time.png)
+- [X] Two Sum 
+- [X] 125 [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+- [X] 121 [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+ - [X] 28 [Find the Index of the First Occurrence in a String](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/description/)
+### Array 
+- [X] 27. [Remove Element](https://leetcode.com/problems/remove-element/description/)
+- [X] 155. [Min Stack] (https://leetcode.com/problems/min-stack/description/)
+### Stack 
+- [X] 155. [Min Stack] (https://leetcode.com/problems/min-stack/description/)
 
-class Solution {
-    func twoSum(nums: [Int], target: Int) -> [Int] {
-        var hashMap = [Int: Int] ()
-        for i in 0..<nums.count {
-            let num = nums[i]
-            let newIndex = target - num
-            if let otherIndex = hashMap[newIndex] {
-                return [otherIndex,i]
-            }
-            hashMap[num] = i
-        }
-        return []
-    }
-}
-```
+## Data Structures
+- [] Array 
+- [] Linked List  
+- [] Stack 
+- [] Queue 
+- [] Tree 
+- [] Hash
+- [] Tries
 
-let solution = Solution()
-solution.twoSum(nums: [2,7,11,15], target: 9)
+## Algorithm 
+- [] Recursion 
+
+
+
