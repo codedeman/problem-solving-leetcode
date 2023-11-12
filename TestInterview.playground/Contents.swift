@@ -540,13 +540,27 @@ tree.preOrderTraversal(node: tree)
 //    }
 //}
 let binarySearh = BinarySearch()
-//binarySearh.search(arr: [1,2,3,6,7,8,9], target: 3)
+let arr =  [1, 3, 5, 7, 9, 11]
+binarySearh.binarySearchRecursion(arr: arr,
+                                  target: 7,
+                                  right: arr.count-1
+)
 
-//print(binarySearh.search(arr: [1,2,3,6,7,8,9], target: 3))
-//
-//let soluton = Solution()
-//
-//soluton.isPalindrome(-121)
+let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+let target = 8
+
+let index = binarySearh.binarySearchRecursion(arr: numbers,
+                                              target: target,
+                                              right: numbers.count-1
+)
+if index != -1 {
+    print("Target found at index",index , numbers[index])
+} else {
+    print("Target not found")
+}
+
+
+
 
 func isPalindromeInt(_ x: Int) -> Bool {
     if x < 0 {
@@ -567,6 +581,30 @@ func isPalindromeInt(_ x: Int) -> Bool {
 }
 
 isPalindromeInt(-121)
+
+func isPalindromeRecursion(_ x: Int, reverNum: Int = 0) -> Bool {
+    var num = x
+    var reverNum = reverNum
+
+    if num < 0 {
+        return false
+    } else if num == 0 {
+        return reverNum == num
+    } else {
+        reverNum = reverNum * 10 + num % 10
+        num /= 10
+        if reverNum == x {
+            return true
+        } else if reverNum > x {
+            return false
+        }
+        return isPalindromeRecursion(num,reverNum: reverNum)
+    }
+
+}
+
+
+isPalindromeRecursion(101)
 
 binarySearh.selectionSort(array: [0,3,2,1,5])
 
@@ -683,8 +721,6 @@ previous = 0
 //let arr: [Int] = [0,2,3,4,5]
 //
 //print(arr[0..<3])
-
-binarySearh.mergeWithouRecursive(array:  [4,0,2,1])
 
 
 

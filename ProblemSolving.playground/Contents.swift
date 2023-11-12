@@ -97,21 +97,41 @@ class Solution {
         }
     }
 
+    func generateParenthesis(_ n: Int) -> [String] {
+           var stack = [Character]()
+           var res = [String]()
+
+           func backtrack(_ openN: Int, _ closedN: Int) {
+               if openN == closedN && openN == n {
+                   res.append(String(stack))
+                   return
+               }
+
+               if openN < n {
+                   stack.append("(")
+                   backtrack(openN + 1, closedN)
+                   stack.removeLast()
+               }
+
+               if closedN < openN {
+                   stack.append(")")
+                   backtrack(openN, closedN + 1)
+                   stack.removeLast()
+               }
+           }
+
+           backtrack(0, 0)
+           return res
+       }
+
 }
-
-
-
-
-
-   
-
-
 
 
 let solution = Solution()
 var nums = [0,1,2,2,3,0,4,2]
 let anotherSolution = AnotherSolution()
 //Input: haystack = "sadbutsad", needle = "sad"
+solution.generateParenthesis(3)
 
 solution.strStr(haystack: "leetcode", needle: "needle")
 
@@ -153,4 +173,57 @@ class MinStack {
     }
 }
 
+
+
+//func countDown(num: Int)  {
+//    if num == 0 {
+//        print("completed")
+//
+//    } else {
+//        print(num)
+//        return countDown(num: num-1)
+//    }
+//}
+
+
+func implBubuleSort(arr: [Int])  {
+    var arr = arr
+       for i in 0..<arr.count {
+           for j in i..<arr.count {
+               if arr[i] > arr[j] {
+                   var temp = arr[i]
+                   arr[i] = arr[j]
+                   arr[j] = temp
+               }
+
+           }
+       }
+
+       for num in arr {
+           print("sorted \(num)")
+       }
+
+}
+
+func implBubleSortRecursion(arr: inout [Int], n: Int) {
+
+    if n == 1 {
+        return
+    }
+
+    for i in  0..<n-1 {
+        if arr[i] > arr[i+1] {
+            let temp = arr[i]
+            arr[i] = arr[i+1]
+            arr[i+1] = temp
+        }
+    }
+
+    implBubleSortRecursion(arr: &arr, n: n-1)
+}
+
+var arr = [4,2,1,0]
+implBubleSortRecursion(arr: &arr, n: arr.count)
+print(arr)
+implBubuleSort(arr: [4,2,1,0])
 

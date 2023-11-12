@@ -24,6 +24,31 @@ public class BinarySearch {
         return -1
     }
 
+    public func binarySearchRecursion(
+        arr: [Int],
+        target: Int,
+        left: Int? = nil,
+        right: Int? = nil
+    ) -> Int {
+
+        let left = left ?? 0
+        let right = right ?? arr.count - 1
+        let middle = (left + right) / 2
+
+        if left > right {
+            return -1 // Target not found
+        }
+
+        if arr[middle] == target {
+            return middle
+        } else if arr[middle] < target {
+            return binarySearchRecursion(arr: arr, target: target, left: middle + 1, right: right)
+        } else if arr[middle] > target {
+            return binarySearchRecursion(arr: arr, target: target, left: left, right: middle - 1)
+        }
+        return -1 
+    }
+
     public func bubleSort() {
 
         
