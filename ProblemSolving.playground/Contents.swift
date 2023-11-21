@@ -101,13 +101,14 @@ class Solution {
            var stack = [Character]()
            var res = [String]()
 
-           func backtrack(_ openN: Int, _ closedN: Int) {
+        func backtrack(_ openN: Int, _ closedN: Int) {
+
                if openN == closedN && openN == n {
                    res.append(String(stack))
                    return
                }
 
-               if openN < n {
+               if openN > 0 {
                    stack.append("(")
                    backtrack(openN + 1, closedN)
                    stack.removeLast()
@@ -124,6 +125,24 @@ class Solution {
            return res
        }
 
+//    func generateParenthesis2(_ n: Int) -> [String] {
+//        var stack: [String] = []
+//        func generate(_ prefix: String, openN: Int, closeN: Int) {
+//            if openN == 0 && closeN == 0 {
+//                stack.append(prefix)
+//                return
+//            }
+//            if openN > 0 {
+//                generate(prefix+"(", openN:openN-1 , closeN: closeN)
+//            }
+//            if closeN > openN {
+//                generate(prefix+")", openN:openN , closeN: closeN-1)
+//            }
+//        }
+//        generate("", openN: n, closeN: n)
+//        return stack
+//    }
+
 }
 
 
@@ -131,7 +150,9 @@ let solution = Solution()
 var nums = [0,1,2,2,3,0,4,2]
 let anotherSolution = AnotherSolution()
 //Input: haystack = "sadbutsad", needle = "sad"
-solution.generateParenthesis(3)
+//solution.generateParenthesis(3)
+//solution.generateParenthesis2(3)
+anotherSolution.generateParenthesis(3)
 
 solution.strStr(haystack: "leetcode", needle: "needle")
 

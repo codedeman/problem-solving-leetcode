@@ -2,7 +2,7 @@ import UIKit
 import Foundation
 import Swift
 var greeting = "Hello, playground"
-
+import Combine
 protocol Purchaseable {
     func buy()
 }
@@ -641,7 +641,7 @@ func romanToInt(_ s: String) -> Int {
 func findMax(arr: [Int])  {
     var max = arr[0]
     var arrMax: [Int] = []
-    for i in 0..<arr.count {
+    for _ in 0..<arr.count {
 
     }
 
@@ -876,3 +876,5 @@ let person = Person(name: "John Doe", address: Address(street: "1 Main St", city
 let streetPath = \Person.address
 let steet = person[keyPath: streetPath]
 print(steet)
+
+
