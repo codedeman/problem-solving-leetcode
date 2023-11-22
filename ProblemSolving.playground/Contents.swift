@@ -125,23 +125,43 @@ class Solution {
            return res
        }
 
-//    func generateParenthesis2(_ n: Int) -> [String] {
-//        var stack: [String] = []
-//        func generate(_ prefix: String, openN: Int, closeN: Int) {
-//            if openN == 0 && closeN == 0 {
-//                stack.append(prefix)
-//                return
-//            }
-//            if openN > 0 {
-//                generate(prefix+"(", openN:openN-1 , closeN: closeN)
-//            }
-//            if closeN > openN {
-//                generate(prefix+")", openN:openN , closeN: closeN-1)
-//            }
-//        }
-//        generate("", openN: n, closeN: n)
-//        return stack
-//    }
+    func calPoints(_ operations: [String]) -> Int {
+        var newoperations: [Int] = []
+        var sum: Int = 0
+        for  element  in operations {
+            if element == "C" {
+                if !newoperations.isEmpty {
+                    sum -= newoperations.last ?? 0
+                    newoperations.removeLast()
+                }
+
+            } else if element == "D" {
+                if let lastValidCode = newoperations.last {
+                    let doubleScore = lastValidCode*2
+                    newoperations.append(doubleScore)
+                    sum += doubleScore
+                }
+
+            } else  if element == "+" {
+                if newoperations.count >= 2 {
+                    let lastValidScore =  newoperations[newoperations.count-1]
+                    let secondValid = newoperations[newoperations.count - 2]
+                    let newscore = lastValidScore+secondValid
+                    newoperations.append(newscore)
+                    sum += newscore
+
+                }
+            } else {
+                if let value = Int(element) {
+                    newoperations.append(value)
+                    sum += value
+                }
+            }
+
+        }
+
+        return sum
+    }
 
 }
 
@@ -152,6 +172,14 @@ let anotherSolution = AnotherSolution()
 //Input: haystack = "sadbutsad", needle = "sad"
 //solution.generateParenthesis(3)
 //solution.generateParenthesis2(3)
+let ops = ["5","2","C","D","+"]
+let testcase2 = ["1","C"]
+
+
+
+// 5*2 = 10
+// 10+5 = 15
+solution.calPoints(ops)
 anotherSolution.generateParenthesis(3)
 
 solution.strStr(haystack: "leetcode", needle: "needle")
