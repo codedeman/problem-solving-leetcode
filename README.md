@@ -8,6 +8,8 @@
 - [X] 27. [Remove Element](https://leetcode.com/problems/remove-element/description/)
 ### Stack 
 - [X] 155 [Min Stack](https://leetcode.com/problems/min-stack/description/)
+- [X] 682 [Baseball Game](https://leetcode.com/problems/baseball-game/description/)
+- [X] 225 Implement Stack using Queues (https://leetcode.com/problems/implement-stack-using-queues/submissions/1108969713/)
 
 ## Data Structures
 - [] Array 

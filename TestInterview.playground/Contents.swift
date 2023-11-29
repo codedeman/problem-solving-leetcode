@@ -878,3 +878,109 @@ let steet = person[keyPath: streetPath]
 print(steet)
 
 
+
+//var queue = Queue<String>()
+//queue.enQueue(element: "Adam")
+//queue.enQueue(element: "Julia")
+//queue.enQueue(element: "Ben")
+
+// we have 3 customers to serve, we're going to serve them in order of arrived
+//let serving = queue.deQueue()
+//let nextToServe = queue.head // J
+
+
+class MyStack {
+
+    var queue =  Queue()
+
+    init() {
+        queue = Queue()
+    }
+
+    func push(_ x: Int) {
+        queue.push(x)
+    }
+
+    func pop() -> Int {
+        for _ in 0..<(queue.count ?? 0)-1 {
+            queue.push(queue.pop())
+        }
+        return queue.pop()
+    }
+
+    func top() -> Int {
+        for element in 0..<((queue.count ?? 0) - 1){
+            print("==>",element)
+//            queue.push(queue.pop())
+        }
+
+      defer {
+          queue.push(queue.pop())
+      }
+
+        return queue.tail ?? 0
+    }
+
+    func empty() -> Bool {
+        return queue.count == 0
+    }
+}
+
+class Queue {
+
+    var elements: [Int] = []
+
+    init() { }
+
+    func push(_ x: Int) {
+        elements.append(x)
+    }
+
+    var head: Int? {
+        return elements.first
+    }
+
+    func pop() -> Int {
+        elements.popLast()!
+    }
+
+    var tail: Int? {
+        return elements.last
+    }
+
+    var count: Int? {
+        return elements.count
+    }
+
+    func isEmpty() -> Bool{
+        return elements.isEmpty
+    }
+
+}
+
+
+
+let stack = MyStack()
+
+stack.push(3)
+stack.push(5)
+stack.push(6)
+
+stack.top()
+stack.empty()
+stack.pop()
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * let obj = MyStack()
+ * obj.push(x)
+ * let ret_2: Int = obj.pop()
+ * let ret_3: Int = obj.top()
+ * let ret_4: Bool = obj.empty()
+ */
+var arr1 = [1,2,3,4,5]
+print(arr1.count-1)
+for el in 0..<arr1.count-1 {
+    print("element",el)
+}
+
+

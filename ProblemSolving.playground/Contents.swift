@@ -1,5 +1,7 @@
 import UIKit
 
+
+
 class Solution {
 
     func twoSum(nums: [Int], target: Int) -> [Int] {
@@ -163,26 +165,97 @@ class Solution {
         return sum
     }
 
+    func nextGreaterElement(_ nums1: [Int],
+                            _ nums2: [Int]) -> [Int] {
+        var newArr: [Int] = []
+        var dict: [Int:Int] = [:]
+//        var stack = [Int]()
+//
+        for (index, value) in nums1.enumerated() {
+            dict[value] = index
+        }
+//
+//        print(dict.values,dict.keys)
+//        var nextGreaterElement = [Int](repeating: -1, count: nums1.count)
+//
+//
+//        for num in nums2 {
+//            while !stack.isEmpty && stack.last! < num {
+//                let top = stack.removeLast()
+//                if let index = dict[top] {
+//                    nextGreaterElement[index] = num
+//                }
+//            }
+//            stack.append(num)
+//        }
+
+        for i in 0..<nums2.count {
+            if let index = dict[nums2[i]] {
+                if i < nums2.count - 1 {
+                    if nums1[index] < nums2[i+1] {
+                        print(nums2[i+1])
+                        newArr.append(nums2[i + 1])
+                        continue
+                    } else {
+                        newArr.append(-1)
+                    }
+                } else {
+                    newArr.append(-1)
+                }
+            }
+        }
+
+//        return nextGreaterElement
+
+        return newArr
+
+    }
+
+   
+
+
 }
 
 
+
+
 let solution = Solution()
+print(solution.nextGreaterElement([4,1,2],[1,3,4,2]))
+
 var nums = [0,1,2,2,3,0,4,2]
 let anotherSolution = AnotherSolution()
-//Input: haystack = "sadbutsad", needle = "sad"
-//solution.generateParenthesis(3)
-//solution.generateParenthesis2(3)
 let ops = ["5","2","C","D","+"]
 let testcase2 = ["1","C"]
 
+print(anotherSolution.nextGreaterElement2([4,1,2], [1,3,4,2]))
+
+
+//[2,4], nums2 = [1,2,3,4]
+// [4,1,2], nums2 = [1,3,4,2]
+// -1,3,-1
+//print(solution.nextGreaterElement([2,4],[1,2,3,4]))
+
+/*
+ min of two array
+ for
+ -> nums1 vs nums2.
+
+ for min... nums2 {
+    if num1.last < num2[min] {
+        apedning num2
+ } else {
+    apending -1
+ }
+ }
+
+ */
 
 
 // 5*2 = 10
 // 10+5 = 15
-solution.calPoints(ops)
-anotherSolution.generateParenthesis(3)
-
-solution.strStr(haystack: "leetcode", needle: "needle")
+//solution.calPoints(ops)
+//anotherSolution.generateParenthesis(3)
+//solution.strStr(haystack: "leetcode", needle: "needle")
 
 let str = "Greetings, friend! How are you?"
 let firstSpace = str.firstIndex(of: " ") ?? str.endIndex
@@ -273,6 +346,71 @@ func implBubleSortRecursion(arr: inout [Int], n: Int) {
 
 var arr = [4,2,1,0]
 implBubleSortRecursion(arr: &arr, n: arr.count)
-print(arr)
-implBubuleSort(arr: [4,2,1,0])
+//print(arr)
+//implBubuleSort(arr: [4,2,1,0])
+func testContine() {
+    let numbers = [1, 2, 3, 4, 5, 6]
+    var arr: [Int] = []
+    for number in numbers {
+        if number / 2 == 0 {
+            arr.append(number)
+//            continue
+        }
 
+        print(number)
+    }
+}
+
+
+testContine()
+
+
+class MyStack {
+
+    var queue =  Queue()
+
+    init() {
+        queue = Queue()
+    }
+
+    func push(_ x: Int) {
+        queue.push(x)
+    }
+
+    func pop() -> Int {
+        for _ in 0..<(queue.count ?? 0)-1 {
+            queue.push(queue.pop())
+        }
+        return queue.pop()
+    }
+
+    func top() -> Int {
+        for element in 0..<((queue.count ?? 0) - 1){
+            print("==>",element)
+//            queue.push(queue.pop())
+        }
+
+      defer {
+          queue.push(queue.pop())
+      }
+
+        return queue.tail ?? 0
+    }
+
+    func empty() -> Bool {
+        return queue.count == 0
+    }
+}
+
+
+
+let stack = MyStack()
+
+stack.push(3)
+stack.push(5)
+stack.push(6)
+
+stack.top()
+stack.empty()
+stack.pop()
+/**
