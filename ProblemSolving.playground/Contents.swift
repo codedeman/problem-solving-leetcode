@@ -211,16 +211,40 @@ class Solution {
 
     }
 
+    func simplifyPath(_ path: String) -> String {
+        var path = path.split(separator: "/")
+        print(path)
+        var simplifiedPath = [String]()
+
+        for index in 0..<path.count {
+            if path[index] == "." {
+                continue
+            } else if path[index] == ".." {
+                simplifiedPath.popLast()
+            } else {
+                simplifiedPath.append(String(path[index]))
+
+            }
+
+        }
+        let simplifyPathString = "/" + simplifiedPath.joined(separator: "/")
+        return simplifyPathString
+    }
+
    
 
 
 }
 
-
-
-
 let solution = Solution()
-print(solution.nextGreaterElement([4,1,2],[1,3,4,2]))
+print(solution.simplifyPath("/a/./b/../../c/"))
+
+//print(solution.nextGreaterElement([4,1,2],[1,3,4,2]))
+//print(solution.simplifyPath("/hello/.."))
+//
+//print(solution.simplifyPath("/../"))
+//print(solution.simplifyPath("/home//foo/"))
+
 
 var nums = [0,1,2,2,3,0,4,2]
 let anotherSolution = AnotherSolution()

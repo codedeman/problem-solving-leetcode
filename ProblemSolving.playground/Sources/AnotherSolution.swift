@@ -101,6 +101,16 @@ public init() {}
            return nums1
        }
 
+//    func simplifyPath(_ path: String) -> String {
+//        var pathComponent = path.split(separator: "/")
+//        var simplifyPathStr: [String] = []
+//        for component in pathComponent {
+//
+//            if co
+//        }
+//        return simplifyPathStr.join()
+//    }
+
 
 
 }
