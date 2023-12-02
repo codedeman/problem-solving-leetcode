@@ -54,7 +54,6 @@ class Solution {
     }
 
     func maxProfit(_ prices: [Int]) -> Int {
-
         var left = 0
         var right = left+1
         var maxProfit = 0
@@ -69,6 +68,8 @@ class Solution {
         }
         return maxProfit
     }
+
+    
 
     func removeElement(_ nums: inout  [Int], _ val: Int) -> Int {
         var index = 0
@@ -232,12 +233,59 @@ class Solution {
     }
 
    
+    func maxSubArray(_ nums: [Int]) -> Int {
+        var maxValue = Int.min
+        var currentSum = 0
+        for num in nums {
+            currentSum = max(num, currentSum+num)
+            print("currentSum", currentSum)
+            maxValue = max(maxValue,currentSum)
+        }
+        return maxValue
+    }
+
+    func maxSubArraySum(_ a: [Int], _ size: Int) -> Int {
+      var maxSoFar = Int.min
+      var maxEndingHere = 0
+
+      for i in 0..<size {
+        maxEndingHere += a[i]
+        if maxSoFar < maxEndingHere {
+          maxSoFar = maxEndingHere
+        }
+        if maxEndingHere < 0 {
+          maxEndingHere = 0
+        }
+      }
+
+      return maxSoFar
+    }
+
+    func maxProduct(_ nums: [Int]) -> Int {
+        var result = nums[0]
+        for (i,valuei) in nums.enumerated() {
+            var mul = nums[i]
+            for j in i+1..<nums.count {
+                result = max(result,mul)
+                mul *= nums[j]
+            }
+            result = max(result,mul)
+        }
+        return result
+
+    }
+
 
 
 }
 
 let solution = Solution()
 print(solution.simplifyPath("/a/./b/../../c/"))
+print(solution.maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))
+print(solution.maxSubArraySum([-2,1,-3,4,-1,2,1,-5,4], 3))
+print(solution.maxProduct([2,3,-2,4]))
+print(solution.maxProduct([-2,0,-1]))
+
 
 //print(solution.nextGreaterElement([4,1,2],[1,3,4,2]))
 //print(solution.simplifyPath("/hello/.."))
@@ -252,6 +300,9 @@ let ops = ["5","2","C","D","+"]
 let testcase2 = ["1","C"]
 
 print(anotherSolution.nextGreaterElement2([4,1,2], [1,3,4,2]))
+anotherSolution.bestTimeSell([7,1,5,3,6,4])
+
+
 
 
 //[2,4], nums2 = [1,2,3,4]
@@ -437,4 +488,4 @@ stack.push(6)
 stack.top()
 stack.empty()
 stack.pop()
-/**
+

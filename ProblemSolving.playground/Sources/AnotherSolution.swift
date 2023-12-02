@@ -16,6 +16,19 @@ public init() {}
         return k
     }
 
+    public func bestTimeSell(_ prices: [Int]) -> Int {
+
+        var minPrice = Int.max
+        var maxProfit = 0
+        for price in prices {
+            minPrice = min(minPrice, price)
+            maxProfit = max(maxProfit, price - minPrice)
+        }
+
+        return maxProfit
+
+    }
+
 //    public func generateParenthesis(_ n: Int) -> [String] {
 //      var stack: [String] = []
 //
