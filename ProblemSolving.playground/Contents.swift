@@ -275,6 +275,9 @@ class Solution {
 
     }
 
+    func getConcatenation(_ nums: [Int]) -> [Int] {
+       return nums + nums
+    }
 
 
 }
@@ -285,6 +288,7 @@ print(solution.maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))
 print(solution.maxSubArraySum([-2,1,-3,4,-1,2,1,-5,4], 3))
 print(solution.maxProduct([2,3,-2,4]))
 print(solution.maxProduct([-2,0,-1]))
+print(solution.getConcatenation([1,2,1]))
 
 
 //print(solution.nextGreaterElement([4,1,2],[1,3,4,2]))
