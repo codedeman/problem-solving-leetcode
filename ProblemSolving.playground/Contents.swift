@@ -166,51 +166,7 @@ class Solution {
         return sum
     }
 
-    func nextGreaterElement(_ nums1: [Int],
-                            _ nums2: [Int]) -> [Int] {
-        var newArr: [Int] = []
-        var dict: [Int:Int] = [:]
-//        var stack = [Int]()
-//
-        for (index, value) in nums1.enumerated() {
-            dict[value] = index
-        }
-//
-//        print(dict.values,dict.keys)
-//        var nextGreaterElement = [Int](repeating: -1, count: nums1.count)
-//
-//
-//        for num in nums2 {
-//            while !stack.isEmpty && stack.last! < num {
-//                let top = stack.removeLast()
-//                if let index = dict[top] {
-//                    nextGreaterElement[index] = num
-//                }
-//            }
-//            stack.append(num)
-//        }
 
-        for i in 0..<nums2.count {
-            if let index = dict[nums2[i]] {
-                if i < nums2.count - 1 {
-                    if nums1[index] < nums2[i+1] {
-                        print(nums2[i+1])
-                        newArr.append(nums2[i + 1])
-                        continue
-                    } else {
-                        newArr.append(-1)
-                    }
-                } else {
-                    newArr.append(-1)
-                }
-            }
-        }
-
-//        return nextGreaterElement
-
-        return newArr
-
-    }
 
     func simplifyPath(_ path: String) -> String {
         var path = path.split(separator: "/")
@@ -224,7 +180,6 @@ class Solution {
                 simplifiedPath.popLast()
             } else {
                 simplifiedPath.append(String(path[index]))
-
             }
 
         }
@@ -263,7 +218,7 @@ class Solution {
 
     func maxProduct(_ nums: [Int]) -> Int {
         var result = nums[0]
-        for (i,valuei) in nums.enumerated() {
+        for (i,_) in nums.enumerated() {
             var mul = nums[i]
             for j in i+1..<nums.count {
                 result = max(result,mul)
@@ -275,22 +230,131 @@ class Solution {
 
     }
 
-    func getConcatenation(_ nums: [Int]) -> [Int] {
-       return nums + nums
+//    func getConcatenation(_ nums: [Int]) -> [Int] {
+//       return nums + nums
+//    }
+////    [ 1,4,5,3,12,10 ]
+//    func dailyTemperatures1(_ temperatures: [Int]) -> [Int] {
+//      var stack = MonotonicStack<Int>()
+//      var result = [Int](repeating: 0, count: temperatures.count)
+//
+//      for (i, num) in temperatures.enumerated() {
+//          while !stack.isEmpty() && num > temperatures[stack.peek()!] {
+//              let index = stack.pop() ?? 0
+//              result[index] = i - index
+//
+//          }
+//        stack.push(i)
+//      }
+//
+//      return result
+//    }
+
+    func dailyTemperatures(_ temperatures: [Int]) -> [Int] {
+        var result = [Int](repeating: 0, count: temperatures.count) // Initialize the result array with zeros
+        var stack = [Int]() // Create an empty stack to store the indices
+
+        for i in 0..<temperatures.count {
+            while !stack.isEmpty && temperatures[i] > temperatures[stack.last!] {
+                let index = stack.removeLast()
+                result[index] = i - index
+            }
+            stack.append(i)
+        }
+
+        return result
+    }
+
+    func minJumps(_ nums: [Int]) -> Int {
+        let n = nums.count
+        var jumps = [Int](repeating: Int.max, count: n)
+        jumps[0] = 0
+
+        for i in 1..<n {
+            for j in 0..<i {
+                if j + nums[j] >= i {
+                    jumps[i] = min(jumps[i], jumps[j] + 1)
+                }
+            }
+        }
+
+        return jumps[n - 1]
+    }
+
+
+    func jump(_ nums: [Int]) -> Int {
+        var count = 0
+
+        for i in 1..<nums.count {
+            for j in i..<nums.count {
+                if nums[i] > nums[j] {
+                    count += 1
+                }
+            }
+
+        }
+        return count
+    }
+
+    func nextGreaterElement(_ nums1: [Int],
+                            _ nums2: [Int]) -> [Int] {
+
+        var dict: [Int: Int] = [:]
+        var stack: [Int] = []
+        for (key,value) in nums1.enumerated() {
+            dict[key] = value
+        }
+        var result = [Int](repeating: -1, count: nums1.count)
+
+        for num in nums2 {
+            while !stack.isEmpty && stack.last! < num {
+               let top =  stack.removeLast()
+                print("pop",top)
+                if let index = dict[top] {
+                    result[index] = num
+                }
+            }
+            stack.append(num)
+        }
+        for n in stack {
+            print("element in stack\(n)")
+        }
+        return  result
+
     }
 
 
 }
 
+
+
+
 let solution = Solution()
-print(solution.simplifyPath("/a/./b/../../c/"))
-print(solution.maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))
-print(solution.maxSubArraySum([-2,1,-3,4,-1,2,1,-5,4], 3))
-print(solution.maxProduct([2,3,-2,4]))
-print(solution.maxProduct([-2,0,-1]))
-print(solution.getConcatenation([1,2,1]))
+print("result",solution.nextGreaterElement([4,1,2], [1,3,4,2]))
 
+//print(solution.dailyTemperatures([ 1,4,5,3,12,10 ]))
+//print(solution.dailyTemperatures([73,74,76]))
+var array = [3, 2, 2, 3]
 
+let nums2 = [1,2,3]
+// Example usage:
+let nums3 = [2, 3, 1, 1, 4]
+
+//let minJumpsCount = solution.minJumps(nums2)
+//
+//print("Minimum jumps required:", solution.jump(nums2))
+//print("Minimum jumps required:", solution.jump(nums3))
+//
+//print(solution.removeElement(&array, 3))
+//
+//print(array)
+
+//print(solution.simplifyPath("/a/./b/../../c/"))
+//print(solution.maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))
+//print(solution.maxSubArraySum([-2,1,-3,4,-1,2,1,-5,4], 3))
+//print(solution.maxProduct([2,3,-2,4]))
+//print(solution.maxProduct([-2,0,-1]))
+//print(solution.getConcatenation([1,2,1]))
 //print(solution.nextGreaterElement([4,1,2],[1,3,4,2]))
 //print(solution.simplifyPath("/hello/.."))
 //
@@ -304,7 +368,8 @@ let ops = ["5","2","C","D","+"]
 let testcase2 = ["1","C"]
 
 print(anotherSolution.nextGreaterElement2([4,1,2], [1,3,4,2]))
-anotherSolution.bestTimeSell([7,1,5,3,6,4])
+//anotherSolution.bestTimeSell([7,1,5,3,6,4])
+//anotherSolution.nextGreaterElement2([4,1,2], [1,3,4,2])
 
 
 
@@ -336,12 +401,12 @@ anotherSolution.bestTimeSell([7,1,5,3,6,4])
 //anotherSolution.generateParenthesis(3)
 //solution.strStr(haystack: "leetcode", needle: "needle")
 
-let str = "Greetings, friend! How are you?"
-let firstSpace = str.firstIndex(of: " ") ?? str.endIndex
-let substr = str[firstSpace...]
-if let nextCapital = substr.firstIndex(where: { $0 >= "A" && $0 <= "Z" }) {
-    print("Capital after a space: \(str[nextCapital])")
-}
+//let str = "Greetings, friend! How are you?"
+//let firstSpace = str.firstIndex(of: " ") ?? str.endIndex
+//let substr = str[firstSpace...]
+//if let nextCapital = substr.firstIndex(where: { $0 >= "A" && $0 <= "Z" }) {
+//    print("Capital after a space: \(str[nextCapital])")
+//}
 class MinStack {
     var stack: [Int]
     var minStack: [Int]
@@ -493,3 +558,19 @@ stack.top()
 stack.empty()
 stack.pop()
 
+
+//
+//var monoDecreasing = MonotonicStack<Int>(stack:  [5,4,2,1])
+//
+//monoDecreasing.push(3)
+//monoDecreasing.peek()
+//print("monoDecreasing",monoDecreasing.count)
+//monoDecreasing.push(4)
+//monoDecreasing.peek()
+
+//var intergrate = 0
+//
+//while intergrate < monoDecreasing.count {
+//    monoDecreasing.pop()
+//    intergrate += 1
+//}

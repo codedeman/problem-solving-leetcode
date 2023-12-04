@@ -2,10 +2,10 @@ import Foundation
 
 
 public class AnotherSolution {
-
-public init() {}
-
-  public func removeElement(_ nums: inout  [Int], _ val: Int) -> Int {
+    
+    public init() {}
+    
+    public func removeElement(_ nums: inout  [Int], _ val: Int) -> Int {
         var k = 0
         for i in 0..<nums.count {
             if nums[i] != val {
@@ -15,52 +15,29 @@ public init() {}
         }
         return k
     }
-
+    
     public func bestTimeSell(_ prices: [Int]) -> Int {
-
+        
         var minPrice = Int.max
         var maxProfit = 0
         for price in prices {
             minPrice = min(minPrice, price)
             maxProfit = max(maxProfit, price - minPrice)
         }
-
+        
         return maxProfit
-
+        
     }
-
-//    public func generateParenthesis(_ n: Int) -> [String] {
-//      var stack: [String] = []
-//
-//      func generate(_ prefix: String, openN: Int, closeN: Int) {
-//        if openN == 0 && closeN == 0 {
-//          stack.append(prefix)
-//          return
-//        }
-//
-//        if openN > 0 {
-//          generate(prefix + "(", openN: openN - 1, closeN: closeN)
-//        }
-//
-//        if closeN > openN {
-//          if prefix.last == "(" {
-//            generate(prefix + ")", openN, closeN - 1)
-//          }
-//        }
-//      }
-//
-//      generate("", openN: n, closeN: n)
-//      return stack
-//    }
-
+    
+    
     public func generateParenthesis(_ n: Int) -> [String] {
         var stack: [String] = []
         func generate(_ prefix: String, openN: Int, closeN: Int) {
             if openN == 0 && closeN == 0 {
-                  stack.append(prefix)
-                  return
+                stack.append(prefix)
+                return
             }
-
+            
             if openN > 0 {
                 generate(prefix+"(", openN:openN-1 , closeN: closeN)
             }
@@ -73,59 +50,29 @@ public init() {}
         generate("", openN: n, closeN: n)
         return stack
     }
-
+    
     public func nextGreaterElement2(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
-        var nums1 = nums1  // Declare `nums1` as a `var` variable
+        var dict: [Int: Int] = [:]
+        var stack: [Int] = []
+        for (key, value) in nums1.enumerated() {
+            dict[value] = key
+        }
+//        var jumps = [Int](repeating: Int.max, count: n)
 
-           if nums2.isEmpty || nums1.isEmpty {
-               return []
-           }
+        var result = [Int](repeating: -1, count: nums1.count)
 
-           var numberNGE: [Int: Int] = [:]
-           var numStack: [Int] = []
-
-           numStack.append(nums2[nums2.count - 1])
-           numberNGE[nums2[nums2.count - 1]] = -1
-
-           for i in stride(from: nums2.count - 2, to: -1, by: -1) {
-               if nums2[i] < numStack.last! {
-                   numberNGE[nums2[i]] = numStack.last!
-                   numStack.append(nums2[i])
-                   continue
-               }
-
-               while !numStack.isEmpty && numStack.last! < nums2[i] {
-                   numStack.removeLast()
-               }
-
-               if numStack.isEmpty {
-                   numStack.append(nums2[i])
-                   numberNGE[nums2[i]] = -1
-               } else {
-                   numberNGE[nums2[i]] = numStack.last!
-                   numStack.append(nums2[i])
-               }
-           }
-
-           for i in 0..<nums1.count {
-               nums1[i] = numberNGE[nums1[i]]!
-           }
-
-           return nums1
-       }
-
-//    func simplifyPath(_ path: String) -> String {
-//        var pathComponent = path.split(separator: "/")
-//        var simplifyPathStr: [String] = []
-//        for component in pathComponent {
-//
-//            if co
-//        }
-//        return simplifyPathStr.join()
-//    }
-
-
-
+        for num in nums2 {
+            while stack.isEmpty && stack.last ?? 0 > num {
+                let value = stack.removeLast()
+                print("value ===>",value)
+            }
+            
+            stack.append(num)
+        }
+        
+        return stack
+        
+    }
 }
 
 class MyStack2 {
