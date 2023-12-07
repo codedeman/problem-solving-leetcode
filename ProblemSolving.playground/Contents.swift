@@ -250,20 +250,7 @@ class Solution {
 //      return result
 //    }
 
-    func dailyTemperatures(_ temperatures: [Int]) -> [Int] {
-        var result = [Int](repeating: 0, count: temperatures.count) // Initialize the result array with zeros
-        var stack = [Int]() // Create an empty stack to store the indices
 
-        for i in 0..<temperatures.count {
-            while !stack.isEmpty && temperatures[i] > temperatures[stack.last!] {
-                let index = stack.removeLast()
-                result[index] = i - index
-            }
-            stack.append(i)
-        }
-
-        return result
-    }
 
     func minJumps(_ nums: [Int]) -> Int {
         let n = nums.count
@@ -323,90 +310,90 @@ class Solution {
 
     }
 
+    func dailyTemperatures(_ temperatures: [Int]) -> [Int] {
+
+        var result = [Int](repeating: 0, count: temperatures.count) // Initialize the result array with zeros
+        var stack = [Int]() // Create an empty stack to store the indices
+
+        for (index, value) in temperatures.enumerated() {
+            while !stack.isEmpty && value > temperatures[stack.last!] {
+                let top = stack.removeLast()
+                result[top] = index-top
+                print("pop",top)
+            }
+            stack.append(index)
+        }
+
+        return result
+    }
+
+
+    func asteroidCollision(_ asteroids: [Int]) -> [Int] {
+        var stack = [Int]()
+        for var a in asteroids { // Use 'var' to make 'a' mutable
+            while !stack.isEmpty && a < 0 && stack.last! > 0 {
+                let diff = a + stack.last!
+                if diff < 0 {
+                    stack.popLast()
+                } else if diff > 0 {
+                    a = 0
+                } else {
+                    a = 0
+                    stack.popLast()
+                }
+            }
+            if a != 0 {
+                stack.append(a)
+            }
+        }
+        return stack
+    }
+
+
+
+    func asteroidCollision3(_ asteroids: [Int]) -> [Int] {
+        var stack: [Int] = []
+        for var asteroid in asteroids {
+            while !stack.isEmpty && asteroid<0 && stack.last! > 0 {
+                let diff = asteroid + stack.last!
+                if diff < 0 {
+                    stack.popLast()
+                } else if diff > 0 {
+                    asteroid = 0
+                }  else {
+                    asteroid = 0
+                    stack.popLast()
+                }
+            }
+            if asteroid != 0  {
+                stack.append(asteroid)
+            }
+
+        }
+
+        return stack
+    }
+
+
 
 }
 
-
-
-
 let solution = Solution()
-print("result",solution.nextGreaterElement([4,1,2], [1,3,4,2]))
 
-//print(solution.dailyTemperatures([ 1,4,5,3,12,10 ]))
-//print(solution.dailyTemperatures([73,74,76]))
-var array = [3, 2, 2, 3]
-
-let nums2 = [1,2,3]
-// Example usage:
-let nums3 = [2, 3, 1, 1, 4]
-
-//let minJumpsCount = solution.minJumps(nums2)
-//
-//print("Minimum jumps required:", solution.jump(nums2))
-//print("Minimum jumps required:", solution.jump(nums3))
-//
-//print(solution.removeElement(&array, 3))
-//
-//print(array)
-
-//print(solution.simplifyPath("/a/./b/../../c/"))
-//print(solution.maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))
-//print(solution.maxSubArraySum([-2,1,-3,4,-1,2,1,-5,4], 3))
-//print(solution.maxProduct([2,3,-2,4]))
-//print(solution.maxProduct([-2,0,-1]))
-//print(solution.getConcatenation([1,2,1]))
-//print(solution.nextGreaterElement([4,1,2],[1,3,4,2]))
-//print(solution.simplifyPath("/hello/.."))
-//
-//print(solution.simplifyPath("/../"))
-//print(solution.simplifyPath("/home//foo/"))
+print("result",solution.asteroidCollision3([5,10,-5]))
+print("result",solution.asteroidCollision3([8,-8]))
+print("result",solution.asteroidCollision3([10,2,-5]))
+print("result",solution.asteroidCollision3([-2,-1,1,2]))
 
 
-var nums = [0,1,2,2,3,0,4,2]
+
+
 let anotherSolution = AnotherSolution()
 let ops = ["5","2","C","D","+"]
 let testcase2 = ["1","C"]
 
 print(anotherSolution.nextGreaterElement2([4,1,2], [1,3,4,2]))
-//anotherSolution.bestTimeSell([7,1,5,3,6,4])
-//anotherSolution.nextGreaterElement2([4,1,2], [1,3,4,2])
 
-
-
-
-//[2,4], nums2 = [1,2,3,4]
-// [4,1,2], nums2 = [1,3,4,2]
-// -1,3,-1
-//print(solution.nextGreaterElement([2,4],[1,2,3,4]))
-
-/*
- min of two array
- for
- -> nums1 vs nums2.
-
- for min... nums2 {
-    if num1.last < num2[min] {
-        apedning num2
- } else {
-    apending -1
- }
- }
-
- */
-
-
-// 5*2 = 10
-// 10+5 = 15
-//solution.calPoints(ops)
-//anotherSolution.generateParenthesis(3)
-//solution.strStr(haystack: "leetcode", needle: "needle")
-
-//let str = "Greetings, friend! How are you?"
-//let firstSpace = str.firstIndex(of: " ") ?? str.endIndex
-//let substr = str[firstSpace...]
-//if let nextCapital = substr.firstIndex(where: { $0 >= "A" && $0 <= "Z" }) {
-//    print("Capital after a space: \(str[nextCapital])")
-//}
 class MinStack {
     var stack: [Int]
     var minStack: [Int]
