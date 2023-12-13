@@ -8,7 +8,7 @@
 ### Array 
 - [X] [1929.Concatenation of Array] (https://leetcode.com/problems/concatenation-of-array/description/)
 - [X] [27.Remove Element](https://leetcode.com/problems/remove-element/description/)
-- [X] 152. [Maximum Product Subarray] (https://leetcode.com/problems/maximum-product-subarray/description/)
+- [X] [152. Maximum Product Subarray] (https://leetcode.com/problems/maximum-product-subarray/description/)
 
 ### Stack 
 - [X] [155 Min Stack](https://leetcode.com/problems/min-stack/description/)
@@ -16,6 +16,7 @@
 - [X] [225. Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/submissions/1108969713/)
 - [X] [496. Next Greater Element I](https://leetcode.com/problems/next-greater-element-i/description/)
 - [X] [735. Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
+- [X] [150 Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/description/)
 
 ## Data Structures
 - [] Array 
@@ -37,7 +38,7 @@
 ![Road Map](https://pbs.twimg.com/media/Fkl6NssacAIG2n7.jpg)
 
 ## Partern solution 
-[partern solution](https://docs.google.com/spreadsheets/d/1Lgg2kl9dYk3QmYrTVA0EEcdl7GTpTz8GnhNGMgbk0to/edit?usp=sharing)
+[Partern Solution](https://docs.google.com/spreadsheets/d/1Lgg2kl9dYk3QmYrTVA0EEcdl7GTpTz8GnhNGMgbk0to/edit?usp=sharing)
 
 
 

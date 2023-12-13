@@ -983,4 +983,34 @@ for el in 0..<arr1.count-1 {
     print("element",el)
 }
 
+func subArray(arr: [Int], n: Int) {
+    for i in 0..<n {
+        for j in i..<n {
+            for k in i...j {
+                print(arr[k])
+            }
+        }
+    }
+}
+
+subArray(arr: [1,2,3,4], n: 4)
+
+
+//void subArray(int arr[], int n)
+//{
+//    // Pick starting point
+//    for (int i=0; i <n; i++)
+//    {
+//        // Pick ending point
+//        for (int j=i; j<n; j++)
+//        {
+//            // Print subarray between current starting
+//            // and ending points
+//            for (int k=i; k<=j; k++)
+//                cout << arr[k] << " ";
+//
+//            cout << endl;
+//        }
+//    }
+//}
 

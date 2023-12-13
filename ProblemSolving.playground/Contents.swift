@@ -193,7 +193,6 @@ class Solution {
         var currentSum = 0
         for num in nums {
             currentSum = max(num, currentSum+num)
-            print("currentSum", currentSum)
             maxValue = max(maxValue,currentSum)
         }
         return maxValue
@@ -374,190 +373,146 @@ class Solution {
         return stack
     }
 
+    func maxSubArrayt(_ nums: [Int]) -> Int {
+        var maxValue = Int.min
+        var maxEnding = 0
+        for num in nums {
+            maxEnding = maxEnding + num
+            if maxValue < maxEnding {
+                print("-->",num)
+                maxValue = maxEnding
+            }
+
+            if maxEnding < 0 {
+                maxEnding = 0
+            }
+
+        }
+        return maxValue
+    }
+
+
+    func maxSumMinProduct(_ nums: [Int]) -> Int {
+        var currentSum = 0
+          var maxSum = Int.min
+        for (index,num) in nums.enumerated() {
+            print("",num)
+              currentSum = max(num, currentSum + num)
+              maxSum = max(maxSum, currentSum)
+          }
+          return maxSum
+
+//        var stack: [Int] = []
+//        var maxValue = Int.min
+//        var maxEnding = 0
+//        for num in nums {
+//            maxEnding = maxEnding + num
+//            if maxValue < maxEnding {
+//                stack.append(num)
+//                maxValue = maxEnding
+//            }
+//
+//            if maxEnding < 0 {
+//                maxEnding = 0
+//                stack.popLast()
+//                print("remove \(num)")
+//            }
+//
+//        }
+//
+//        for j in stack {
+//            print("j",j)
+//        }
+//        let min = nums.min()
+//        print("min",nums.min())
+//        return maxValue
+
+    }
+
+    func maxSubMinProduct(_ nums: [Int]) -> Int {
+
+        var prefixSum = Array(repeating: 0, count: nums.count + 1)
+        for i in 0..<nums.count {
+            prefixSum[i+1] = prefixSum[i] + nums[i]
+        }
+        print(prefixSum)
+        var maxMinProd = Int.min
+        var minStack = [Int]()
+        for i in 0...nums.count {
+            while !minStack.isEmpty && (i == nums.count || nums[i] < nums[minStack.last!])  {
+                let mid = minStack.removeLast()
+                let left = minStack.isEmpty ? 0 : minStack.last! + 1
+                let new = (prefixSum[i] - prefixSum[left]) * nums[mid]
+                maxMinProd = max(maxMinProd, new)
+
+            }
+            minStack.append(i)
+
+        }
+
+        return maxMinProd % (Int(pow(10.0, 9.0)) + 7)
+
+    }
+
+    func carFleet(_ target: Int, _ position: [Int], _ speed: [Int]) -> Int {
+        if speed.count == 1 {return 1}
+               let array = zip(position, speed).sorted{$0.0 < $1.0}
+               var stack = [Double]()
+
+               for (x, v) in array {
+                   let time = Double(target - x) / Double(v)
+                   print("value \(time)")
+                   if !stack.isEmpty && time >= stack.last! {
+                       stack.popLast()
+                   }
+                   stack.append(time)
+               }
+               return stack.count
+       }
+
+
+
+    func evalRPN(_ tokens: [String]) -> Int {
+        var stack: [Int] = []
+        for value in tokens{
+            switch value {
+            case "+":
+                stack.append(stack.popLast()!+stack.popLast()!)
+            case "-":
+                let a = stack.popLast()!
+                let b  = stack.popLast()!
+                stack.append(b-a)
+            case "*":
+                stack.append(stack.popLast()!*stack.popLast()!)
+            case "/":
+                let a = stack.popLast()!
+                let b  = stack.popLast()!
+                stack.append(b/a)
+            default:
+                stack.append(Int(value)!)
+            }
+        }
+
+        return stack.first!
+    }
+
 
 
 }
 
 let solution = Solution()
-
-print("result",solution.asteroidCollision3([5,10,-5]))
-print("result",solution.asteroidCollision3([8,-8]))
-print("result",solution.asteroidCollision3([10,2,-5]))
-print("result",solution.asteroidCollision3([-2,-1,1,2]))
+//Input: target = 12, position = [10,8,0,5,3], speed = [2,4,1,1,3]
 
 
+solution.evalRPN(["4","13","5","/","+"])
 
-
-let anotherSolution = AnotherSolution()
-let ops = ["5","2","C","D","+"]
-let testcase2 = ["1","C"]
-
-print(anotherSolution.nextGreaterElement2([4,1,2], [1,3,4,2]))
-
-class MinStack {
-    var stack: [Int]
-    var minStack: [Int]
-
-    init() {
-
-        self.stack = []
-        self.minStack = []
-    }
-
-    func push(_ val: Int) {
-
-        self.stack.append(val)
-        let min = min(val, self.minStack.last ?? Int.max)
-        minStack.append(min)
-
-    }
-
-    func pop() {
-        minStack.popLast()
-        stack.popLast()
-    }
-
-    func top() -> Int {
-        return minStack.last ?? 0
-    }
-
-    func getMin() -> Int {
-        return minStack.last ?? 0
-    }
-}
+solution.evalRPN( ["2","1","+","3","*"])
 
 
 
-//func countDown(num: Int)  {
-//    if num == 0 {
-//        print("completed")
-//
-//    } else {
-//        print(num)
-//        return countDown(num: num-1)
-//    }
-//}
+let nums =  [1,2,3,2]
+//[1,2,3,2]
+solution.carFleet(12, [10,8,0,5,3], [2,4,1,1,3])
+let maxSubarraySum =  solution.maxSubMinProduct(nums)
+print("The maximum subarray sum is: \(maxSubarraySum)")
 
-
-func implBubuleSort(arr: [Int])  {
-    var arr = arr
-       for i in 0..<arr.count {
-           for j in i..<arr.count {
-               if arr[i] > arr[j] {
-                   var temp = arr[i]
-                   arr[i] = arr[j]
-                   arr[j] = temp
-               }
-
-           }
-       }
-
-       for num in arr {
-           print("sorted \(num)")
-       }
-
-}
-
-func implBubleSortRecursion(arr: inout [Int], n: Int) {
-
-    if n == 1 {
-        return
-    }
-
-    for i in  0..<n-1 {
-        if arr[i] > arr[i+1] {
-            let temp = arr[i]
-            arr[i] = arr[i+1]
-            arr[i+1] = temp
-        }
-    }
-
-    implBubleSortRecursion(arr: &arr, n: n-1)
-}
-
-var arr = [4,2,1,0]
-implBubleSortRecursion(arr: &arr, n: arr.count)
-//print(arr)
-//implBubuleSort(arr: [4,2,1,0])
-func testContine() {
-    let numbers = [1, 2, 3, 4, 5, 6]
-    var arr: [Int] = []
-    for number in numbers {
-        if number / 2 == 0 {
-            arr.append(number)
-//            continue
-        }
-
-        print(number)
-    }
-}
-
-
-testContine()
-
-
-class MyStack {
-
-    var queue =  Queue()
-
-    init() {
-        queue = Queue()
-    }
-
-    func push(_ x: Int) {
-        queue.push(x)
-    }
-
-    func pop() -> Int {
-        for _ in 0..<(queue.count ?? 0)-1 {
-            queue.push(queue.pop())
-        }
-        return queue.pop()
-    }
-
-    func top() -> Int {
-        for element in 0..<((queue.count ?? 0) - 1){
-            print("==>",element)
-//            queue.push(queue.pop())
-        }
-
-      defer {
-          queue.push(queue.pop())
-      }
-
-        return queue.tail ?? 0
-    }
-
-    func empty() -> Bool {
-        return queue.count == 0
-    }
-}
-
-
-
-let stack = MyStack()
-
-stack.push(3)
-stack.push(5)
-stack.push(6)
-
-stack.top()
-stack.empty()
-stack.pop()
-
-
-//
-//var monoDecreasing = MonotonicStack<Int>(stack:  [5,4,2,1])
-//
-//monoDecreasing.push(3)
-//monoDecreasing.peek()
-//print("monoDecreasing",monoDecreasing.count)
-//monoDecreasing.push(4)
-//monoDecreasing.peek()
-
-//var intergrate = 0
-//
-//while intergrate < monoDecreasing.count {
-//    monoDecreasing.pop()
-//    intergrate += 1
-//}
