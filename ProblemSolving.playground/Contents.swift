@@ -168,24 +168,6 @@ class Solution {
 
 
 
-    func simplifyPath(_ path: String) -> String {
-        var path = path.split(separator: "/")
-        print(path)
-        var simplifiedPath = [String]()
-
-        for index in 0..<path.count {
-            if path[index] == "." {
-                continue
-            } else if path[index] == ".." {
-                simplifiedPath.popLast()
-            } else {
-                simplifiedPath.append(String(path[index]))
-            }
-
-        }
-        let simplifyPathString = "/" + simplifiedPath.joined(separator: "/")
-        return simplifyPathString
-    }
 
    
     func maxSubArray(_ nums: [Int]) -> Int {
@@ -497,6 +479,53 @@ class Solution {
     }
 
 
+    func simplifyPath(_ path: String) -> String {
+        var path = path.split(separator: "/")
+        var simplePath: [String] = []
+        for str in path {
+
+            switch str {
+            case ".":
+                continue
+            case "..":
+                simplePath.popLast()
+            default:
+                simplePath.append(String(str))
+            }
+
+        }
+
+        return "/"+simplePath.joined()
+    }
+
+    public func isAlienSorted(_ words: [String], _ order: String) -> Bool {
+
+        let translateAble = Dictionary(uniqueKeysWithValues: zip(order,"abcdefghijklmnopqrstuvwxyz"))
+        var prev = ""
+        for word in words {
+            let currentStr = String(word.map{ ch in translateAble[ch]!})
+
+//            let currentStr = String(word.map{ ch in translateAble[ch]!})
+            print("str ", currentStr)
+            guard prev <= currentStr else { return false }
+            prev = currentStr
+        }
+        return true
+    }
+
+    func sortArrayByParity(_ nums: [Int]) -> [Int] {
+        var l = 0
+        var nums = nums
+        for r in 0..<nums.count {
+            if nums[r] % 2 == 0 {
+                nums.swapAt(r, l)
+                l += 1
+            }
+
+        }
+        return nums
+    }
+
 
 }
 
@@ -505,14 +534,21 @@ let solution = Solution()
 
 
 solution.evalRPN(["4","13","5","/","+"])
-
+//["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
+solution.isAlienSorted(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
 solution.evalRPN( ["2","1","+","3","*"])
-
-
+solution.sortArrayByParity([3,1,2,4])
 
 let nums =  [1,2,3,2]
 //[1,2,3,2]
 solution.carFleet(12, [10,8,0,5,3], [2,4,1,1,3])
 let maxSubarraySum =  solution.maxSubMinProduct(nums)
 print("The maximum subarray sum is: \(maxSubarraySum)")
+solution.simplifyPath("/home/")
+solution.simplifyPath("/../")
+
+let another = AnotherSolution()
+
+another.isAlienSorted(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
+another.calPoints(["5","2","C","D","+"])
 

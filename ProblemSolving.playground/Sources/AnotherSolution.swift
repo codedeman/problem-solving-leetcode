@@ -73,6 +73,72 @@ public class AnotherSolution {
         return stack
         
     }
+
+    public func isAlienSorted(_ words: [String], _ order: String) -> Bool {
+        let charOrder = Dictionary(uniqueKeysWithValues: order.enumerated().map { ($0.1,$0.0)})
+
+        for i in 0..<words.count-1 {
+
+            let currentWorld = Array(words[i]), nextworld = Array(words[i+1])
+
+            let minArray =  min(currentWorld.count,nextworld.count)
+            var j = 0
+
+            while j < minArray {
+                guard currentWorld != nextworld else {
+                    continue
+                }
+                let currentChar = currentWorld[j]
+                let nextChar = nextworld[j+1]
+
+                if charOrder[currentChar]! < charOrder[nextChar]! {
+                    return false
+                } else {
+                    break
+                }
+
+            }
+
+        }
+        return true
+
+    }
+
+
+    public func calPoints(_ operations: [String]) -> Int {
+        var sum = 0
+        var stack: [Int] = []
+        for operation in operations {
+            switch operation {
+            case "+":
+                print("elements \(stack.count)")
+                let numA = stack.last ?? 0
+                let numB = stack[stack.count - 2]
+                let result = numA + numB
+                stack.append(result)
+            case "D":
+                let last = Int(stack.last!)
+                let result = last*2
+                stack.append(result)
+            case "C":
+                if !stack.isEmpty {
+                    stack.removeLast()
+                }
+            default:
+                if let value = Int(operation) {
+                    stack.append(value)
+                }
+            }
+        }
+
+        for num in stack {
+            print("num",num)
+            sum += num
+        }
+        return sum
+
+    }
+
 }
 
 class MyStack2 {
