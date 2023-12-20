@@ -53,21 +53,21 @@ class Solution {
         return arrDuplicate
     }
 
-    func maxProfit(_ prices: [Int]) -> Int {
-        var left = 0
-        var right = left+1
-        var maxProfit = 0
-        while right < prices.count {
-            print("left ==> \(left)")
-            if prices[left] < prices[right] {
-                maxProfit =  max(maxProfit, prices[right] - prices[left])
-            } else {
-                left = right
-            }
-            right += 1
-        }
-        return maxProfit
-    }
+//    func maxProfit(_ prices: [Int]) -> Int {
+//        var left = 0
+//        var right = left+1
+//        var maxProfit = 0
+//        while right < prices.count {
+//            print("left ==> \(left)")
+//            if prices[left] < prices[right] {
+//                maxProfit =  max(maxProfit, prices[right] - prices[left])
+//            } else {
+//                left = right
+//            }
+//            right += 1
+//        }
+//        return maxProfit
+//    }
 
     
 
@@ -215,21 +215,7 @@ class Solution {
 //       return nums + nums
 //    }
 ////    [ 1,4,5,3,12,10 ]
-//    func dailyTemperatures1(_ temperatures: [Int]) -> [Int] {
-//      var stack = MonotonicStack<Int>()
-//      var result = [Int](repeating: 0, count: temperatures.count)
-//
-//      for (i, num) in temperatures.enumerated() {
-//          while !stack.isEmpty() && num > temperatures[stack.peek()!] {
-//              let index = stack.pop() ?? 0
-//              result[index] = i - index
-//
-//          }
-//        stack.push(i)
-//      }
-//
-//      return result
-//    }
+
 
 
 
@@ -377,37 +363,13 @@ class Solution {
     func maxSumMinProduct(_ nums: [Int]) -> Int {
         var currentSum = 0
           var maxSum = Int.min
-        for (index,num) in nums.enumerated() {
+        for (_,num) in nums.enumerated() {
             print("",num)
               currentSum = max(num, currentSum + num)
               maxSum = max(maxSum, currentSum)
           }
           return maxSum
 
-//        var stack: [Int] = []
-//        var maxValue = Int.min
-//        var maxEnding = 0
-//        for num in nums {
-//            maxEnding = maxEnding + num
-//            if maxValue < maxEnding {
-//                stack.append(num)
-//                maxValue = maxEnding
-//            }
-//
-//            if maxEnding < 0 {
-//                maxEnding = 0
-//                stack.popLast()
-//                print("remove \(num)")
-//            }
-//
-//        }
-//
-//        for j in stack {
-//            print("j",j)
-//        }
-//        let min = nums.min()
-//        print("min",nums.min())
-//        return maxValue
 
     }
 
@@ -504,8 +466,6 @@ class Solution {
         var prev = ""
         for word in words {
             let currentStr = String(word.map{ ch in translateAble[ch]!})
-
-//            let currentStr = String(word.map{ ch in translateAble[ch]!})
             print("str ", currentStr)
             guard prev <= currentStr else { return false }
             prev = currentStr
@@ -526,11 +486,184 @@ class Solution {
         return nums
     }
 
+    func findMaxConsecutiveOnes(_ nums: [Int]) -> Int {
+
+        var maxCount = 0
+           var currentCount = 0
+
+           for num in nums {
+               if num == 1 {
+                   currentCount += 1
+                   maxCount = max(maxCount, currentCount)
+               } else {
+                   currentCount = 0
+               }
+           }
+
+           return maxCount
+    }
+
+    func findRadius(_ houses: [Int], _ heaters: [Int]) -> Int {
+
+        var houses = houses.sorted {$0>$1}
+        var heaters = heaters.sorted{$0>$1}
+        var  radius  = 0
+        for house in houses {
+            let index = binarySearch(arr: heaters, target: house)
+            print("index",index)
+            var distance = Int.max
+            if index < heaters.count {
+                distance = heaters[index] - house
+            }
+
+            if index > 0 {
+                distance = min(distance, house - houses[index - 1])
+            }
+            radius = max(radius,distance)
+
+        }
+        return radius
+
+    }
+
+    func findRadius2(_ houses: [Int], _ heaters: [Int]) -> Int {
+        var distances: [Int] = []
+        for house in houses {
+            var minNum = Double.infinity
+            for heater in heaters {
+                minNum = min(minNum, Double(abs(heater-house)))
+                distances.append(Int(minNum))
+            }
+        }
+
+        var radius = distances[0]
+        for d in distances {
+            if d > radius {
+                radius = d
+            }
+        }
+        return radius
+
+
+    }
+
+    func binarySearch(arr: [Int], target: Int)  -> Int {
+        var left = 0
+        var right = arr.count-1
+        while left <= right {
+            let mid = left + (right - left) / 2
+            if arr[mid] == target {
+                return mid
+            } else if arr[mid] > target {
+                right = mid-1
+            } else if arr[mid] < target {
+                left = mid+1
+            }
+        }
+        return left
+    }
+
+    func maxProfit(_ prices: [Int]) -> Int {
+
+        var left = 1
+        var right = left+1
+        var maxValue = 0
+        var minPrice = 0
+
+        while right < prices.count {
+
+            if prices[left] < prices[right] {
+                maxValue = max(maxValue, prices[right] - prices[left])
+            } else {
+                left = right
+            }
+            right += 1
+        }
+        return maxValue
+    }
+
+    func dailyTemperatures1(_ temperatures: [Int]) -> [Int] {
+
+        var stack: [Int] = []
+        var result = [Int](repeating: 0, count: temperatures.count)
+
+        for i in 0..<temperatures.count {
+            while !stack.isEmpty && temperatures[stack.last!] < temperatures[i] {
+                let index = stack.popLast()!
+                let newIndex =  i-index
+                result[index] = newIndex
+                print("index ", index)
+            }
+            stack.append(i)
+        }
+
+        print("stack ==>",stack.first, stack.last)
+
+        return result
+    }
+
+    func pivotIndex(_ nums: [Int]) -> Int {
+        var sum = 0
+        for num in nums {
+            sum += num
+        }
+
+        var leftSum = 0
+            var rightSum = sum
+        for i in 0..<nums.count {
+            rightSum -= nums[i]
+            if rightSum == leftSum {
+                print("right sum\(rightSum)")
+                return i
+            }
+            leftSum += nums[i]
+
+        }
+        return -1
+    }
+
+    func islandPerimeter(_ grid: [[Int]]) -> Int {
+        var isIlands = 0
+        var neighBors = 0
+        for i in 0..<grid.count {
+            for j in 0..<grid[0].count {
+                if grid[i][j] == 1 {
+                    isIlands += 1
+                    if i < grid.count-1 && grid[i+1][j] == 1 {
+                        neighBors += 1
+                    }
+                    if j < grid[0].count-1 && grid[i][j+1] == 1 {
+                        neighBors += 1
+                    }
+
+                }
+
+            }
+        }
+        return isIlands*4 - 2*neighBors
+    }
+
+    
 
 }
 
 let solution = Solution()
+//[[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]
+
+solution.islandPerimeter( [[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]])
+//solution.pivotIndex([1,7,3,6,5,6])
+solution.pivotIndex([1,2,3])
+
+solution.dailyTemperatures1([73,74,75,71,69,72,76,73])
+//solution.maxProfit([7,1,5,3,6,4]
+//solution.maxProfit([7,6,4,3,1])
+
+
 //Input: target = 12, position = [10,8,0,5,3], speed = [2,4,1,1,3]
+//solution.findMaxConsecutiveOnes([1,1,0,1,1,1])
+//solution.findMaxConsecutiveOnes([1,0,1,1,0,1])
+solution.findRadius([1,2,3], [2])
+solution.findRadius2([1,2,3], [2])
 
 
 solution.evalRPN(["4","13","5","/","+"])
@@ -538,6 +671,7 @@ solution.evalRPN(["4","13","5","/","+"])
 solution.isAlienSorted(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
 solution.evalRPN( ["2","1","+","3","*"])
 solution.sortArrayByParity([3,1,2,4])
+//[1,2,3], heaters = [2]
 
 let nums =  [1,2,3,2]
 //[1,2,3,2]
@@ -551,4 +685,10 @@ let another = AnotherSolution()
 
 another.isAlienSorted(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
 another.calPoints(["5","2","C","D","+"])
+
+another.islandPerimeter([[0,1,0,0],
+                         [1,1,1,0],
+                         [0,1,0,0],
+                         [1,1,0,0]]
+)
 

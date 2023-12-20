@@ -139,6 +139,28 @@ public class AnotherSolution {
 
     }
 
+    public func islandPerimeter(_ grid: [[Int]]) -> Int {
+        var result = 0
+        for r in 0..<grid.count  {
+            print("row",r)
+            for col in 0..<grid[r].count {
+                if grid[r][col] == 1 {
+                    result += 4
+                    print("Fuck ", grid[1][1])
+                    if r > 0 && grid[r-1][col] == 1{
+                        result -= 2
+                    }
+                    if col > 0 && grid[r][col-1] == 1 {
+                        result -= 2
+                    }
+                }
+
+            }
+        }
+
+        return result
+    }
+
 }
 
 class MyStack2 {

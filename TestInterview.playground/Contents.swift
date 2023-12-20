@@ -500,18 +500,18 @@ func maxProfit(price: [Int]) -> Int {
 //testinPlindrome("A man hhahha")
 //print( txt.replacingOccurrences(of: regex, with: repl, options: [.regularExpression]) )
 
-let tree = BinaryTree<Int>(value: 10)
-
-tree.insertNode(value: 5)
-tree.insertNode(value: 10)
-tree.insertNode(value: 4)
-tree.insertNode(value: 25)
+//let tree = BinaryTree<Int>(value: 10)
+//
+//tree.insertNode(value: 5)
+//tree.insertNode(value: 10)
+//tree.insertNode(value: 4)
+//tree.insertNode(value: 25)
 
 //tree.deleteNode(root: tree, key: 10)
 //tree.deleteNode(root: tree, key: 25)
 
 //tree.printTree()
-tree.preOrderTraversal(node: tree)
+//tree.preOrderTraversal(node: tree)
 
 //class BinarySearch {
 //
@@ -1014,3 +1014,59 @@ subArray(arr: [1,2,3,4], n: 4)
 //    }
 //}
 
+// Struct containing left and right child of current node and key value
+class Node {
+    let key: Int
+    var left: Node?
+    var right: Node?
+
+    init(key: Int) {
+        self.key = key
+        self.left = nil
+        self.right = nil
+    }
+}
+
+
+final class BinaryTree {
+    var root: Node?
+
+    init(root: Node? = nil) {
+        self.root = root
+    }
+
+    func printOder(_ node: Node?) {
+        guard let node = node else { return }
+        printOder(node.left)
+        print("key",node.key)
+        printOder(node.right)
+    }
+
+    func printPreOder(_ node: Node?) {
+        guard let node = node else { return }
+        print("key printPreOder",node.key)
+        printPreOder(node.left)
+        printPreOder(node.right)
+
+    }
+
+    func printPostOder(_ node: Node?) {
+        guard let node = node else { return }
+        printPreOder(node.left)
+        printPreOder(node.right)
+        print("key printPreOder",node.key)
+
+
+    }
+
+}
+
+let tree = BinaryTree()
+tree.root = Node(key: 1)
+tree.root?.left = Node(key: 2)
+tree.root?.right = Node(key: 3)
+tree.root?.left?.left = Node(key: 4)
+tree.root?.left?.right = Node(key: 5)
+print("Inorder traversal of binary tree is:")
+//tree.printOder(tree.root)
+tree.printPreOder(tree.root)
