@@ -643,7 +643,21 @@ class Solution {
         return isIlands*4 - 2*neighBors
     }
 
-    
+    func majorityElement(_ nums: [Int]) -> Int {
+        var store = Set<Int>()
+        var elements: [Int: Int] = [:]
+        var maxCount = 0
+        var mostFrequentElement: Int = 0
+        for num in nums {
+            elements[num,default: 0] += 1
+            if let count = elements[num], count > maxCount {
+                print("===>",count)
+                maxCount = count
+                mostFrequentElement = num
+            }
+        }
+        return mostFrequentElement
+    }
 
 }
 
@@ -653,6 +667,20 @@ let solution = Solution()
 solution.islandPerimeter( [[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]])
 //solution.pivotIndex([1,7,3,6,5,6])
 solution.pivotIndex([1,2,3])
+solution.majorityElement([3,2,3])
+solution.majorityElement([2,2,1,1,1,2,2])
+
+//
+//Example 1:
+//
+//Input: nums = [3,2,3]
+//Output: 3
+//Example 2:
+//
+//Input: nums = [2,2,1,1,1,2,2]
+//Output: 2
+
+
 
 solution.dailyTemperatures1([73,74,75,71,69,72,76,73])
 //solution.maxProfit([7,1,5,3,6,4]
@@ -691,4 +719,6 @@ another.islandPerimeter([[0,1,0,0],
                          [0,1,0,0],
                          [1,1,0,0]]
 )
+
+
 
