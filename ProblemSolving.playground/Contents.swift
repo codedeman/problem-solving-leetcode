@@ -644,14 +644,12 @@ class Solution {
     }
 
     func majorityElement(_ nums: [Int]) -> Int {
-        var store = Set<Int>()
         var elements: [Int: Int] = [:]
         var maxCount = 0
         var mostFrequentElement: Int = 0
         for num in nums {
             elements[num,default: 0] += 1
             if let count = elements[num], count > maxCount {
-                print("===>",count)
                 maxCount = count
                 mostFrequentElement = num
             }
@@ -659,9 +657,105 @@ class Solution {
         return mostFrequentElement
     }
 
+    func majorityElementArr(_ nums: [Int]) -> [Int] {
+            var dict: [Int: Int] = [:]
+            var maxValue = 0
+            var frequentNum: [Int: Int] = [:]
+            for num in nums {
+                dict[num, default: 0] += 1
+                if let count = dict[num], count > maxValue {
+                    maxValue = count
+                    frequentNum[num] = num
+                }
+            }
+
+        let devided = lround(Double(nums.count/3))
+        print("devided \(devided)")
+        if frequentNum.keys.count > devided  {
+            return nums
+        }
+
+        return frequentNum.keys.map {Int($0)}
+       
+    }
+    func intersection(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+        var dict: [Int: Int] = [:]
+        var result: [Int] = []
+        for num in nums1 {
+            dict[num, default: 0] += 1
+        }
+        for key in dict.keys {
+            print("hello==>",key)
+        }
+        for num in nums2 {
+            if let count = dict[num], count > 0 {
+                print("==> count",count)
+//                result.append(num)
+//                dict[num] = count - 1
+            }
+        }
+
+        return  result
+    }
+
+
+    func containsDuplicate(_ nums: [Int]) -> Bool {
+        
+        var dict: [Int: Int] = [:]
+        var isDuplicate: Bool = false
+
+        for num in nums {
+            if let numdic = dict[num], numdic == num  {
+                isDuplicate = true
+            }
+            dict[num] = num
+        }
+
+        return isDuplicate
+
+    }
+
+    func containsNearbyDuplicate(_ nums: [Int], _ k: Int) -> Bool {
+        var isDuplicate: Bool = false
+        var resultNum: Int = 0
+        for num in nums {
+            if num == k && resultNum != num {
+                resultNum = num
+                isDuplicate = true
+            } else {
+
+             
+            }
+        }
+        return isDuplicate
+    }
 }
 
+
+
 let solution = Solution()
+solution.containsDuplicate([1,1,1,3,3,4,3,2,4,2])
+solution.containsNearbyDuplicate([1,2,3,1], 3)
+/*
+ Example 1:
+
+ Input: nums = [1,2,3,1], k = 3
+ Output: true
+ Example 2:
+
+ Input: nums = [1,0,1,1], k = 1
+ Output: true
+ Example 3:
+
+ Input: nums = [1,2,3,1,2,3], k = 2
+ Output: false
+
+ */
+//[1,2,2,1], nums2 = [2,2]
+//[4,9,5], nums2 = [9,4,9,8,4]
+solution.intersection([1,2,2,1], [2,2])
+solution.intersection([4,9,5], [9,4,9,8,4])
+
 //[[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]
 
 solution.islandPerimeter( [[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]])
@@ -670,6 +764,21 @@ solution.pivotIndex([1,2,3])
 solution.majorityElement([3,2,3])
 solution.majorityElement([2,2,1,1,1,2,2])
 
+//solution.majorityElemen tArr([1,2,3])
+solution.majorityElementArr([1,2])
+
+//Example 1:
+//
+//Input: nums = [3,2,3]
+//Output: [3]
+//Example 2:
+//
+//Input: nums = [1]
+//Output: [1]
+//Example 3:
+//
+//Input: nums = [1,2]
+//Output: [1,2]
 //
 //Example 1:
 //
