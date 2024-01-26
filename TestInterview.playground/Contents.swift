@@ -1056,8 +1056,11 @@ final class BinaryTree {
         printPreOder(node.right)
         print("key printPreOder",node.key)
 
-
     }
+
+    
+
+
 
 }
 
@@ -1070,3 +1073,72 @@ tree.root?.left?.right = Node(key: 5)
 print("Inorder traversal of binary tree is:")
 //tree.printOder(tree.root)
 tree.printPreOder(tree.root)
+
+func maxSum(nums: [Int], k: Int) -> Int {
+    var max = 0
+    var sum = 0
+    for i in 0..<k {
+        sum += nums[i]
+        max = sum
+    }
+
+    for i in k..<nums.count {
+        sum += nums[i] - nums[i - k]
+        if sum > max {
+            max = sum
+        }
+    }
+    return max
+
+}
+let arrT = [1, 4, 2, 10, 2, 3, 1, 0, 20];
+let k = 4;
+let slide = maxSum(nums: [5,2,-1,0,3] , k: 3)
+print("max sum",slide)
+
+
+func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
+    var nums = nums.sorted() // Sort for efficient two-pointer and duplicate handling
+    var result: [[Int]] = []
+
+    for i in 0..<nums.count - 3 {
+        // Skip duplicates for the first element
+        if i > 0 && nums[i] == nums[i - 1] { continue }
+
+        var left = i + 1
+        var right = nums.count - 1
+
+        while left < right {
+            let currentSum = nums[i] + nums[left] + nums[right]
+
+            if currentSum < target { // Optimization: Check for potential sums
+                left += 1
+            } else if currentSum > target {
+                right -= 1
+            } else {
+                var mid = left + 1
+                while mid < right && nums[mid] == nums[mid - 1] { // Skip duplicate mid
+                    mid += 1
+                }
+
+                result.append([nums[i], nums[left], nums[mid], nums[right]])
+                left += 1
+                right -= 1
+
+                    // Skip duplicates for left and right
+                    while left < right && nums[left] == nums[left - 1] {
+                        left += 1
+                    }
+                    while left < right && nums[right] == nums[right + 1] {
+                        right -= 1
+                    }
+                }
+            }
+        }
+
+        return result
+    }
+
+
+
+

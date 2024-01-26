@@ -716,118 +716,421 @@ class Solution {
     }
 
     func containsNearbyDuplicate(_ nums: [Int], _ k: Int) -> Bool {
-        var isDuplicate: Bool = false
-        var resultNum: Int = 0
-        for num in nums {
-            if num == k && resultNum != num {
-                resultNum = num
-                isDuplicate = true
-            } else {
 
-             
+        var window = Set<Int> ()
+        var L = 0
+
+        for R in 0..<nums.count {
+            if R-L > k {
+                window.remove(nums[L])
+                L += 1
+            }
+
+            if window.contains(nums[R]) {
+                return true
+            }
+
+            window.insert(nums[R])
+        }
+        return false
+    }
+
+    func bestTimeSell(nums: [Int]) -> Int {
+        var left = 0
+        var right = left+1
+        var maxProfit: Int = 0
+        while right < nums.count {
+            if nums[left] < nums[right] {
+                maxProfit = max(maxProfit, nums[right] - nums[left])
+            } else {
+                left = right
+            }
+            right += 1
+        }
+        return maxProfit
+    }
+
+        func lengthOfLongestSubstring(_ s: String) -> Int {
+            var char = Array(s)
+            var start = 0
+            var end = 0
+            var uniqueChars = Set<Character>()
+            var maxLength = 0
+            while end < char.count {
+                let char = char[end]
+                if uniqueChars.contains(char) {
+                    uniqueChars.remove(char)
+                    start += 1
+                } else {
+                    uniqueChars.insert(char)
+                    maxLength = max(maxLength, end - start + 1)
+                    end += 1
+
+                }
+            }
+            return maxLength
+
+        }
+
+    func characterReplacement(_ s: String, _ k: Int) -> Int {
+        var arr = Array(s)
+        var dict: [Character: Int] = [:]
+        var left: Int = 0
+        var maxF = 0
+        var final = 0
+        for r in 0..<arr.count {
+            dict[arr[r], default: 0] += 1
+            maxF = max(maxF,dict[arr[r], default: 0])
+            let numsLeft = r-left+1
+            while r-left+1 - maxF > k {
+//                print("letter ==>",arr[r])
+                dict[arr[r],default: 0] -= 1
+                left += 1
+            }
+            final = max(final, r - left+1)
+
+        }
+        return final
+
+    }
+
+    func findAnagrams(_ s: String, _ p: String) -> [Int]  {
+
+        var sArray = Array(s)
+        var pArray = Array(p)
+        var pFrequecy: [Int] = Array(repeating: 0, count: 26)
+
+        for char in pArray {
+            let index = Int(char.asciiValue! - Character("a").asciiValue!)
+            pFrequecy[index] += 1
+        }
+
+        print("===>",pFrequecy)
+
+
+        var windowFrequency: [Int] = Array(repeating: 0, count: 26)
+
+        var left = 0
+        var right = 0
+        var result: [Int] = []
+
+        while right < sArray.count {
+            let char = sArray[right]
+            let index = Int(char.asciiValue! - Character("a").asciiValue!)
+            windowFrequency[index] += 1
+
+            if right - left+1 > pArray.count {
+                let leftChar = sArray[left]
+                let leftIndex = Int(leftChar.asciiValue! - Character("a").asciiValue!)
+                windowFrequency[leftIndex] -= 1
+                print("left ==>", left, "right", right)
+                left += 1
+            }
+            if windowFrequency == pFrequecy {
+                result.append(left)
+            }
+            right += 1
+
+        }
+
+
+        return result
+
+    }
+
+    func maxFrequency(_ nums: [Int], _ k: Int) -> Int {
+        var nums = nums
+        nums.sort()
+
+        var left = 0
+        var right = 0
+        var maxFreq = 0
+        var res: Int = 0
+        var total = 0
+
+        while right < nums.count {
+            total += nums[right]
+            while nums[right] * (right - left+1) > total+k {
+                total -= nums[left]
+                left += 1
+            }
+            res = max(res,right-left+1)
+            right += 1
+        }
+        return res
+    }
+
+    func moveZeroes(_ nums: inout [Int]) {
+        for i in 0..<nums.count-1 {
+            if nums[i] == 0 {
+                for j in (i+1)..<nums.count {
+                    if nums[j] != 0 {
+                        nums.swapAt(i, j)
+                        break
+                    }
+                }
             }
         }
-        return isDuplicate
+
+        print("==> ",nums)
     }
+
+    func canPlaceFlowers(_ flowerbed: [Int], _ n: Int) -> Bool {
+        var left = 0
+        var count = 0
+        var flowerbed = flowerbed
+        while left < flowerbed.count {
+            if (left == 0 || flowerbed[left-1] == 0) && (left == flowerbed.count-1 || flowerbed[left + 1] == 0) && flowerbed[left] == 0  {
+                flowerbed[left] = 1
+                count += 1
+                if count >= n {
+                    return true
+                }
+            }
+
+            left += 1
+
+        }
+
+        return count >= n
+
+    }
+
+    func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
+        var dic: [Int: Int] = [:]
+        for index in 0..<nums.count {
+            if let newIndex = dic[target - nums[index]] {
+                return [newIndex, index]
+            } else {
+                dic[nums[index]] = index
+
+            }
+        }
+        return []
+
+    }
+
+    func twoSum2(_ numbers: [Int], _ target: Int) -> [Int] {
+        var dic: [Int: Int] = [:]
+
+        for index in 0..<numbers.count {
+            if let newIndex = dic[target - numbers[index]] {
+
+                return [newIndex+1, index+1]
+            } else {
+                dic[numbers[index]] = index
+            }
+        }
+        return []
+    }
+
+    func fizzBuzz(_ n: Int) -> [String] {
+
+        var arr: [String] = []
+        var total: Int = 0
+        for num in 1...n {
+            print("num ==>",num)
+            if  num%3 == 0  && num%5 == 0 {
+                arr.append("FizzBuzz")
+            } else if num%3 == 0 {
+                arr.append("Fizz")
+            } else if num%5 == 0 {
+                arr.append("Buzz")
+            } else {
+                arr.append("\(num)")
+            }
+        }
+        return arr
+    }
+
+
+    func threeSum(_ nums: [Int]) -> [[Int]] {
+        var result: [[Int]] = []
+
+            // Sort the array in ascending order
+            let sortedNums = nums.sorted()
+
+            // Iterate through the array
+            for i in 0..<sortedNums.count {
+
+                // Skip duplicate values
+                if i > 0 && sortedNums[i] == sortedNums[i-1] {
+                    continue
+                }
+
+                var left = i + 1
+                var right = sortedNums.count - 1
+
+                while left < right {
+                    let sum = sortedNums[i] + sortedNums[left] + sortedNums[right]
+
+                    if sum == 0 {
+                        result.append([sortedNums[i], sortedNums[left], sortedNums[right]])
+
+                        // Skip duplicate values
+                        while left < right && sortedNums[left] == sortedNums[left+1] {
+                            left += 1
+                        }
+
+                        while left < right && sortedNums[right] == sortedNums[right-1] {
+                            right -= 1
+                        }
+
+                        left += 1
+                        right -= 1
+                    } else if sum < 0 {
+                        left += 1
+                    } else {
+                        right -= 1
+                    }
+                }
+            }
+
+            return result
+
+    }
+
+    func threeSumClosest(_ nums: [Int], _ target: Int) -> Int {
+
+        var closestSum = Int.max
+        var minDifference = Int.max
+
+        for i in 0..<nums.count-2 {
+            for j in i+1..<nums.count-1 {
+                for k in j+1..<nums.count {
+                    let currentSum = nums[i] + nums[j] + nums[k]
+                    let difference = abs(currentSum-target)
+                    if difference < minDifference {
+                        minDifference = difference
+                        closestSum = currentSum
+                    }
+                }
+            }
+        }
+        return closestSum
+
+    }
+
+/*
+ LeetCode problem 228
+ step 1: sorted array
+ step 2: delcare i then interate through nums sorted array
+ - declare new j = i+1
+ - using loop to incremnent j while j < nums.count && num[j] == nums[i] +j-i
+ - if j > i+1 => num[i]->num[j-1]
+ - add i position
+ return result
+
+*/
+    func summaryRanges(_ nums: [Int]) -> [String] {
+        var nums = nums.sorted()
+        var i = 0
+        var results: [String] = []
+        while i < nums.count {
+            var j = i + 1 // Initialize j inside the loop
+
+            // Update j while elements are consecutive
+            while j < nums.count && nums[j] == nums[i] + j - i {
+                j += 1
+            }
+
+            if j > i + 1 {
+                results.append("\(nums[i])->\(nums[j - 1])")
+            } else {
+                results.append("\(nums[i])")
+            }
+
+            i = j // Move i to the next range or single element
+        }
+
+        return results
+    }
+
+
 }
 
 
-
 let solution = Solution()
-solution.containsDuplicate([1,1,1,3,3,4,3,2,4,2])
-solution.containsNearbyDuplicate([1,2,3,1], 3)
-/*
- Example 1:
 
- Input: nums = [1,2,3,1], k = 3
- Output: true
- Example 2:
+//solution.fizzBuzz(3)
+//[-1,2,1,-4], target = 1
+solution.threeSumClosest([-1,2,1,-4], 1)
+//[0,0,0], target = 1
+solution.threeSumClosest([0,0,0], 1)
+//[0,1,2]
+solution.threeSumClosest([0,1,2], 3)
+//[1,0,-1,0,-2,2], target = 0
+solution.summaryRanges([0,1,2,4,5,7])
 
- Input: nums = [1,0,1,1], k = 1
- Output: true
- Example 3:
 
- Input: nums = [1,2,3,1,2,3], k = 2
- Output: false
 
+
+//let test = ["1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "FizzBuzz"]
+//test.count
+
+//let nums = [-1,0,1,2,-1,-4]
+//let triplets = solution.threeSum(nums)
+//print(triplets)
+
+//let anotherSolution = AnotherSolution()
+//[2,7,11,15], target = 9
+//anotherSolution.twoSum2([2,7,11,15], 9)
+/**
+ * Question Link: https://leetcode.com/problems/4sum/
+ * Primary idea: Sort the array, and traverse it, increment left or decrease right
+ *               predicated on their sum is greater or not than the target
+ * Time Complexity: O(n^3), Space Complexity: O(nC4)
  */
-//[1,2,2,1], nums2 = [2,2]
-//[4,9,5], nums2 = [9,4,9,8,4]
-solution.intersection([1,2,2,1], [2,2])
-solution.intersection([4,9,5], [9,4,9,8,4])
 
-//[[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]
+class FourSum {
+    func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
+        let nums = nums.sorted(by: <)
+        var threeSum = 0
+        var twoSum = 0
+        var left = 0
+        var right = 0
+        var res = [[Int]]()
 
-solution.islandPerimeter( [[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]])
-//solution.pivotIndex([1,7,3,6,5,6])
-solution.pivotIndex([1,2,3])
-solution.majorityElement([3,2,3])
-solution.majorityElement([2,2,1,1,1,2,2])
+        guard nums.count >= 4 else {
+            return res
+        }
 
-//solution.majorityElemen tArr([1,2,3])
-solution.majorityElementArr([1,2])
+        for i in 0..<nums.count - 3 {
+            guard i == 0 || nums[i] != nums[i - 1] else {
+                continue
+            }
+            threeSum = target - nums[i]
 
-//Example 1:
-//
-//Input: nums = [3,2,3]
-//Output: [3]
-//Example 2:
-//
-//Input: nums = [1]
-//Output: [1]
-//Example 3:
-//
-//Input: nums = [1,2]
-//Output: [1,2]
-//
-//Example 1:
-//
-//Input: nums = [3,2,3]
-//Output: 3
-//Example 2:
-//
-//Input: nums = [2,2,1,1,1,2,2]
-//Output: 2
+            for j in i + 1..<nums.count - 2 {
+                guard j == i + 1 || nums[j] != nums[j - 1] else {
+                    continue
+                }
+                twoSum = threeSum - nums[j]
 
+                left = j + 1
+                right = nums.count - 1
+                while left < right {
+                    if nums[left] + nums[right] == twoSum {
+                        res.append([nums[i], nums[j], nums[left], nums[right]])
+                        repeat {
+                            left += 1
+                        } while left < right && nums[left] == nums[left - 1]
+                            repeat {
+                                right -= 1
+                        } while left < right && nums[right] == nums[right + 1]
+                    } else if nums[left] + nums[right] < twoSum {
+                        repeat {
+                            left += 1
+                        } while left < right && nums[left] == nums[left - 1]
+                    } else {
+                        repeat {
+                            right -= 1
+                        } while left < right && nums[right] == nums[right + 1]
+                    }
+                }
+            }
+        }
 
-
-solution.dailyTemperatures1([73,74,75,71,69,72,76,73])
-//solution.maxProfit([7,1,5,3,6,4]
-//solution.maxProfit([7,6,4,3,1])
-
-
-//Input: target = 12, position = [10,8,0,5,3], speed = [2,4,1,1,3]
-//solution.findMaxConsecutiveOnes([1,1,0,1,1,1])
-//solution.findMaxConsecutiveOnes([1,0,1,1,0,1])
-solution.findRadius([1,2,3], [2])
-solution.findRadius2([1,2,3], [2])
-
-
-solution.evalRPN(["4","13","5","/","+"])
-//["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
-solution.isAlienSorted(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
-solution.evalRPN( ["2","1","+","3","*"])
-solution.sortArrayByParity([3,1,2,4])
-//[1,2,3], heaters = [2]
-
-let nums =  [1,2,3,2]
-//[1,2,3,2]
-solution.carFleet(12, [10,8,0,5,3], [2,4,1,1,3])
-let maxSubarraySum =  solution.maxSubMinProduct(nums)
-print("The maximum subarray sum is: \(maxSubarraySum)")
-solution.simplifyPath("/home/")
-solution.simplifyPath("/../")
-
-let another = AnotherSolution()
-
-another.isAlienSorted(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
-another.calPoints(["5","2","C","D","+"])
-
-another.islandPerimeter([[0,1,0,0],
-                         [1,1,1,0],
-                         [0,1,0,0],
-                         [1,1,0,0]]
-)
-
-
-
+        return res
+    }
+}

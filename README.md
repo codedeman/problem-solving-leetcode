@@ -30,7 +30,8 @@
 - [] Hash
 - [] Tries
 
-## Algorithm 
+## Algorithm Technique 
+- [] Window Sliding
 - [] Recursion 
 - [] BackTracking 
 - [] Binary Search 
