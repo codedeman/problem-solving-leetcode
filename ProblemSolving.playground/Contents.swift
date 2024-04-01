@@ -168,8 +168,6 @@ class Solution {
 
 
 
-
-   
     func maxSubArray(_ nums: [Int]) -> Int {
         var maxValue = Int.min
         var currentSum = 0
@@ -276,6 +274,7 @@ class Solution {
         return  result
 
     }
+    // MARK: 739. Daily Temperatures
 
     func dailyTemperatures(_ temperatures: [Int]) -> [Int] {
 
@@ -440,7 +439,7 @@ class Solution {
         return stack.first!
     }
 
-
+    // MARK: 71. Simplify Path
     func simplifyPath(_ path: String) -> String {
         var path = path.split(separator: "/")
         var simplePath: [String] = []
@@ -571,7 +570,6 @@ class Solution {
         var minPrice = 0
 
         while right < prices.count {
-
             if prices[left] < prices[right] {
                 maxValue = max(maxValue, prices[right] - prices[left])
             } else {
@@ -582,25 +580,6 @@ class Solution {
         return maxValue
     }
 
-    func dailyTemperatures1(_ temperatures: [Int]) -> [Int] {
-
-        var stack: [Int] = []
-        var result = [Int](repeating: 0, count: temperatures.count)
-
-        for i in 0..<temperatures.count {
-            while !stack.isEmpty && temperatures[stack.last!] < temperatures[i] {
-                let index = stack.popLast()!
-                let newIndex =  i-index
-                result[index] = newIndex
-                print("index ", index)
-            }
-            stack.append(i)
-        }
-
-        print("stack ==>",stack.first, stack.last)
-
-        return result
-    }
 
     func pivotIndex(_ nums: [Int]) -> Int {
         var sum = 0
@@ -860,6 +839,10 @@ class Solution {
         return res
     }
 
+// MARK: 283. Move Zeroes
+/* 283. Move Zeroes
+
+ */
     func moveZeroes(_ nums: inout [Int]) {
         for i in 0..<nums.count-1 {
             if nums[i] == 0 {
@@ -872,7 +855,6 @@ class Solution {
             }
         }
 
-        print("==> ",nums)
     }
 
     func canPlaceFlowers(_ flowerbed: [Int], _ n: Int) -> Bool {
@@ -1010,9 +992,9 @@ class Solution {
         return closestSum
 
     }
-
+//MARK:  LeetCode problem 228
 /*
- LeetCode problem 228
+
  step 1: sorted array
  step 2: delcare i then interate through nums sorted array
  - declare new j = i+1
@@ -1045,92 +1027,662 @@ class Solution {
 
         return results
     }
+    /*
+     twosum by using two pointer
+     */
+
+    func twoSumTwoPoiter(_ nums: [Int], _ target: Int) -> [Int] {
+        var sortedNums = nums.sorted()
+        var left = 0
+        var right = nums.count-1
+
+        while left < right {
+            let sum = sortedNums[left] + sortedNums[right]
+            if sum == target {
+
+                return [left+1, right+1]
+            } else if sum < target {
+                left += 1
+            } else {
+                right -= 1
+            }
+
+        }
+
+        return []
+    }
+
+    func twoSumWithoutIndexMap(_ nums: [Int], _ target: Int) -> [Int] {
+        var sortedNums = nums.sorted()
+
+        var left = 0
+        var right = sortedNums.count - 1
+
+        while left < right {
+            let sum = sortedNums[left] + sortedNums[right]
+            if sum == target {
+                // Find the original indices without a dictionary
+                var originalLeft = 0
+                while nums[originalLeft] != sortedNums[left] {
+                    originalLeft += 1
+                }
+                // Ensure originalLeft and originalRight are distinct
+                var originalRight = 0
+                while originalRight == originalLeft || nums[originalRight] != sortedNums[right] {
+                    originalRight += 1
+                }
+                return [originalLeft + 1, originalRight + 1]
+            } else if sum < target {
+                left += 1
+            } else {
+                right -= 1
+            }
+        }
+
+        return []
+    }
+
+    // MARK: Frequently element
+
+    func mostFrequentlyAppearingElement(in array: [Int]) -> Int? {
+        var countDic: [Int: Int] = [:]
+        for element in array {
+            if let elementCount = countDic[element] {
+                countDic[element] = elementCount + 1
+            } else {
+                countDic[element] = 1
+            }
+        }
+        var highestCount = 0
+        var mostFrequentElement: Int?
+
+        for (element, count) in countDic {
+            if count > highestCount {
+                highestCount = element
+                mostFrequentElement = count
+            }
+        }
+
+        return mostFrequentElement
+    }
+    //MARK: 977. Squares of a Sorted Array
+
+    func sortedSquares(_ nums: [Int]) -> [Int] {
+        var left = 0
+        var right = nums.count-1
+        var res: [Int] = []
+
+        while left <= right {
+            let leftSquare = nums[left] * nums[left]
+            let rightSquare = nums[right] * nums[right]
+
+            if leftSquare < rightSquare {
+                res.append(rightSquare)
+                right -= 1
+            } else {
+                res.append(leftSquare)
+                left += 1
+            }
+            
+        }
+        return res.reversed()
+    }
+
+        //MARK: 11. Container With Most Water
+/*
+
+ */
+
+        func maxArea(_ height: [Int]) -> Int {
+            var left = 0
+            var right = height.count-1
+            var maxArea = Int.min
+            while left <= right {
+               let  minArea = (right - left) * min(height[left], height[right])
+                maxArea = max(maxArea, minArea)
+
+                if height[left] < height[right] {
+                    left += 1
+                } else {
+                    right -= 1
+                }
+            }
+            return maxArea
+        }
+
+    //MARK:  31. Next Permutation
+
+/*
+ Step
+ First Finding privot we can start from array - 2 with 3 elements
+ Second: we iterate through midle array if array is decending order we will reverse array
+ Third: we iterate throungh the last and compare with element loop previously
+
+ */
+    func nextPermutation(_ nums: inout [Int]) {
+        guard nums.count > 1 else { return }
+
+        var i = nums.count - 2
+
+        while i >= 0 && nums[i] >= nums[i+1] {
+            i -= 1
+        }
+
+        if i == -1 {
+            nums.reverse()
+            return
+        }
+
+        var j = nums.count - 1
+        while j > i && nums[j] <= nums[i] {
+            j -= 1
+        }
+
+        nums.swapAt(i, j)
+
+        nums[i+1..<nums.count].reverse()
+
+    }
+
+    func permutations(of array: [Int]) -> [[Int]] {
+        var result = [[Int]]()
+        var a = array
+        func generate(_ n: Int) {
+            if n == 1 {
+                result.append(a)
+                return
+            }
+            for i in 0..<n {
+                generate(n - 1)
+                if n % 2 == 0 {
+                    a.swapAt(i, n - 1)
+                } else {
+                    a.swapAt(0, n - 1)
+                }
+            }
+        }
+
+        generate(a.count)
+        return result
+    }
+
+    //MARK: 763. Partition Labels
+/*
+    Step 1: iterate through array and with each element we store it inside of dictionary
+    Step 2: declare end = 0 and size = 0 , interate through array and increase size and caculate maximum index of element we met during iterate
+    Step 3: if the end of element == index interate we reset size.
+ */
+    func partitionLabels(_ s: String) -> [Int] {
+
+        var lastOccur: [Character: Int] = [:]
+
+        for (i, char) in s.enumerated() {
+            lastOccur[char] = i
+        }
+
+        var result: [Int] = []
+        var start = 0
+        var end = 0
+
+        for (i, char) in s.enumerated() {
+            end = max(end, lastOccur[char, default: 0])
+            if i == end {
+                result.append(end - start+1)
+                start = i+1
+                end = i+1
+            }
+
+        }
+
+        return result
+    }
+    //MARK: 75. Sort Colors
+    func sortColors(_ nums: inout [Int]) {
+//        for i in 0..<nums.count {
+//            for j in i+1..<nums.count {
+//                if nums[j] < nums[i] {
+//                    let temp = nums[j]
+//                    nums[j] = nums[i]
+//                    nums[i] = temp
+//                }
+//            }
+//        }
+
+    }
+    //MARK: 206. Reverse Linked List
+
+    func reverseList(_ head: ListNode?) -> ListNode? {
+        var prev: ListNode? = nil
+        var current = head
+        while current != nil {
+            let next = current?.next
+            current?.next = prev
+            prev = current
+            current = next
+        }
+        return prev
+
+    }
+    //MARK: 234. Palindrome Linked List
+
+    /*
+     Step1: initialize array
+     Step2: iterate through the node until nod equal nil then add val into array
+     Step3: interate through the node untl node equal nil check the val equal value pop from stack or not
+        - equal return true else return flase
+     */
+
+    func isPalindrome(_ head: ListNode?) -> Bool {
+        var stack: [Int] = []
+        var current: ListNode? = head
+        while current != nil {
+            stack.append(current!.val)
+            current = current?.next
+        }
+        current = head
+        while current != nil {
+            if current?.val != stack.popLast() {
+                return false
+            }
+            current = current?.next
+        }
+        return true
+    }
+
 
 
 }
 
 
 let solution = Solution()
+solution.maxArea([1,8,6,2,5,4,8,3,7])
+solution.permutations(of: [1,2,3])
+var arr = [2,0,2,1,1,0]
+solution.nextPermutation(&arr)
+solution.partitionLabels("ababcbacadefegdehijhklij")
+let str = "ababcbaca"
+print("==>", str.count)
 
-//solution.fizzBuzz(3)
-//[-1,2,1,-4], target = 1
-solution.threeSumClosest([-1,2,1,-4], 1)
-//[0,0,0], target = 1
-solution.threeSumClosest([0,0,0], 1)
-//[0,1,2]
-solution.threeSumClosest([0,1,2], 3)
-//[1,0,-1,0,-2,2], target = 0
-solution.summaryRanges([0,1,2,4,5,7])
+public class ListNode {
+    public var val: Int
+    public var next: ListNode?
+
+    public init() {
+        self.val = 0
+        self.next = nil
+    }
+
+    public init(_ val: Int) {
+        self.val = val
+        self.next = nil
+    }
+
+    public init(_ val: Int, _ next: ListNode?) {
+        self.val = val
+        self.next = next
+    }
 
 
+}
+extension ListNode: CustomStringConvertible {
+    public var description: String {
+       guard let next = next else {
+         return "\(val)"
+       }
+       return "\(val) -> " + String(describing: next) + " "
+     }
+}
 
+public struct LinkedList {
 
-//let test = ["1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "FizzBuzz"]
-//test.count
+    var head: ListNode?
+    var tail: ListNode?
 
-//let nums = [-1,0,1,2,-1,-4]
-//let triplets = solution.threeSum(nums)
-//print(triplets)
+    public var isEmpty: Bool {
+        head == nil
+    }
 
-//let anotherSolution = AnotherSolution()
-//[2,7,11,15], target = 9
-//anotherSolution.twoSum2([2,7,11,15], 9)
-/**
- * Question Link: https://leetcode.com/problems/4sum/
- * Primary idea: Sort the array, and traverse it, increment left or decrease right
- *               predicated on their sum is greater or not than the target
- * Time Complexity: O(n^3), Space Complexity: O(nC4)
- */
+    public mutating func push(_ value: Int) {
+        head = ListNode(value)
+        if tail == nil {
+            tail = head
+        }
+    }
 
-class FourSum {
-    func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
-        let nums = nums.sorted(by: <)
-        var threeSum = 0
-        var twoSum = 0
-        var left = 0
-        var right = 0
-        var res = [[Int]]()
+    public mutating func reverseList() {
+       head = recusiveHelper(head)
+    }
 
-        guard nums.count >= 4 else {
-            return res
+    private mutating func recusiveHelper(_ node: ListNode?) -> ListNode? {
+        guard let currentNode = head else { return nil }
+
+        if currentNode.next == nil {
+            head = currentNode
+            return currentNode
         }
 
-        for i in 0..<nums.count - 3 {
-            guard i == 0 || nums[i] != nums[i - 1] else {
-                continue
-            }
-            threeSum = target - nums[i]
+        let reverList = recusiveHelper(currentNode.next)
+        currentNode.next = currentNode
+        currentNode.next = nil
+        return reverList
 
-            for j in i + 1..<nums.count - 2 {
-                guard j == i + 1 || nums[j] != nums[j - 1] else {
-                    continue
-                }
-                twoSum = threeSum - nums[j]
 
-                left = j + 1
-                right = nums.count - 1
-                while left < right {
-                    if nums[left] + nums[right] == twoSum {
-                        res.append([nums[i], nums[j], nums[left], nums[right]])
-                        repeat {
-                            left += 1
-                        } while left < right && nums[left] == nums[left - 1]
-                            repeat {
-                                right -= 1
-                        } while left < right && nums[right] == nums[right + 1]
-                    } else if nums[left] + nums[right] < twoSum {
-                        repeat {
-                            left += 1
-                        } while left < right && nums[left] == nums[left - 1]
-                    } else {
-                        repeat {
-                            right -= 1
-                        } while left < right && nums[right] == nums[right + 1]
-                    }
+    }
+
+
+    public mutating func reverse() {
+        var prev: ListNode? = nil
+        var current = head
+        while current != nil {
+            let next = current?.next
+            current?.next = prev
+            prev = current
+            current = next
+        }
+        tail = head
+        head = prev
+    }
+
+
+    mutating func sort() {
+        var current = head
+        var isSwapped = false
+        repeat {
+            isSwapped = false
+            current = head
+            while let node = current?.next {
+                if node.val > current!.val {
+                    swap(node, current!)
+                    isSwapped = true
                 }
+                current = node
             }
+        } while isSwapped
+
+
+    }
+
+    private mutating func swap(_ node1: ListNode, _ node2: ListNode) {
+        let temp = node1.val
+        node1.val = node2.val
+        node2.val = temp
+
+    }
+
+    /*
+     Step1: initilize array interate through elelemt
+     */
+
+    public func isPralindome() -> Bool {
+
+        var stack: [Int] = []
+
+        var current = head
+
+        while current != nil {
+            stack.append(current?.val ?? 0)
+            current = current?.next
         }
 
-        return res
+        current = head
+
+        while current != nil {
+            if current?.val == stack.popLast() {
+                return true
+            }
+            current = current?.next
+        }
+
+        return false
+    }
+
+
+    public mutating func apend(_ value: Int) {
+        guard !isEmpty else {
+            push(value)
+            return
+        }
+        // 2
+        tail?.next = ListNode(value)
+        tail = tail?.next
+    }
+    @discardableResult
+    public mutating func insert(_ value: Int,
+                                after node: ListNode
+    ) -> ListNode {
+        guard tail !== node else {
+            apend(value)
+            return tail!
+        }
+        node.next = ListNode(value)
+        return node.next!
+
+    }
+    @discardableResult
+
+    public mutating func pop() -> Int {
+        defer {
+            head = head?.next
+            if isEmpty {
+                tail = nil
+
+            }
+        }
+        return head!.val
+    }
+    @discardableResult
+
+    public mutating func remove(after node: ListNode) -> Int {
+        defer {
+            if node.next === tail {
+                tail = node
+            }
+            node.next = node.next?.next
+        }
+        return node.next!.val
+    }
+
+    public mutating func findAdjacentElements() {
+
+        var current = head
+        while let currentNode = current {
+            if let nextNode = current?.next {
+                swap(currentNode, nextNode)
+            }
+            current = current?.next
+
+        }
+    }
+
+    func removeElements(_ head: ListNode?, _ val: Int) -> ListNode? {
+        var head = head
+        var dumyNode = ListNode(0)
+        dumyNode.next = head
+        var current = head
+        var prev: ListNode? = dumyNode
+
+        while current != nil {
+            if current?.val == val {
+                prev?.next = current?.next
+            } else {
+                prev = current
+            }
+            current = current?.next
+        }
+
+        return dumyNode.next
+    }
+
+
+    func removeElements2(_ head: ListNode?, _ val: Int) -> ListNode? {
+        var head = head
+        var dumyNode = ListNode(0)
+        dumyNode.next = head
+        var current = head
+        var prev: ListNode? = dumyNode
+
+        while current != nil {
+            if current?.val == val {
+                prev?.next = current?.next
+            } else {
+                prev = current
+            }
+            current = prev?.next
+        }
+
+        return dumyNode.next
+    }
+
+
+
+    public mutating func append(_ value: Int) {
+
+      // 1
+      guard !isEmpty else {
+        push(value)
+        return
+      }
+
+      // 2
+      tail!.next = ListNode(value)
+
+      // 3
+      tail = tail!.next
+    }
+
+    mutating func swapPairs() {
+        let dummy = ListNode(0)
+        dummy.next = head
+
+        var prev: ListNode? = dummy
+        var current = head // Initialize current to the head
+
+        while let node1 = current, let node2 = current?.next {
+                // Swap node1 and node2
+                prev?.next = node2
+                node1.next = node2.next
+                node2.next = node1
+
+                // Move prev and current pointers forward for next iteration
+                prev = node1
+            print("node 1", node1.val, node1.next ?? 0)
+                current = node1.next
+            }
+
+        print("dummy", dummy.next!)
+
+    }
+
+    func swapPairs(_ head: ListNode?) -> ListNode? {
+        let dummy = ListNode(0)
+        dummy.next = head
+
+        var prev: ListNode? = dummy
+        var current = head // Initialize current to the head
+
+        while let node1 = current, let node2 = current?.next {
+                // Swap node1 and node2
+                prev?.next = node2
+                node1.next = node2.next
+                node2.next = node1
+
+                // Move prev and current pointers forward for next iteration
+                prev = node1
+            print("node 1", node1.val, node1.next)
+                current = node1.next
+            }
+
+            return dummy.next // Return the new head which is after the dummy node
+
+    }
+
+    mutating func deleteDuplicates(_ head: ListNode?) -> ListNode? {
+        var dummyNode = ListNode(0)
+        dummyNode.next = head
+        var prev: ListNode? = dummyNode
+        var current = head
+        var set = Set<Int>()
+        while  current != nil {
+            if set.contains(current?.val ?? 0) {
+                prev?.next = current?.next
+            } else {
+                prev = current
+            }
+            set.insert(current?.val ?? 0)
+            current = current?.next
+        }
+        return dummyNode.next
+    }
+
+    //MARK: 82. Remove Duplicates from Sorted List II
+    /*
+
+     Step1: Declare new dic
+     iterate through list node with each value we icrease 1 
+     */
+
+    mutating func deleteDuplicates2(_ head: ListNode?) -> ListNode? {
+        var dict = [Int: Int]() // Dictionary to keep track of node counts
+        var current = head
+
+        while current != nil {
+            dict[current?.val ?? 0, default: 0] += 1
+            current = current?.next
+        }
+
+        var dummyNode = ListNode(0)
+        dummyNode.next = head
+        var prev: ListNode? = dummyNode
+        current = head
+
+        while current != nil {
+            if let count = dict[current?.val ?? 0], count > 1 {
+                prev?.next = current?.next
+            } else {
+                prev = current
+            }
+            current = current?.next
+        }
+
+        return dummyNode.next
+    }
+
+
+}
+
+extension LinkedList: CustomStringConvertible {
+    public var description: String {
+        guard let head = head else {
+            return "Empty list"
+        }
+        return String(describing: head)
+    }
+
+    public func printAll() {
+        var current = head
+        while let currentNode = current {
+            print(currentNode.val)
+            current = currentNode.next
+        }
     }
 }
+
+
+
+var list = LinkedList()
+//list.push(1)
+//list.push(2)
+//list.push(3)
+//list.push(4)
+
+list.append(3)
+  list.append(2)
+list.append(4)
+list.append(1)
+let node = ListNode(0)
+
+
+//  list.append(3)
+
+/// Print the original list
+list.swapPairs()

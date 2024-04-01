@@ -1140,5 +1140,122 @@ func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
     }
 
 
+//public struct ListNode {
+//    public var val: Int
+//    public var next: ListNode?
+//
+//    public init(_ val: Int) {
+//        self.val = val
+//        self.next = nil
+//    }
+//}
 
+public struct LinkedList {
+    public var head: ListNode?
+    public var tail: ListNode?
 
+    public var isEmpty: Bool {
+        return head == nil
+    }
+
+    public mutating func push(_ value: Int) {
+        let newNode = ListNode(value)
+        if isEmpty {
+            head = newNode
+            tail = newNode
+        } else {
+            newNode.next = head
+            head = newNode
+        }
+    }
+
+    public mutating func reverse() {
+        var prev: ListNode? = nil
+        var current = head
+        while current != nil {
+            let next = current?.next
+            current?.next = prev
+            prev = current
+            current = next
+        }
+        tail = head
+        head = prev
+    }
+
+    public mutating func append(_ value: Int) {
+        let newNode = ListNode(value)
+        if isEmpty {
+            head = newNode
+            tail = newNode
+        } else {
+            tail?.next = newNode
+            tail = newNode
+        }
+    }
+
+    public mutating func insert(_ value: Int, after node: ListNode) {
+        let newNode = ListNode(value)
+        if node === tail {
+            append(value)
+        } else {
+            newNode.next = node.next
+            node.next = newNode
+        }
+    }
+
+    @discardableResult
+    public mutating func pop() -> Int? {
+        guard let oldHead = head else {
+            return nil
+        }
+        defer {
+            head = oldHead.next
+            if isEmpty {
+                tail = nil
+            }
+        }
+        return oldHead.val
+    }
+
+    @discardableResult
+    public mutating func remove(after node: ListNode) -> Int? {
+        guard let nodeToRemove = node.next else {
+            return nil
+        }
+        defer {
+            if nodeToRemove === tail {
+                tail = node
+            }
+            node.next = nodeToRemove.next
+        }
+        return nodeToRemove.val
+    }
+
+    public func printAll() {
+        var current = head
+        while let currentNode = current {
+            print("current value:", currentNode.val)
+            current = currentNode.next
+        }
+    }
+}
+
+// Create an instance of LinkedList
+var list = LinkedList()
+
+// Push elements onto the linked list
+list.push(1)
+list.push(2)
+list.push(3)
+list.push(4)
+
+// Print the original list
+print("Original list:")
+//list.printAll()
+
+// Reverse the list
+list.reverse()
+
+// Print the reversed list
+print("\nReversed list:",list)
+//list.printAll()

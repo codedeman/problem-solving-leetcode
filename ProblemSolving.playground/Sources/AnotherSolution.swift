@@ -262,6 +262,121 @@ public class AnotherSolution {
         return closestSum
     }
 
+    // MARK: 283. Move Zeroes
+
+    func moveZeroes(_ nums: inout [Int]) {
+        var left = 0
+        var right = 1
+        if nums.count < 2 {
+            return
+        }
+        while left < nums.count && right < nums.count {
+
+            if nums[left] != 0 {
+                left += 1
+                right += 1
+            } else if nums[right] == 0 {
+                right += 1
+            } else {
+                let temp = nums[right]
+                nums[right] = nums[left]
+                nums[left] = temp
+            }
+        }
+
+    }
+    // MARK: 26. Remove Duplicates from Sorted
+
+    public func removeDuplicates(_ nums: inout [Int]) -> Int {
+        guard nums.count > 1 else { return nums.count } // Handle empty or single-element arrays
+        var left = 0
+        var right = 1
+
+        while right < nums.count {
+            if nums[left] != nums[right] {
+                left += 1
+                nums[left] = nums[right]
+            }
+            right += 1
+        }
+
+        return left+1
+
+    }
+
+
+    public func removeDuplicates2(_ nums: inout [Int]) -> Int {
+        guard nums.count > 2 else { return nums.count }
+        var allowDuplicateCount = 1
+        var writeIndex = 2
+
+        for readIndex in 2..<nums.count {
+            if nums[readIndex] != nums[writeIndex - 2 ] {
+                nums[writeIndex] = nums[readIndex]
+                writeIndex += 1
+            }
+
+        }
+        return  writeIndex
+    }
+
+
+    public func partitionLabels(_ s: String) -> [Int] {
+        var s = Array(s)
+
+        var lastOccur: [Character: Int] = [:]
+
+        for (index, char) in s.enumerated()  {
+            lastOccur[char] = index
+        }
+
+
+        var end = 0
+        var results: [Int] = []
+        var size = 0
+
+        for (index, char) in s.enumerated() {
+            size += 1
+            end =  max(end, lastOccur[s[index], default: 0])
+
+            if index == end {
+                results.append(size)
+                size = 0
+            }
+
+        }
+
+        return results
+      }
+
+//MARK: 75. Sort Colors
+    
+    public func sortColors(_  nums: inout [Int]) {
+        var left = 0
+        var right = nums.count-1
+        var i = 0
+
+        while i <= right {
+            if nums[i] == 0 {
+                nums.swapAt(left, i)
+                left += 1
+            } else if nums[i] == 2 {
+                nums.swapAt(i, right)
+                right -= 1
+            } else {
+                i += 1
+
+            }
+        }
+
+    }
+
+
+
+
+
+
+
 //    class Solution {
 //        func threeSumClosest(_ nums: [Int], _ target: Int) -> Int {
 //            let nums = nums.sorted() // Sort the array
