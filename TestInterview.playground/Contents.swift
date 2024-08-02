@@ -1259,3 +1259,101 @@ list.reverse()
 // Print the reversed list
 print("\nReversed list:",list)
 //list.printAll()
+let q1 = DispatchQueue(label: "q1", attributes: .concurrent)
+let q2 = DispatchQueue(label: "q2", attributes: .concurrent)
+
+var count = 0
+//
+//func increment(queue: DispatchQueue) {
+//    count = count + 1
+//    print("write count: \(count) in queue: \(queue.label)")
+//}
+//
+//func read(queue: DispatchQueue) {
+//    print("read count: \(count) in queue: \(queue.label)")
+//}
+
+
+//func perform(queue: DispatchQueue) {
+//    increment(queue: queue)
+//    read(queue: queue)
+//}
+//
+//for _ in 1...5 {
+//    q1.async {
+//        perform(queue: q1)
+//    }
+//    q2.async {
+//        perform(queue: q2)
+//    }
+//}
+protocol Shape {
+    func getArea() -> Double
+}
+
+class Rectangle: Shape {
+    var width: Double
+    var height: Double
+
+    init(width: Double, height: Double) {
+        self.width = width
+        self.height = height
+    }
+
+    func getArea() -> Double {
+        return width * height
+    }
+}
+
+func calculateTotalArea(shapes: [Shape]) -> Double {
+    var totalArea = 0.0
+    for shape in shapes {
+        totalArea += shape.getArea() // LSP allows using any Shape subclass here
+    }
+    return totalArea
+}
+
+class Square: Rectangle {
+
+    override init(width: Double, height: Double) {
+        super.init(width: width, height: height)
+    }
+}
+
+
+// Usage:
+let rectangle = Rectangle(width: 5, height: 3)
+let square = Square(width: 4, height: 4) // Enforces square dimensions
+let shapes: [Shape] = [rectangle, square]
+let totalArea = calculateTotalArea(shapes: shapes) // Works for both Rectangle and Square objects
+print("Total area: \(totalArea)")
+
+
+class HeavyWork {
+
+    static func runUserInitiatedTask(seconds: UInt32) {
+        Task(priority: .userInitiated) {
+            print("🥸 userInitiated: \(Date())")
+            sleep(seconds)
+        }
+    }
+
+    static func runUtilityTask(seconds: UInt32) {
+        Task(priority: .utility) {
+            print("☕️ utility: \(Date())")
+            sleep(seconds)
+        }
+    }
+
+    static func runBackgroundTask(seconds: UInt32) {
+        Task(priority: .background) {
+            print("⬇️ background: \(Date())")
+            sleep(seconds)
+        }
+    }
+}
+
+// Test 1: Creating Tasks with Same Priority Level
+for _ in 1...150 {
+    HeavyWork.runUserInitiatedTask(seconds: 3)
+}

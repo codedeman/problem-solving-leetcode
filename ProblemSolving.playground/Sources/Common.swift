@@ -1,35 +1,20 @@
 import Foundation
 
-public class Queue {
+public struct Queue<T> {
+  private var items: [T] = []
 
-    var elements: [Int] = []
+    public mutating func enqueue(_ item: T) {
+    items.append(item)
+  }
 
-    public init() { }
+public mutating func dequeue() -> T? {
+    guard !items.isEmpty else { return nil }
+    return items.removeFirst()
+  }
 
-    public func push(_ x: Int) {
-        elements.append(x)
-    }
-
-    public var head: Int? {
-        return elements.first
-    }
-
-    public func pop() -> Int {
-        elements.popLast()!
-    }
-
-    public var tail: Int? {
-        return elements.last
-    }
-
-    public var count: Int? {
-        return elements.count
-    }
-
-    public func isEmpty() -> Bool{
-        return elements.isEmpty
-    }
-
+    public var isEmpty: Bool {
+    return items.isEmpty
+  }
 }
 
 public struct MonotonicStack<T: Comparable> {
@@ -63,3 +48,14 @@ public struct MonotonicStack<T: Comparable> {
 }
 
 
+// Definition for doubly-linked list.
+public class DoublyLinkedListNode {
+    public var data: Int
+    public var next: DoublyLinkedListNode?
+    public var prev: DoublyLinkedListNode?
+    public init(data: Int, next: DoublyLinkedListNode? = nil, prev: DoublyLinkedListNode? = nil) {
+        self.data = data
+        self.next = next
+        self.prev = prev
+    }
+}
