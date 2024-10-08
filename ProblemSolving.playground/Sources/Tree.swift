@@ -1,18 +1,18 @@
 import Foundation
 
-public class TreeNode<T> {
-    public var value: T
+public class TreeNode<T: Comparable> {
+    public var val: T
     public var left: TreeNode?
     public var right: TreeNode?
 
     public init(value: T) {
-        self.value = value
+        self.val = value
     }
 }
 
 extension TreeNode: CustomStringConvertible {
     public var description: String {
-        var output = "\(value)"
+        var output = "\(val)"
 
         if let left = left {
             output += " <- " + left.description
@@ -34,7 +34,7 @@ extension TreeNode: CustomStringConvertible {
 //       return "\(val) -> " + String(describing: next) + " "
 //     }
 //}
-
+/*
 class BinaryTree<T> {
     var root: TreeNode<T>?
 
@@ -52,7 +52,7 @@ class BinaryTree<T> {
     }
 
     private func insertHelper(_ node: TreeNode<T>, value: T) where T: Comparable {
-        if value < node.value {
+        if value < node.val {
             if let leftChild = node.left {
                 self.insertHelper(leftChild, value: value)
             } else {
@@ -75,12 +75,13 @@ class BinaryTree<T> {
     private func searchHelper(_ node: TreeNode<T>?, value: T) -> TreeNode<T>? where T: Comparable {
         guard let node = node else { return nil }
 
-        if value == node.value {
+        if value == node.val {
             return node
-        } else if value < node.value {
+        } else if value < node.val {
             return self.searchHelper(node.left, value: value)
         } else {
             return self.searchHelper(node.right, value: value)
         }
     }
 }
+*/

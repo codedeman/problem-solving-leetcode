@@ -18,12 +18,19 @@ public class AnotherSolution {
 
     
     public func bestTimeSell(_ prices: [Int]) -> Int {
-
         var minPrice = Int.max
         var maxProfit = 0
         for price in prices {
-            minPrice = min(minPrice, price)
-            maxProfit = max(maxProfit, price - minPrice)
+
+            if price < minPrice {
+                minPrice = price
+            }
+
+            let profit = price - minPrice
+
+            if profit > maxProfit {
+                maxProfit = profit
+            }
         }
 
         return maxProfit
@@ -494,35 +501,35 @@ public class AnotherSolution {
 
     }
 
-
-    public func minDepth(_ root: TreeNode<Int>?) -> Int {
-        guard let root = root else {
-            return 0
-        }
-        var queue: [(TreeNode, Int)] = [(root, 1)]
-
-        while !queue.isEmpty {
-            let (node, depth) = queue.removeFirst()
-
-            // Check if this is a leaf node
-            if node.left == nil && node.right == nil {
-                return depth
-            }
-
-            // Enqueue left child
-            if let left = node.left {
-                queue.append((left, depth + 1))
-            }
-
-            // Enqueue right child
-            if let right = node.right {
-                queue.append((right, depth + 1))
-            }
-        }
-        return 0
-
-
-    }
+//
+//    public func minDepth(_ root: TreeNode<Int>?) -> Int {
+//        guard let root = root else {
+//            return 0
+//        }
+//        var queue: [(TreeNode, Int)] = [(root, 1)]
+//
+//        while !queue.isEmpty {
+//            let (node, depth) = queue.removeFirst()
+//
+//            // Check if this is a leaf node
+//            if node.left == nil && node.right == nil {
+//                return depth
+//            }
+//
+//            // Enqueue left child
+//            if let left = node.left {
+//                queue.append((left, depth + 1))
+//            }
+//
+//            // Enqueue right child
+//            if let right = node.right {
+//                queue.append((right, depth + 1))
+//            }
+//        }
+//        return 0
+//
+//
+//    }
     // BFS
 
     public func maxDepth(_ root: TreeNode<Int>?) -> Int {
@@ -928,7 +935,7 @@ public class AnotherSolution {
         }
         return arr
     }
-    //MARK: TODo 
+    //MARK: TODO
 
     public func firstUniqChar(_ s: String) -> Int {
 
@@ -1345,7 +1352,6 @@ public class AnotherSolution {
         return maxCount
     }
 
-    //MARK: Leetcode 424. Longest Repeating Character Replacement
     /*
      using slide window techinique
      Step1: expand window and store element occurs
@@ -1355,13 +1361,15 @@ public class AnotherSolution {
 
      Fianlly: we need compute maximum max count
      */
+    //MARK: Leetcode 424. Longest Repeating Character Replacement
 
     public func characterReplacement(_ s: String, _ k: Int) -> Int {
         //  AAAA
+        // ABAB // 2
+//        "AAABACDEFGBBB" // 3
             var left = 0
             var right = 0
             let newArray = Array(s)
-            var count = 0
             var maxCount = 0
             var hashMap: [Character: Int] = [:]
             var maxFreq: Int = 0
@@ -1370,7 +1378,7 @@ public class AnotherSolution {
                 let char = newArray[right]
                 hashMap[char, default: 0] += 1
                 maxFreq = max(maxFreq, hashMap[char]!)
-
+                print("maxFeg",left,right,maxFreq)
                 while (right - left + 1) - maxFreq > k {
                     hashMap[newArray[left]]! -= 1
                     left += 1
@@ -1381,6 +1389,7 @@ public class AnotherSolution {
 
             return maxCount
         }
+
      //MARK: 53. Maximum Subarray
     public func maxSubArray(_ nums: [Int]) -> Int {
 
@@ -1525,6 +1534,26 @@ public class AnotherSolution {
         }
         return true
     }
+   //MARK: 674. Longest Continuous Increasing Subsequence
+    /*
+
+     */
+    public func findLengthOfLCIS(_ nums: [Int]) -> Int {
+        if nums.isEmpty { return 0 }
+        let nums = nums
+        var count = 1
+        var maxLeght = 1
+        for i in 1..<nums.count {
+            if nums[i] > nums[i-1] {
+                count += 1
+                maxLeght = max(maxLeght, count)
+            } else {
+                count = 1
+            }
+        }
+
+        return maxLeght
+    }
 
     //MARK: 1721. Swapping Nodes in a Linked List
     /*
@@ -1617,7 +1646,7 @@ public class AnotherSolution {
         var fast: ListNode? = dummy
         var slow: ListNode? = dummy
 
-        for i in 0..<n {
+        for _ in 0..<n {
             fast = fast?.next
         }
 
@@ -1655,8 +1684,7 @@ public class AnotherSolution {
         if list2 == nil {
             return list1
         }
-//        let l1: ListNode? = list1
-//        let l2: ListNode? = list2
+
 
         if let node1 = list1, let node2 = list2 {
             if node1.val <= node1.val {
@@ -1714,7 +1742,8 @@ public class AnotherSolution {
 
         }
     }
-
+    //MARK: 328. Odd Even Linked List
+    
     public func oddEvenList(_ head: ListNode?) -> ListNode? {
         guard head != nil else { return nil}
 
@@ -1995,7 +2024,9 @@ public class AnotherSolution {
         return joinedString
     }
 
-    //MARK: 160. Intersection of Two Linked Lists
+    //MARK: TODO
+
+    //MARK: 160 Intersection of Two Linked Lists
 
     func getIntersectionNode(_ headA: ListNode?, _ headB: ListNode?) -> ListNode? {
 //        Calculate the Lengths:
@@ -2039,7 +2070,1229 @@ public class AnotherSolution {
         return current
     }
 
+    public func merge(
+        _ nums1: inout [Int],
+        _ m: Int,
+        _ nums2: [Int],
+        _ n: Int
+    ) {
+
+        var i = m-1
+        var j = n - 1
+        var k = m + n-1
+
+        while i >= 0 && j >= 0 {
+            if nums1[i] < nums2[j] {
+                nums1[k] = nums2[j]
+                j -= 1
+            } else {
+                nums1[k] = nums1[i]
+                i -= 1
+            }
+
+            k -= 1
+        }
+
+        while j >= 0 {
+            nums1[k] = nums2[j]
+            j -= 1
+            k -= 1
+        }
+
+
+
+
+
+    }
+//MARK: 14. Longest Common Prefix
+
+    public func longestCommonPrefix(_ strs: [String]) -> String {
+        var prefix = strs[0]
+
+        for str in strs {
+            // Reduce the prefix while it is not a prefix of the current string
+
+            while !str.hasPrefix(prefix) {
+                prefix = String(prefix.dropLast()) // will remove elemet
+                print("prefix", prefix)
+                if prefix.isEmpty {
+                    return ""
+                }
+            }
+        }
+
+        return prefix
+
+
+    }
+
+
+
+    public func reverse(_ x: Int) -> Int {
+
+        var num = x
+        var reverseNum = 0
+        while num != 0 {
+            // Extract the last digit of num.
+
+            let digit = num % 10
+            // Check if adding the digit to reverseNum would cause overflow.
+            // Overflow happens if reverseNum is greater than (Int(Int32.max) - digit) / 10
+            // or if reverseNum is less than (Int(Int32.min) - digit) / 10.
+            // If an overflow is detected, return 0.
+            if reverseNum > (Int(Int32.max) - digit)/10 || reverseNum < (Int(Int32.min) - digit) / 10 {
+                return 0
+            }
+            // Update reverseNum by shifting its digits left and adding the new digit.
+
+            reverseNum = reverseNum*10+digit
+            // Remove the last digit from num.
+            num /= 10
+        }
+
+        return reverseNum
+    }
+
+
+    func convert(_ s: String, _ numRows: Int) -> String {
+
+        return ""
+    }
+
+    func maxProduct(_ nums: [Int]) -> Int {
+
+        if nums.isEmpty {
+            return 0
+        }
+        var result = nums[0]
+        var maximumEnding = nums[0]
+        var minimumEnding = nums[0]
+        for i in 1..<nums.count {
+            let current = nums[i]
+
+            if current == 0 {
+                maximumEnding  = 1
+                minimumEnding = 1
+                result = max(result, 0)
+            } else {
+                let tempMax = max(current, maximumEnding * current, minimumEnding * current)
+                minimumEnding = min(current, maximumEnding * current, minimumEnding * current)
+                maximumEnding = tempMax
+                result = max(result, maximumEnding)
+            }
+        }
+        return result
+    }
+    public func maxArea(_ height: [Int]) -> Int {
+        var result = 0
+
+        var left = 0
+        var right = height.count - 1
+
+        while left < right {
+            let area = (right - left) * min(height[left], height[right])
+            result = max(result, area)
+
+            if height[left] < height[right] {
+                left += 1
+            } else {
+                right -= 1
+            }
+        }
+
+        return result
+    }
+    //MARK: 15. 3Sum
+    /*
+     iterate through array n - 3
+     create two pointer
+     skip duplicate for the first number
+     caculate sum
+     skip duplicate for second number
+     skip duplicate for third number
+
+     */
+    public func threeSum(_ nums: [Int]) -> [[Int]] {
+        let nums = nums.sorted()
+        if nums.count <= 3 {
+            return []
+        }
+        var result: [[Int]] = []
+
+        for i in 0..<nums.count - 2 {
+
+            if i > 0, nums[i] == nums[i-1] {
+                continue
+            }
+
+            var left = i+1
+            var right = nums.count - 1
+
+            while left < right {
+                let sum = nums[i] + nums[left] + nums[right]
+
+                if sum == 0 {
+                    result.append([nums[i], nums[left], nums[right]])
+                    // Skip duplicates for the second number
+
+                    if left < right, nums[left] == nums[left+1] {
+                       left += 1
+                    }
+                    // Skip duplicates for the second number
+
+                    if left < right, nums[right] == nums[right-1] {
+                        right -= 1
+                    }
+
+                    left += 1
+                    right -= 1
+                } else if sum < 0 {
+                    left += 1
+                } else {
+                    right -= 1
+                }
+
+            }
+
+        }
+
+        return result
+    }
+    //MARK: 371. Sum of Two Integers
+
+    public func getSum(_ a: Int, _ b: Int) -> Int {
+        var a = a
+        var b = b
+        while b != 0 {
+            let carry = a & b
+            print("sum",carry)
+            a = a ^ b
+            print("a", a)
+            b = carry << 1
+        }
+        return a
+    }
+
+    public func decodeString(_ s: String) -> String {
+        var currentStr = ""
+        var currentNum = 0
+        var stringStack :[String] = []
+        var countStack: [Int] = []
+        for char in s {
+            if char.isNumber {
+                /* 12[a] => 0*10+1 => 1
+                    1*10+2 => 12
+                 */
+                currentNum = currentNum * 10 + (char.wholeNumberValue ?? 0)
+            } else if char == "[" {
+                stringStack.append(currentStr)
+                countStack.append(currentNum)
+                currentStr = ""
+                currentNum = 0
+            } else if char == "]" {
+               let repeatTime = countStack.removeLast()
+                var temp = stringStack.popLast()
+                temp! += String(repeating: currentStr, count: repeatTime)
+                currentStr = temp!
+            } else {
+                currentStr.append(char)
+            }
+
+        }
+        return currentStr
+    }
+
+    //MARK: Binary Search
+    //MARK: 35. Search Insert Position
+    public func searchInsert(_ nums: [Int], _ target: Int) -> Int {
+
+        var left = 0
+        var right = nums.count - 1
+
+        while left <= right {
+
+            let mid = left + (right - left)/2
+
+            if nums[mid] == target {
+                return mid
+            } else if nums[mid] < target {
+                left = mid+1
+            } else {
+                right = mid - 1
+            }
+        }
+
+        return left
+
+    }
+
+    //MARK: 162. Find Peak Element
+
+    public func findPeakElement(_ nums: [Int]) -> Int {
+
+        var left = 0
+        var right = nums.count - 1
+
+        while left <= right {
+            let mid = left+(right - left) / 2
+            if mid > 0 && mid < nums.count-1 {
+                if nums[mid] > nums[mid+1] && nums[mid] > nums[mid-1] {
+                    return mid
+                } else if nums[mid] < nums[mid+1] {
+                    left = mid+1
+                } else if nums[mid] < nums[mid-1] {
+                    right = mid-1
+                }
+            } else if mid == 0 {
+                // If mid is at the first index, only compare with the next element
+                if nums[mid] > nums[mid+1] {
+                    return mid
+                } else {
+                    left = mid + 1
+                }
+            } else if mid == nums.count-1 {
+                // If mid is at the last index, only compare with the previous element
+                if nums[mid] > nums[mid-1] {
+                    return mid
+                } else {
+                    right = mid - 1
+                }
+            }
+
+        }
+
+        return left
+    }
+//MARK: 268. Missing Number
+    public func missingNumber(_ nums: [Int]) -> Int {
+
+        let n = nums.count
+        // 9 * 5
+        let expectedSum = n*(n+1)/2
+        print("expected sum", expectedSum)
+        var actualSum = 0
+
+        for num in nums {
+            actualSum += num
+        }
+
+        return expectedSum - actualSum 
+
+    }
+    //MARK: TODO 
+    //MARK: 1011. Capacity To Ship Packages Within D Days
+    public func shipWithinDays(
+        _ weights: [Int],
+        _ days: Int
+    ) -> Int {
+        var low = weights.max(by: <)!
+        print("low \(low)")
+        var high = weights.reduce(0, +)
+        while low < high {
+            let mid = (low + high)/2
+            if canShip(weights: weights, days: days, capacity: mid) {
+                high = mid
+            } else {
+                low = mid+1
+            }
+        }
+
+        return low
+    }
+
+    public func canShip(
+        weights: [Int],
+        days: Int,
+        capacity: Int
+    ) -> Bool {
+        var dayNeeded = 1
+        var current_weight = 0
+        for weight in weights {
+            if current_weight + weight > capacity {
+                print("current_weight", current_weight, weight)
+                dayNeeded += 1
+                current_weight = 0
+            }
+            current_weight += weight
+
+        }
+        return dayNeeded <= days
+    }
+    private func maxiumPackages(weights: [Int] ) ->Int {
+        var maximum = 0
+        for i in weights {
+            maximum = max(maximum, i)
+        }
+        return maximum
+
+    }
+
+//MARK: 624. Maximum Distance in Arrays
+    // Todo 
+   public func maxDistance(_ arrays: [[Int]]) -> Int {
+       var maxDist = 0
+       var maxVal = arrays[0].last!
+       var minVal = arrays[0].first!
+
+       for i in 1..<arrays.count {
+           let currentArray = arrays[i]
+           let distance1 = abs(currentArray.last! - minVal)
+           let distance2 = abs(maxVal - (currentArray.first ?? 0))
+           maxDist = max(maxDist, distance1, distance2)
+           minVal = min(minVal, currentArray.first ?? 0)
+           maxVal = max(maxVal, currentArray.last ?? 0)
+       }
+
+       return maxDist
+
+    }
+
+    func minSteps(_ n: Int) -> Int {
+
+        return 0
+     }
+//    [2,7,11,15]
+   //MARK: 2148. Count Elements With Strictly Smaller and Greater Elements
+    /*
+    Step 1: Find the minimum and maximum elements in the array.
+    Step 2: Iterate through the array and count elements that are strictly between the minimum and maximum values.
+    Final: Return the count value.
+    Time complexity is: O(n)
+    Space complexity is: O(1)
+     */
+    public func countElements(_ nums: [Int]) -> Int {
+        let minValue = nums.min()!
+        let maxValue = nums.max()!
+        var count = 0
+        for num in nums {
+            if num > minValue && num < maxValue {
+                count += 1
+            }
+        }
+        return count
+    }
+
+    func hasCycle(_ head: ListNode?) -> Bool {
+
+        var slow = head
+        var fast = head
+        while fast != nil && fast?.next != nil {
+            fast = fast?.next?.next
+            slow = slow?.next
+            if slow === fast {
+                return true
+            }
+        }
+        return false
+
+    }
+
+    //MARK: Tree
+
+    public func isSymmetric(_ root: TreeNode<Int>?) -> Bool {
+
+        return isMiror(left: root?.left, right: root?.right)
+    }
+
+    private func isMiror(
+        left: TreeNode<Int>?,
+        right: TreeNode<Int>?
+    ) -> Bool {
+
+        if left == nil && right == nil {
+            return true
+        }
+
+        if left == nil || right == nil {
+            return false
+        }
+        return (left?.val == right?.val)
+        && isMiror(
+            left: left?.left,
+            right: right?.right
+        )
+        && isMiror(
+            left: left?.right,
+            right: right?.left
+        )
+    }
+
+    //MARK: 701. Insert into a Binary Search Tree
+    func insertIntoBST(_ root: TreeNode<Int>?, _ val: Int) -> TreeNode<Int>? {
+        guard let node = root else { return TreeNode<Int>(value: val) }
+
+        if val > node.val {
+            node.right = insertIntoBST(node.right, val)
+        } else {
+            node.left = insertIntoBST(node.left, val)
+        }
+
+        return node
+
+    }
+
+    func insertIntoBSTIterative(_ root: TreeNode<Int>?, _ val: Int) -> TreeNode<Int> {
+        // If the tree is empty, create and return a new node
+        guard let rootNode = root else {
+            return TreeNode(value: val)
+        }
+
+        var currentNode: TreeNode? = rootNode
+        while let node = currentNode {
+            if val < node.val {
+                if node.left == nil {
+                    node.left = TreeNode(value: val)
+                    break
+                } else {
+                    currentNode = node.left
+                }
+            } else {
+                if node.right == nil {
+                    node.right = TreeNode(value: val)
+                    break
+                } else {
+                    currentNode = node.right
+                }
+            }
+        }
+
+
+        return rootNode
+    }
+
+    func invertTree(_ root: TreeNode<Int>?) -> TreeNode<Int>? {
+
+        guard let node = root else { return nil}
+        
+        let temp = node.left
+        node.left = node.right
+        node.right = temp
+        invertTree(node.left)
+        invertTree(node.right)
+        return root
+    }
+
+    public func findComplement(_ num: Int) -> Int {
+        var mask = 1
+        while mask < num {
+            mask = (mask << 1) | 1
+        }
+        return num ^ mask
+     }
+
+public func minDepth(_ root: TreeNode<Int>?) -> Int {
+        guard let root = root else {
+            return 0
+        }
+
+        var queue: [TreeNode<Int>] = [root]
+        var level = 1
+        while !queue.isEmpty {
+            for i in 0..<queue.count {
+                let currentNode = queue.removeFirst()
+
+                if currentNode.left == nil && currentNode.right == nil {
+                    return level
+                }
+                if let left = currentNode.left {
+                    queue.append(left)
+                }
+                if let right = currentNode.right {
+                    queue.append(right)
+                }
+
+            }
+            level += 1
+        }
+
+        return level
+
+    }
+
+   //MARK: 543. Diameter of Binary Tree
+
+    func diameterOfBinaryTree(_ root: TreeNode<Int>?) -> Int {
+        var diameter = 0
+
+        func calculateHeight(_ node: TreeNode<Int>?) -> Int {
+            guard let node = node else { return 0 }
+            let leftHeight = calculateHeight(node.left)
+            let rightHeight = calculateHeight(node.right)
+            diameter = max(diameter, leftHeight+rightHeight)
+
+            return max(leftHeight, rightHeight) + 1
+
+        }
+        // Start the recursive height calculation from the root
+        calculateHeight(root)
+
+        return diameter
+      }
+
+    //MARK: 110. Balanced Binary Tree
+    /*
+     balance tree the height of left and right subtrees of any nodes differ by no more than one is left node and right node not equal - 1 and
+     the two subtree every node never differs more than one
+     */
+    func isBalanced(_ root: TreeNode<Int>?) -> Bool {
+        func calculateHeight(_ root: TreeNode<Int>?) -> Int {
+            guard let root = root else {
+                return 0
+            }
+
+            let leftHeight = calculateHeight(root.left)
+            let rightHeight = calculateHeight(root.right)
+
+            if leftHeight == -1 || rightHeight == -1 || abs(leftHeight - rightHeight) > 1 {
+                return -1
+            }
+
+            return max(leftHeight, rightHeight) + 1
+        }
+
+        return calculateHeight(root) != -1
+      }
+
+    //MARK: 404. Sum of Left Leaves
+
+    public func sumOfLeftLeaves(_ root: TreeNode<Int>?) -> Int {
+        guard let root = root else { return 0 }
+        var sum = 0
+
+        if let left = root.left {
+            if left.left == nil || left.right == nil {
+                sum += left.val
+            } else {
+                sum += sumOfLeftLeaves(left)
+            }
+        }
+       sum += sumOfLeftLeaves(root.right)
+
+        return sum
+    }
+
+    public func postorderTraversal(_ root: TreeNode<Int>?) -> [Int] {
+        var results: [Int] = []
+
+        func traversal(root: TreeNode<Int>?) {
+            if root != nil {
+                traversal(root: root?.left)
+                traversal(root: root?.right)
+                results.append(root?.val ?? 0)
+            }
+        }
+        traversal(root: root)
+        return results
+    }
+
+   public func sortedArrayToBST(_ nums: [Int]) -> TreeNode<Int>? {
+       func helper(_ nums: [Int], _ left: Int , _ right: Int) -> TreeNode<Int>? {
+           if left > right {
+               return nil
+           }
+           let mid = (right + left)/2
+           let node = TreeNode<Int>.init(value: nums[mid])
+           node.left = helper(nums, left, mid - 1)
+           node.right = helper(nums, mid + 1, right)
+           return node
+       }
+       return helper(nums, 0, nums.count - 1)
+    }
+    //MARK: 98. Validate Binary Search Tree
+
+    public func isValidBST(_ root: TreeNode<Int>?) -> Bool {
+
+        func helper(_ root: TreeNode<Int>?, min: Int?, max: Int?) -> Bool {
+            guard let root = root else { return true }
+            if let min = min, root.val <= min {
+                return false
+            }
+
+            if let max = max, root.val >= max {
+                   return false
+               }
+            return helper(root.left, min: min, max: root.val) &&  helper(root.right, min: root.val, max: max)
+        }
+
+        return helper(root, min: nil, max: nil)
+    }
+
+    //MARK: Stack
+//Input: s = "bcabc"
+//Output: "abc"
+    public func removeDuplicateLetters(_ s: String) -> String {
+        var stack: [Character] = []
+        var seen: Set<Character> = []
+        var frequency: [Character: Int] = [:]
+        // Step 1: Count the frequency of each character in the string
+          for char in s {
+              frequency[char, default: 0] += 1
+          }
+
+        for (_, char) in s.enumerated() {
+
+            // Decrease the frequency of the current character
+            frequency[char]! -= 1
+
+            // Example condition: if stack is not empty and the last character is equal to the current one
+            if seen.contains(char) {
+                continue
+            }
+
+            while let last = stack.last, last > char, frequency[last]! > 0 {
+                stack.removeLast()
+                seen.remove(last)
+            }
+            seen.insert(char)
+            stack.append(char)
+        }
+
+        return String(stack)
+    }
+
+
+
+    public func find132pattern(_ nums: [Int]) -> Bool {
+
+        if nums.count < 3 {
+            return false
+        }
+        var stack: [Int] = []
+        var third = Int.min
+        for i in (0..<nums.count).reversed() {
+            if nums[i] < third {
+                return true
+            }
+            while !stack.isEmpty, nums[i] > stack.last ?? 0{
+                third = stack.removeLast()
+            }
+            stack.append(nums[i])
+        }
+        return false
+    }
+
+    public func nextGreaterElement(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+        var nextGreaterElementArr: [Int] = []
+        nextGreaterElementArr = Array(repeating: -1, count: nums1.count)
+        print("nextGreaterElementArr",nextGreaterElementArr)
+        var stack: [Int] = []
+        var dict: [Int:Int] = [:]
+        for (index, value) in nums1.enumerated() {
+            dict[value] = index
+        }
+        for num in nums2 {
+
+            while !stack.isEmpty, let last = stack.last, last < num {
+                let top = stack.popLast()!
+                if let index = dict[top] {
+                    nextGreaterElementArr[index] = num
+                }
+            }
+            stack.append(num)
+
+        }
+        return nextGreaterElementArr
+    }
+
+    public func nextGreaterElements(_ nums: [Int]) -> [Int] {
+        var stack: [Int] = []
+        var nextGreaterElements = Array(repeating: -1, count: nums.count)
+
+        for i in 0..<(2 * nums.count) {
+
+            let index = i % nums.count
+            print("index ", index)
+
+            while !stack.isEmpty, let last = stack.last, nums[last] < nums[index]{
+               let lastIndex = stack.removeLast()
+                nextGreaterElements[lastIndex] = nums[index]
+            }
+            if i < nums.count {
+                stack.append(index)
+            }
+        }
+
+        print("nextGreaterElements", nextGreaterElements)
+        return nextGreaterElements
+    }
+//MARK: 581. Shortest Unsorted Continuous Subarray to do
+    public func findUnsortedSubarray(_ nums: [Int]) -> Int {
+        var stack: [Int] = []
+        var left = nums.count
+           var right = 0
+        for i in 0..<nums.count {
+            while !stack.isEmpty, let last = stack.last, nums[last] > nums[i] {
+                print("index value",i)
+                left = min(left, stack.popLast() ?? 0)
+            }
+            stack.append(i)
+        }
+        print("left = ", left)
+//        print("value", stack, left)
+        stack.removeAll()
+        for (i, value) in nums.enumerated().reversed() {
+            while !stack.isEmpty && nums[stack.last!] < value {
+                print("right",value, i)
+                right = max(right, stack.popLast()!)
+            }
+            stack.append(i)
+        }
+        return right - left > 0 ? right - left + 1 : 0
+    }
+
+    public func dailyTemperatures(_ temperatures: [Int]) -> [Int] {
+        var stack: [Int] = []
+        var results = Array(repeating: 0, count: temperatures.count)
+        for i in 0..<temperatures.count {
+
+            while !stack.isEmpty, let last = stack.last, temperatures[i] > temperatures[last] {
+                let lastIndex = stack.popLast()!
+                print("index", i, lastIndex)
+                results[lastIndex] = i - lastIndex
+            }
+            stack.append(i)
+
+        }
+        return results
+    }
+    //MARK: 1475: Final Prices With a Special Discount in a Shop.
+    public func finalPrices(_ prices: [Int]) -> [Int] {
+
+        var stack: [Int] = []
+        var results = prices
+        for i in 0..<prices.count {
+
+            while !stack.isEmpty, let last = stack.last, prices[i] <= prices[last] {
+                let lastIndex = stack.popLast()!
+                let num = prices[lastIndex] - prices[i]
+                print("num",num)
+                results[lastIndex] = num
+
+            }
+            stack.append(i)
+        }
+        return results
+      }
+
+    public func sumSubarrayMins(_ arr: [Int]) -> Int {
+
+        return 0
+    }
+
+    public func removeKdigits(_ num: String, _ k: Int) -> String {
+        
+        var stack: [Character] = []
+        var k = k
+        for digit in num {
+            while k > 0, !stack.isEmpty, let last = stack.last, last > digit {
+                stack.popLast()
+                k -= 1
+            }
+
+            if !stack.isEmpty ||  digit != "0" {
+                stack.append(digit)
+            }
+        }
+
+        while k > 0, !stack.isEmpty {
+            stack.popLast()
+            k -= 1
+        }
+
+        let result = String(stack)
+
+        return result.isEmpty ? "0" : result
+      }
+
+   public func splitListToParts(_ head: ListNode?, _ k: Int) -> [ListNode?] {
+       var result = [ListNode?](repeating: nil, count: k)
+
+           // Step 1: Calculate the total length of the linked list
+           var length = 0
+           var current = head
+           while current != nil {
+               length += 1
+               current = current?.next
+           }
+
+           // Step 2: Calculate the base size of each part and how many parts need extra nodes
+           let baseSize = length / k
+           let extraNodes = length % k
+
+           // Step 3: Traverse the linked list and split it into parts
+           current = head
+           for i in 0..<k {
+               if current == nil {
+                   result[i] = nil  // If we run out of nodes, fill with nil
+               } else {
+                   result[i] = current  // Set the head of the current part
+                   var partSize = baseSize + (i < extraNodes ? 1 : 0)  // Calculate the current part size
+
+                   // Move the current pointer `partSize - 1` steps forward, if partSize > 0
+                   for _ in 0..<partSize - 1 {
+                       current = current?.next
+                   }
+
+                   // Split the list by disconnecting the current part from the rest
+                   if current != nil {
+                       let nextPart = current?.next
+                       current?.next = nil  // Terminate the current part
+                       current = nextPart  // Move to the next part
+                   }
+               }
+           }
+
+           return result
+      }
+
+    public func mostCompetitive(_ nums: [Int], _ k: Int) -> [Int] {
+
+        var stack: [Int] = []
+        let n = nums.count
+
+        for (i,num) in nums.enumerated() {
+
+            while !stack.isEmpty, let last = stack.last, num < last, stack.count + (n - i) > k {
+               let lastIndex = stack.popLast()
+                print("lastIndex",lastIndex!)
+            }
+            if stack.count < k {
+                stack.append(num)
+            }
+        }
+        return stack
+      }
+
+    public func numSubmat(_ mat: [[Int]]) -> Int {
+
+        let m = mat.count
+        let n = mat[0].count
+
+        var result = 0
+        var dp = Array(repeating: Array(repeating: 0, count: n), count: m)
+
+           // Step 1: Build the dp table to store consecutive 1's in each row
+        for i in 0..<m {
+            for j in 0..<n {
+                if mat[i][j] == 1 {
+                    dp[i][j] = (j == 0 ? 0 : dp[i][j-1]) + 1
+                }
+            }
+        }
+
+        for i in 0..<m {
+            for j in 0..<n {
+                var minWidth = dp[i][j]
+                for k in (0...i).reversed() {  // Move upwards from row i to row 0
+                    minWidth = min(minWidth, dp[k][j])  // Minimum width of 1's in the column
+                    if minWidth == 0 {  // If there's a row with no 1's, break the loop
+                        break
+                    }
+                    result += minWidth  // Add the number of valid submatrices
+                }
+            }
+        }
+
+        return result
+
+    }
+
+   public func maxSumMinProduct(_ nums: [Int]) -> Int {
+       let mod = Int(1e9 + 7)
+       var res = 0
+       var stack = [(Int, Int)]() // A stack of (startIndex, value)
+       var prefix = [0]           // Prefix sum array initialized with 0
+
+       for n in nums {
+           prefix.append(prefix.last! + n)
+       }
+
+       for (i, n) in nums.enumerated() {
+           var newStart = i
+           while let last = stack.last, last.1 > n {
+               let (start, val) = stack.removeLast()
+               let total = prefix[i] - prefix[start]
+               res = max(res, val * total)
+               newStart = start
+           }
+           stack.append((newStart, n))
+       }
+       // Final check for remaining elements in the stack
+       for (start, val) in stack {
+           let total = prefix[nums.count] - prefix[start]
+           res = max(res, val * total)
+       }
+       return res % mod
+       }
+
+    public func maxSlidingWindow(_ nums: [Int], _ k: Int) -> [Int] {
+
+        guard nums.count >= k else { return []}
+//        var currentSum = 0
+
+        var deque = [Int]()  // This will store indices
+            var result = [Int]()
+
+            for i in 0..<nums.count {
+
+                let current = nums[i]
+
+                // Remove indices from the deque where the corresponding element is smaller or equal to the current element
+                while !deque.isEmpty && nums[deque.last!] <= current {
+                    deque.removeLast()
+                }
+
+                // Add the current element index to the deque
+                deque.append(i)
+
+                // Remove the front element of the deque if it's outside the current window
+                if deque.first! == i - k {
+                    deque.removeFirst()
+                }
+
+                // If we have a valid window, record the maximum (which is at the front of the deque)
+                if i >= k - 1 {
+                    result.append(nums[deque.first!])
+                }
+            }
+
+            return result
+     }
+
+    public func permute(arr: [Int]) -> [[Int]] {
+        var results: [[Int]] = []
+        var arr = arr
+        func backtrack(start: Int) {
+            if start == arr.count {
+                results.append(arr)
+                return
+            }
+
+            for i in start..<arr.count {
+                arr.swapAt(start, i)
+                backtrack(start: start + 1)
+                arr.swapAt(start, i) // Swap back to the original array state
+            }
+
+        }
+        backtrack(start: 0)
+        return results
+    }
+
+    public func uncommonFromSentences(_ s1: String, _ s2: String) -> [String] {
+        // Split strings into arrays of words
+            let arr1 = s1.components(separatedBy: " ")
+            let arr2 = s2.components(separatedBy: " ")
+
+            // Create a single hashMap for both arrays
+            var wordCount: [String: Int] = [:]
+
+            // Count occurrences of words in both arrays
+            for word in arr1 {
+                wordCount[word, default: 0] += 1
+            }
+
+            for word in arr2 {
+                wordCount[word, default: 0] += 1
+            }
+
+            // Filter words that occur exactly once
+            return wordCount.filter { $0.value == 1 }.map { $0.key }
+      }
+
+    //MARK: 392. Is Subsequence
+
+    //MARK: 567. Permutation in String
+    
+    public func checkInclusion(_ s1: String, _ s2: String) -> Bool {
+        // Edge case: if s1 is longer than s2, no permutation of s1 can be a substring of s2
+           if s1.count > s2.count {
+               return false
+           }
+
+           let s1Chars = Array(s1)
+           let s2Chars = Array(s2)
+
+           var s1Count = [Int](repeating: 0, count: 26) // Frequency array for s1
+           var s2Count = [Int](repeating: 0, count: 26) // Frequency array for s2 (window of size s1)
+
+           let aAsciiValue = Int(Character("a").asciiValue!) // Reference for 'a' in ASCII
+
+            print("aAsciiValue",aAsciiValue)
+           // Build the frequency array for s1 and the first window of s2
+           for i in 0..<s1.count {
+               s1Count[Int(s1Chars[i].asciiValue!) - aAsciiValue] += 1
+               s2Count[Int(s2Chars[i].asciiValue!) - aAsciiValue] += 1
+           }
+
+           // If the first window matches, return true
+           if s1Count == s2Count {
+               return true
+           }
+
+           // Now slide the window over s2
+           for i in s1.count..<s2.count {
+               // Remove the influence of the character that's sliding out of the window
+               s2Count[Int(s2Chars[i - s1.count].asciiValue!) - aAsciiValue] -= 1
+               // Add the influence of the character that's sliding into the window
+               s2Count[Int(s2Chars[i].asciiValue!) - aAsciiValue] += 1
+
+               // If the new window matches s1's frequency, return true
+               if s1Count == s2Count {
+                   return true
+               }
+           }
+
+           // No permutation of s1 found as a substring of s2
+           return false
+    }
+
+//    var results: [[Int]] = []
+//    func backtrack(path: [Int], _ remaining: [Int]) {
+//        if remaining.isEmpty {
+//            results.append(path)
+//        }
+//
+//        for i in 0..<remaining.count {
+//            var newPath = path
+//            var newRemaining = remaining
+//            print("value", newRemaining[i])
+//            newPath.append(newRemaining[i])
+//            newRemaining.remove(at: i)
+//            backtrack(path: newPath, newRemaining)
+//        }
+//    }
+//    backtrack(path: [], nums)
+//    return results
+
+    public func isSubsequence(_ s: String, _ t: String) -> Bool {
+        let sChars = Array(s)
+           let tChars = Array(t)
+        // Pointers for s and t
+        var i = 0, j = 0
+
+        while j < tChars.count {
+
+            if i < sChars.count &&  sChars[i] == tChars[j] {
+                i += 1
+            }
+
+            j += 1
+            if i < sChars.count && sChars[i] == tChars[j] {
+                i += 1
+            }
+
+            j += 1
+            if i == sChars.count {
+                return true
+            }
+        }
+
+        return i == sChars.count
+    }
+
+    public func findContentChildren(_ g: [Int], _ s: [Int]) -> Int {
+        let sortedG = g.sorted()
+        let sortedS = s.sorted()
+        var contentChildren = 0  // Count of content children
+        var i = 0, j = 0
+
+        while i < sortedG.count && j < sortedS.count {
+            if sortedS[j] >= sortedG[i] {
+                i += 1
+                contentChildren += 1
+            }
+            j += 1
+        }
+
+        return contentChildren
+    }
+//  [1,3,4,2,2]
+    //  [1,2,2,3,4]
+    public func findDuplicate(_ nums: [Int]) -> Int {
+        var sortedArray = nums.sorted()
+        var result: Int = 0
+        for i in 0..<sortedArray.count {
+            if i+1 < nums.count, sortedArray[i] == sortedArray[i+1] {
+                result = sortedArray[i]
+            }
+        }
+        return result
+      }
+
+    public func reverseVowels(_ s: String) -> String {
+        let vowels: Set<Character> = ["a", "e", "i", "o", "u", "A", "E", "I", "O", "U"]
+
+        var characters = Array(s)
+        var left = 0
+        var right = characters.count-1
+
+        while left < right {
+
+            // Move left pointer until a vowel is found
+            while left < right && !vowels.contains(characters[left]) {
+                left += 1
+            }
+
+            // Move left pointer until a vowel is found
+            while left < right && !vowels.contains(characters[right]) {
+                right -= 1
+            }
+
+            characters.swapAt(left, right)
+
+            left += 1
+            right -= 1
+
+        }
+
+        return String(characters)
+    }
+
+    public func subsets(_ nums: [Int]) -> [[Int]] {
+        var results: [[Int]] = []
+        var subset: [Int] = []
+
+        func dfs(index: Int) {
+            if index == nums.count {
+                results.append(subset)
+                return
+            }
+
+            subset.append(nums[index])
+            dfs(index: index+1)
+            subset.popLast()
+            dfs(index: index+1)
+        }
+        dfs(index: 0)
+        return results
+      }
+
+    public func subsetsWithDup(_ nums: [Int]) -> [[Int]] {
+        var results: [[Int]] = []
+        var subset: [Int] = []
+        let sortedNums = nums.sorted()
+
+        func dfs(index: Int) {
+            results.append(subset)
+            for i in index..<nums.count {
+
+                if i > index && sortedNums[i] == sortedNums[i-1] {
+                    continue
+                }
+                subset.append(sortedNums[i])
+                dfs(index: i+1)
+                subset.removeLast()
+            }
+        }
+
+        dfs(index: 0)
+
+        return results
+    }
 }
+
+//MARK: ENDING
 
 
 public func buildLinkedList(_ array: [Int]) -> ListNode? {
@@ -2063,3 +3316,18 @@ public func linkedListToArray(_ head: ListNode?) -> [Int] {
     }
     return array
 }
+
+
+
+
+
+
+
+func performOperation(closure: @escaping() -> Void) {
+    DispatchQueue.global().async {
+        closure()
+    }
+    print("Operation completed")
+}
+
+

@@ -231,66 +231,64 @@ while reveseNode != nil {
 }
 removeDuplicates(llist: SinglyLinkedListNode(0,SinglyLinkedListNode(1,SinglyLinkedListNode(2, SinglyLinkedListNode(3)))
 ))
-//reversePrint(
-//    llist: SinglyLinkedListNode(0,SinglyLinkedListNode(1,SinglyLinkedListNode(2, SinglyLinkedListNode(3))))
-//)
+//let head = ListNode(1)
+//head.next = ListNode(2)
+//head.next?.next = ListNode(3)
+//
+//anotherSolution.splitListToParts(head, 5)
+////[3,5,2,6], k = 2
+//anotherSolution.mostCompetitive([3,5,2,6], 2)
+//anotherSolution.mostCompetitive([71,18,52,29,55,73,24,42,66,8,80,2], 3)
+//Input: nums = [1, 3, -1, -3, 5, 3, 6, 7], k = 3
 
+anotherSolution.maxSlidingWindow([1, 3, -1, -3, 5, 3, 6, 7], 3)
 
-class Bird {
-    func fly() {
-        print("Flying")
+let test = Test()
+var arr = [5,4,7,5,3,2]
+//[1,3,2]
+//[3,2,1]
+test.permuteUnique([1,1,2])
+//test.letterCasePermutation("a1b2")
+print(arr)
+func binaryGen(_ b: inout [Int], n: Int) {
+    var i = n - 1 // Chỉ số bắt đầu từ 0 trong Swift, nên giảm 1
+    while i >= 0 && b[i] == 1 {
+        b[i] = 0
+        i -= 1
+    }
+    if i < 0 {
+        return
+    } else {
+        b[i] = 1
     }
 }
-
-class Sparrow: Bird {
-    override func fly() {
-        print("Sparrow flying")
-    }
-}
-
-class Penguin: Bird {
-    override func fly() {
-        fatalError("Penguins can't fly")
-    }
-}
-
-func letBirdFly(_ bird: Bird) {
-    bird.fly()
-}
-
-
-//Example: [1,1,4,4,5,5,7,8,8];
-//Output: 7
-    /*
-     1: Given a sorted array consisting of only integers where each element appears two except for one element which appears once, design an algorithm to find and return the element that appears only once. Your solution must achieve O(log n) time complexity and O(1) space complexity.
-
-     Example: [1,1,4,4,5,5,7,8,8];
-     Output: 7
-     */
-
-/*
- 2, I have a continuous stream of data pouring in from the device. Define an architecture to upload data to the server, ensuring three factors:
- Data is uploaded securely and completely.
- Data is uploaded in the correct order.
- Control over fixed resources of the device is maintained.
- - first check permission
- - size file want to upload
- - encrypt the file send to server
- - for each we have unique id or index to acesss
-  Retry pattern
-    Sequence numbering
-    Batch Upload
-
- */
+//var b = [0, 0, 0, 0] // Chuỗi nhị phân ban đầu
+//
+//binaryGen(&b, n: b.count)
+//print(b)
 
 
 
-anotherSolution.strStr1("aaa", "aaaa")
-anotherSolution.strStr1("a", "a")
+//var num = [0,1,0,3,12]
+//anotherSolution.moveZeroes(&num)
+//print(num)
 
-var arr = [1,2,3]
+let head = ListNode(1)
+head.next = ListNode(2)
+head.next?.next = ListNode(2)
+head.next?.next?.next = ListNode(1)
 
-//for value in 0...arr.count {
-//    print("value \(arr[value])")
-//}
-//anotherSolution.reverseWords("the sky is blue")
+//test.isPalindrome(head)
+test.isPalindrome("madam")
+
+test.isPalindrome("A man, a plan, a canal: Panama")
+let arr1 = [1, 3, 5, 7]
+let arr2 = [2, 4, 6, 8]
+
+test.mergeSortedArrays(arr1, arr2)
+//[1,2,2,1], nums2 = [2,2]
+test.intersection([1,2,2,1], [2,2])
+//[4,9,5], nums2 = [9,4,9,8,4]
+test.intersection([4,9,5], [9,4,9,8,4])
+
+test.intersection2([4,9,5], [9,4,9,8,4])

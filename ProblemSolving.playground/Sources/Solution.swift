@@ -43,7 +43,6 @@ public class Solution {
                 }
 
             default:
-
                 stack.popLast()
             }
         }
@@ -1866,7 +1865,7 @@ public class Solution {
                 return false
             }
 
-            guard let leftNode = left, let rightNode = right, leftNode.value == rightNode.value else {
+            guard let leftNode = left, let rightNode = right, leftNode.val == rightNode.val else {
                 return false
             }
 
@@ -1931,7 +1930,7 @@ public class Solution {
 
         inOrder(node: node.left)
 
-        print("\(node.value)")
+        print("\(node.val)")
         inOrder(node: node.right)
 
     }
@@ -1942,12 +1941,12 @@ public class Solution {
     ) -> TreeNode<Int>? {
         guard let node = node else { return nil }
 
-        if value < node.value {
+        if value < node.val {
             node.left = removeNode(
                 node.left,
                 value: value
             )
-        } else if value > node.value  {
+        } else if value > node.val  {
             node.right = removeNode(
                 node.right,
                 value: value
@@ -1965,10 +1964,10 @@ public class Solution {
             }
 
             if let minValueNode = minValueNode(node.right) {
-                node.value = minValueNode.value
+                node.val = minValueNode.val
                 node.right = removeNode(
                     node.right,
-                    value: minValueNode.value
+                    value: minValueNode.val
                 )
             }
         }
@@ -1996,7 +1995,8 @@ public class Solution {
         return newRoot
 
     }
-
+    
+    //MARK: 111. Minimum Depth of Binary Tree
     func minDepth(_ root: TreeNode<Int>?) -> Int {
         guard let root = root else { return 0}
         if root.left == nil  && root.right == nil {
@@ -2581,7 +2581,6 @@ public class Solution {
 
           // Initialize maxSum with the sum of the first window
           maxSum = windowSum
-
           // Slide the window from the start to the end of the array
           for i in k..<nums.count {
               windowSum += nums[i] - nums[i - k] // Slide the window by adding the new element and removing the old element
@@ -2590,20 +2589,293 @@ public class Solution {
 
           return maxSum
     }
+    //MARK:  14. Longest Common Prefix
+    public func longestCommonPrefix(_ strs: [String]) -> String {
+
+        let firstStr = strs[0]
+
+        for i in 0..<firstStr.count {
+            let index = firstStr.index(firstStr.startIndex, offsetBy: i)
+            let char = firstStr[index]
+//            print("char ", char)
+
+            for str in strs {
+                if i >= strs.count {
+                    let index = str[str.index(str.startIndex, offsetBy: i)]
+                    print("char", index)
+                }
+//                let char = strs[index]
+            }
+        }
+        return firstStr
+    }
+
 
     // Expected output: [4]
+    //MARK: 12. Integer to Roman
+    public func intToRoman(_ num: Int) -> String {
+
+        // Define a dictionary with integer values as keys and their corresponding Roman numeral symbols as values.
+        let valueToSymbol: [Int: String] = [
+            1000: "M", 900: "CM", 500: "D", 400: "CD",
+            100: "C", 90: "XC", 50: "L", 40: "XL",
+            10: "X", 9: "IX", 5: "V", 4: "IV", 1: "I"
+        ]
+        var number = num
+        var result = ""
+
+        for value in valueToSymbol.keys.sorted(by: >) {
+            while number >= value {
+                print("value==> \(value)")
+                result += valueToSymbol[value]!
+                number -= value
+            }
+        }
+
+        return result
+    }
+
+   public func search(_ nums: [Int], _ target: Int) -> Int {
+
+       var left = 0
+       var right = nums.count - 1
+       while left < right {
+
+           let mid = left + (left+right)/2
+
+           if nums[mid] == target {
+               return mid
+           }
+
+           if nums[left] <= nums[mid] {
+               if nums[left] <=  target, target < nums[mid]  { // if the value contain with this rage
+                    right = mid - 1
+               } else { // if the value
+                   left = mid + 1
+               }
+           } else {
+
+               if nums[mid] < target && target <= nums[right]{
+                   left = mid + 1
+               } else {
+                   right = mid-1
+               }
+           }
+
+       }
+       return -1
+    }
+
+
+    //MARK: 268. Missing Number
+    public func missingNumber(_ nums: [Int]) -> Int {
+
+        var res = nums.count
+
+        for i in 0..<nums.count {
+            res += (i-nums[i])
+        }
+
+        return res
+
+    }
+    public func shipWithinDays(_ weights: [Int], _ days: Int) -> Int {
+        func canShip(capacity: Int)  -> Bool{
+            var dayNeeded = 1
+            var currentCapacity = 0
+            for weight in weights {
+                if currentCapacity+weight > capacity {
+                    dayNeeded += 1
+                    currentCapacity = 0
+                }
+                currentCapacity += weight
+            }
+            return dayNeeded <= days
+        }
+
+        var left = weights.max(by: <)!
+        var right = weights.reduce(0, +)
+        while left < right {
+            let mid = (right+left)/2
+            if canShip(capacity: mid) {
+                right = mid
+            } else {
+                left = mid+1
+            }
+        }
+
+        return left
+
+    }
+
+    public func countElements(_ nums: [Int]) -> Int {
+
+        let uniqueNum = Set(nums)
+
+        let minValue = uniqueNum.min()!
+        let maxValue = uniqueNum.max()!
+
+        var count = 0
+        for num in uniqueNum {
+            if num > minValue && num < maxValue {
+                count += 1
+            }
+        }
+
+        return count
+    }
+
+    public func hasCycle(_ head: ListNode?) -> Bool {
+
+        var slow = head
+        var fast = head
+
+        while fast != nil && fast?.next != nil {
+            slow = slow?.next
+            fast = fast?.next?.next
+
+            if slow === fast {
+                return true
+            }
+        }
+        return false
+    }
+
+    //MARK: Tree
+
+
+    public func minDiffInBST(_ root: TreeNode<Int>?) -> Int {
+        var prev: Int? = nil
+        var minDiff: Int = Int.max
+        func inOrderTraversal(_ node: TreeNode<Int>?) {
+            guard let node = node else { return }
+            inOrderTraversal(node.left)
+
+            if let prevVal = prev {
+                minDiff = min(minDiff, node.val - (prev ?? 0))
+            }
+            prev = node.val
+            inOrderTraversal(node.right)
+
+        }
+        inOrderTraversal(root)
+        return minDiff
+    }
+
+    public func inOrderTraversal(_ root: TreeNode<Int>?) {
+
+        guard let node = root else { return }
+
+        inOrderTraversal(node.left)
+        print("everynode i visited", node.val)
+        inOrderTraversal(node.right)
+    }
+
+    public func iterativeInOrderTraversal(_ root: TreeNode<Int>?) {
+
+        var stack: [TreeNode<Int>] = []
+           var currentNode = root
+
+        while !stack.isEmpty && currentNode != nil {
+            while currentNode != nil {
+                stack.append(currentNode!)
+                currentNode = currentNode?.left
+            }
+            currentNode = stack.removeLast()
+
+            print("value visited",currentNode?.val)
+            currentNode = currentNode?.right
+        }
+    }
+
+    public func postorder(_ root: Node?) -> [Int] {
+
+        var result: [Int] = []
+
+        func traversal(_ root: Node?) {
+            guard let node = root else { return }
+            for element in node.children {
+                traversal(element)
+            }
+            result.append(root!.val)
+        }
+        traversal(root)
+        return result
+    }
+    //MARK: 100. Same Tree
+    public func isSameTree(_ p: TreeNode<Int>?, _ q: TreeNode<Int>?) -> Bool {
+
+        if p == nil && q == nil {
+            return true
+        }
+
+        if p == nil || q == nil {
+            return false
+        }
+        if p?.val != q?.val {
+            return false
+        }
+
+        return isSameTree(p?.left, q?.left ) && isSameTree(p?.right, q?.right)
+
+       }
+    func invertTree(_ root: TreeNode<Int>?) -> TreeNode<Int>? {
+
+        guard let root = root else { return nil}
+
+        let temp = root.left
+        root.left = root.right
+        root.right = temp
+        invertTree(root.left)
+        invertTree(root.right)
+        return root
+    }
+
+    public func levelOrder(_ root: TreeNode<Int>?) -> [[Int]] {
+
+        var results: [[Int]] = [[]]
+
+        func traversal(root: TreeNode<Int>?, level: Int) {
+
+            guard let root = root else { return }
+            if results.count == level {
+                results.append([])
+            }
+
+            results[level].append(root.val)
+
+            traversal(root: root.left, level: level + 1)
+            traversal(root: root.right, level: level + 1)
+        }
+        traversal(root: root, level: 0)
+        return results
+       }
+
+    
+    //MARK: Ending
+
+
 
 }
 
 
 
 
+public class Node {
+    public var val: Int
+    public var children: [Node]
+    public init(_ val: Int) {
+        self.val = val
+        self.children = []
+    }
+}
+
 // Helper function to insert a new node in the BST
 func insertNode(_ root: TreeNode<Int>?, value: Int) -> TreeNode<Int>? {
     guard let root = root else {
         return TreeNode(value: value)
     }
-    if value < root.value {
+    if value < root.val {
         root.left = insertNode(root.left, value: value)
     } else {
         root.right = insertNode(root.right, value: value)
@@ -2614,7 +2886,7 @@ func insertNode(_ root: TreeNode<Int>?, value: Int) -> TreeNode<Int>? {
 func inOrderTraversal(_ root: TreeNode<Int>?) {
     guard let root = root else { return }
     inOrderTraversal(root.left)
-    print("===> \(root.value)")
+    print("===> \(root.val)")
     inOrderTraversal(root.right)
 }
 
@@ -2633,7 +2905,7 @@ func inOrderTraversalIterative(_ root: TreeNode<Int>?) {
             currentNode = currentNode?.left
         }
         currentNode = stack.removeLast()
-        print(currentNode?.value)
+        print(currentNode?.val)
         currentNode  = currentNode?.right
     }
 }
