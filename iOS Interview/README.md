@@ -96,6 +96,14 @@ Certainly, here’s a concise comparison:
 | **Use Case**               | For screens/pages                                      | For UI components or subviews           |
 
 In short, `UIViewController` handles the logic and flow of a screen, while `UIView` manages rendering and interaction for individual components.
+4. **What are `strong`, `weak`, `assign`, and `copy` attributes?**
+
+| Attribute | Reference Type | Memory Management | Common Use Cases          |
+|-----------|----------------|-------------------|----------------------------|
+| `strong`  | Object         | Retains the object | Managing object lifecycle   |
+| `weak`    | Object         | No ownership       | Avoiding retain cycles      |
+| `assign`  | Primitive      | No memory management | Primitive types             |
+| `copy`    | Object         | Creates a copy     | Strings and mutable objects |
 
 
 # Architecture 
