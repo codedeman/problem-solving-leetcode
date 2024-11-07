@@ -1699,7 +1699,7 @@ public class AnotherSolution {
         return nil
 
     }
-
+    //MARK: 143. Reorder List 	
     public func reorderList(_ head: ListNode?) {
 
         guard head != nil && head?.next != nil else { return }
@@ -1749,6 +1749,9 @@ public class AnotherSolution {
 
         var odd = head
         var even = head?.next
+        print("even")
+        printList(even)
+
         let evenHead = even
 
         while even != nil && even?.next != nil {
@@ -1757,10 +1760,28 @@ public class AnotherSolution {
             odd = odd?.next
             even = even?.next
         }
+        print("even after loop")
+        printList(even)
+        print("evenHead")
+        printList(evenHead)
+        print("odd")
+        printList(odd)
+        print("odd?.next", odd?.next)
+        print("con me may")
+        printList(head)
+
         odd?.next = evenHead
         return head
       }
 
+    func printList(_ head: ListNode?) {
+        var current = head
+        while current != nil {
+            print(current?.val, terminator: " ==> ")
+            current = current?.next
+        }
+        print("nil")
+    }
     public func deleteMiddle(_ head: ListNode?) -> ListNode? {
         if head == nil || head?.next == nil {
             return nil
@@ -2303,6 +2324,7 @@ public class AnotherSolution {
     }
 
     //MARK: Binary Search
+    
     //MARK: 35. Search Insert Position
     public func searchInsert(_ nums: [Int], _ target: Int) -> Int {
 
@@ -3210,7 +3232,7 @@ public func minDepth(_ root: TreeNode<Int>?) -> Int {
 //  [1,3,4,2,2]
     //  [1,2,2,3,4]
     public func findDuplicate(_ nums: [Int]) -> Int {
-        var sortedArray = nums.sorted()
+        let sortedArray = nums.sorted()
         var result: Int = 0
         for i in 0..<sortedArray.count {
             if i+1 < nums.count, sortedArray[i] == sortedArray[i+1] {
@@ -3290,6 +3312,298 @@ public func minDepth(_ root: TreeNode<Int>?) -> Int {
 
         return results
     }
+
+    public func exist(_ board: [[Character]], _ word: String) -> Bool {
+        let wordArray = Array(word)
+        let rows = board.count
+        let cols = board[0].count
+
+        func dfs(_ i: Int, _ j: Int, _ index: Int) -> Bool {
+
+            if index == wordArray.count {
+
+            }
+
+            // Check boundaries and if the current character matches
+            if i < 0 || i >= rows || j < 0 || j >= cols || board[i][j] != wordArray[index] {
+                return false
+            }
+
+            // Mark the current cell as visited by temporarily setting it to '#'
+            var board = board
+            let temp = board[i][j]
+            board[i][j] = "#"
+            // Explore all 4 directions: down, up, right, left
+            let found = dfs(i+1, j, index+1) ||  // Down
+            dfs(i-1, j, index+1) ||  // Up
+            dfs(i, j+1, index+1) ||  // Right
+            dfs(i, j-1, index+1)     // Left
+
+            // Restore the cell to its original value
+            board[i][j] = temp
+
+            return found
+        }
+        // Try to start DFS from each cell in the grid
+        for i in 0..<rows {
+            for j in 0..<cols {
+                if dfs(i, j, 0) {
+                    return true
+                }
+            }
+        }
+
+        return false
+       }
+
+    //MARK: 2. Add Two Numbers
+//    func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+//
+//        var stack1: [Int] = []
+//        var stack2: [Int] = []
+//        var current = l1
+//
+//        while current != nil {
+//            stack1.append(current?.val ?? 0)
+//            current = current?.next
+//        }
+//        current = l2
+//        while current != nil {
+//            stack2.append(current?.val ?? 0)
+//            current = current?.next
+//        }
+//
+//        var results: ListNode? = nil
+//        var carry = 0
+//        while !stack1.isEmpty || !stack2.isEmpty || carry != 0 {
+//
+//            let value1 = stack1.isEmpty ? 0 : stack1.removeLast()
+//            let value2 = stack2.isEmpty ? 0 : stack2.removeLast()
+//            let sum = carry + value1 + value2
+//            carry = sum / 10
+//
+//            let newNode = ListNode(sum % 10)
+//            newNode.next = results
+//            results = newNode
+//
+//        }
+//
+//        return results
+//    }
+
+    public func addTwoNumbers2(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+
+        var carry = 0
+        var node1 = reveseLinkedList(head: l1)
+        var node2 = reveseLinkedList(head: l2)
+
+            var dummyHead = ListNode(0) // Dummy node to help construct the result
+           var current: ListNode? = dummyHead
+
+        while node1 != nil || node2 != nil || carry != 0 {
+
+            let value1 = node1?.val ?? 0
+            let value2 = node2?.val ?? 0
+            let sum = carry+value1+value2
+            carry = sum/10
+
+            current?.next = ListNode(sum%10)
+            current = current?.next
+
+            node1 = node1?.next
+            node2 = node2?.next
+        }
+
+        return reveseLinkedList(head: dummyHead.next)
+    }
+
+    func reveseLinkedList(head: ListNode?) -> ListNode? {
+
+        var current:ListNode? = head
+        var prev: ListNode? = nil
+
+        while current != nil {
+            let next  = current?.next
+            current?.next = prev
+            prev = current
+            current = next
+        }
+        return prev
+    }
+
+    func pairSum(_ head: ListNode?) -> Int {
+        guard let head = head else { return 0}
+        var slow: ListNode? = head
+        var fast: ListNode? = head
+        while fast != nil && fast?.next != nil {
+            slow = slow?.next
+            fast = fast?.next?.next
+        }
+        var current = slow
+        var prev: ListNode? = nil
+        while current != nil  {
+            let next = current?.next
+            current?.next = prev
+            prev = current
+            current = next!
+        }
+
+        var first = head
+        var second = prev
+        var maxSum = 0
+        while second != nil {
+            maxSum = max(maxSum, first.val + (second?.val ?? 0))
+            first = first.next!
+            second = second!.next
+        }
+        return maxSum
+
+      }
+    //MARK: 1019. Next Greater Node In Linked List
+    public func nextLargerNodes(_ head: ListNode?) -> [Int] {
+        var current = head
+        var stack: [Int] = []
+        var values = [Int]()
+
+        while current != nil {
+            values.append(current?.val ?? 0)
+            current = current?.next
+        }
+
+        var results = Array(repeating: 0, count: values.count)
+
+        for i  in 0..<values.count {
+
+            while let last = stack.last, values[i] > values[last] {
+
+                results[stack.removeLast()] = values[i]
+            }
+            stack.append(i)
+
+        }
+
+        return results
+    }
+
+    public func searchRange(_ nums: [Int], _ target: Int) -> [Int] {
+
+        var left = 0
+        var right = nums.count-1
+        var startIndex = -1
+        while left <= right {
+            let mid = left + (right - left) / 2
+            if nums[mid] == target {
+                print("mide",mid)
+                startIndex = mid
+                right = mid - 1 
+            } else if mid < target {
+                left = mid + 1
+            } else {
+                right = mid - 1
+            }
+
+        }
+
+        if startIndex == -1 {
+            return [-1, -1]
+        }
+        left = 0
+        right = nums.count - 1
+        var endIndex = -1
+
+        while left <= right {
+            let mid = left + (right - left) / 2
+            if nums[mid] == target {
+                endIndex = mid
+                left = mid + 1
+            } else if mid < target {
+                left = mid + 1
+            } else {
+                right = mid - 1
+            }
+
+        }
+
+
+        return [startIndex, endIndex]
+    }
+    //MARK: 74. Search a 2D Matrix
+    public func searchMatrix(_ matrix: [[Int]], _ target: Int) -> Bool {
+        if matrix.isEmpty || matrix[0].isEmpty { return false }
+
+        var m = matrix.count
+        var n = matrix[0].count
+        var left = 0
+        var right = m*n-1
+
+        while left <= right {
+
+            let mid = left + (right - left)/2
+            let minValue = matrix[mid / n ][mid % n]
+
+            if minValue == target {
+                return true
+            } else if minValue < target {
+                left = mid + 1
+            } else {
+                right = mid - 1
+            }
+        }
+
+        return false
+    }
+
+    //MARK: Min Heap
+    //MARK: 215. Kth Largest Element in an Array
+
+    public func findKthLargest(_ nums: [Int], _ k: Int) -> Int {
+        var minHeap = Array(nums.prefix(k)) // Step 1: Get the first k elements
+           minHeap.sort() // Step 2: Sort the minHeap to maintain the min-heap property
+
+           for num in nums.dropFirst(k) { // Step 3: Iterate through the remaining elements
+               if num > minHeap.first! { // Step 4: Check if the current number is larger than the smallest in the min-heap
+                   minHeap.removeFirst() // Step 5: Remove the smallest element
+                   minHeap.append(num) // Step 6: Add the new number to the min-heap
+                   minHeap.sort() // Step 7: Sort to maintain the min-heap property
+               }
+           }
+
+           return minHeap.first ?? 0 // Step 8: Return the smallest element in the min-heap, which is the k-th largest
+
+    }
+
+    public func topKFrequent(_ nums: [Int], _ k: Int) -> [Int] {
+        var hashMap: [Int: Int] = [:]
+        for num in nums {
+            hashMap[num, default: 0] += 1
+        }
+
+//        var minHeap = [(num: Int, count: Int)]()
+
+        var results: [Int] = []
+        for (num, count) in hashMap {
+            if count > k {
+                results.append(num)
+            }
+
+        }
+
+        return results
+//        return minHeap.map {$0.num}
+    }
+
+    public func maxDepth2(_ root: TreeNode<Int>?) -> Int {
+        guard let root = root else { return 0 }
+
+       let left = maxDepth2(root.left)
+        let right = maxDepth2(root.right)
+
+        return max(left, right) + 1
+    }
+
+    //MARK: 
+
+
 }
 
 //MARK: ENDING

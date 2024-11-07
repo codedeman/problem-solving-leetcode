@@ -105,6 +105,80 @@ In short, `UIViewController` handles the logic and flow of a screen, while `UIVi
 | `assign`  | Primitive      | No memory management | Primitive types             |
 | `copy`    | Object         | Creates a copy     | Strings and mutable objects |
 
+7. **Describe push notifications and how they are implemented in iOS.**
+**Push Notifications** are messages sent from a server to an app on a device, even when the app is not actively running. They are used to engage users, provide updates, or inform them about new content or events. Here’s how push notifications work and how they are implemented in iOS:
+
+### Description of Push Notifications
+- **Types**: 
+  - **Silent Notifications**: Do not alert the user but can wake the app in the background to perform tasks.
+  - **Alert Notifications**: Display an alert, badge, or sound to notify users.
+
+- **Components**:
+  - **Payload**: The data sent with the notification, which can include the alert message, title, and other custom data.
+  - **Device Token**: A unique identifier assigned to each device by the Apple Push Notification service (APNs) to route notifications to the correct device.
+
+### Implementation in iOS
+1. **Register for Push Notifications**:
+   - The app requests permission from the user to receive notifications. This is typically done in the app's `AppDelegate`.
+   ```swift
+   import UserNotifications
+
+   func registerForPushNotifications() {
+       UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+           // Handle permission
+           self.getNotificationSettings()
+       }
+   }
+   ```
+
+2. **Obtain Device Token**:
+   - Once the user grants permission, the app retrieves a device token from APNs.
+   ```swift
+   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+       // Convert token to string
+       let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+       print("Device Token: \(tokenString)")
+   }
+   ```
+
+3. **Send Device Token to Server**:
+   - The device token should be sent to your server, where it will be stored for sending notifications.
+
+4. **Handling Incoming Notifications**:
+   - Implement methods to handle notifications when they are received. This can include displaying alerts or updating the UI.
+   ```swift
+   func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+       // Handle the notification response
+       completionHandler()
+   }
+   ```
+
+5. **Sending Notifications**:
+   - Use a server-side application to send notifications to the APNs, specifying the device token and the payload. APNs then routes the notification to the device.
+
+6. **Configuring Notification Content**:
+   - Create and customize the notification content, including titles, messages, sounds, and any custom data you want to include in the payload.
+
+### Example Payload Structure
+```json
+{
+   "aps": {
+       "alert": {
+           "title": "New Message",
+           "body": "You have received a new message!"
+       },
+       "sound": "default",
+       "badge": 1
+   },
+   "customData": {
+       "key1": "value1",
+       "key2": "value2"
+   }
+}
+```
+
+### Summary
+Push notifications are a powerful tool for user engagement in iOS apps. Implementing them involves requesting permission, registering for notifications, obtaining a device token, and handling incoming notifications effectively. The server-side component is crucial for sending notifications to the APNs, ensuring timely delivery to the intended devices.
 
 # Architecture 
 What the difference between MVVM and Clean Architecture ? 

@@ -701,4 +701,755 @@ public class Test {
 
     }
 
+   public func numRescueBoats(_ people: [Int], _ limit: Int) -> Int {
+       let sortedArray = people.sorted()
+
+       var left = 0
+       var right = sortedArray.count-1
+       var boat = 0
+
+       while left < right {
+
+
+       }
+       return 0
+      }
+
+    public func countSubstrings(_ s: String) -> Int {
+        let arrStr = Array(s)
+        var count = 0
+        let n = arrStr.count
+
+        func expandArroundCenter(_ left: Int, _ right: Int) {
+            var l = left
+            var r = right
+
+            while l >= 0 && r < n && arrStr[l] == arrStr[r]{
+                count += 1
+                l -= 1
+                r += 1
+            }
+        }
+
+        for i in 0..<n {
+            expandArroundCenter(i, i)
+            if i+1 < n {
+                expandArroundCenter(i, i+1)
+            }
+        }
+        return count
+//        for i in 0..<arrStr.count {
+//            for j in i..<arrStr.count {
+//                let substring = String(arrStr[i...j]) // Use range to create the substring
+//                let reverString = String(substring.reversed())
+//                if substring == reverString {
+//                    count += 1
+//                }
+//
+//            }
+//        }
+    }
+
+    //MARK: 2. Add Two Numbers
+    func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+
+        var l1 = l1
+        var l2 = l2
+        var carry = 0
+        let dummy: ListNode = ListNode(0)
+        var current: ListNode? = dummy
+
+        while l1 != nil || l2 != nil || carry != 0 {
+            var x = l1?.val ?? 0
+            var y = l2?.val ?? 0
+            let sum = carry + x + y
+            carry = sum / 10
+            current?.next = ListNode(sum%10)
+            current = current?.next
+            l1 = l1?.next
+            l2 = l2?.next
+        }
+
+        return dummy.next
+    }
+
+    func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
+
+        var dummy:ListNode?  = ListNode(0)
+
+        dummy?.next = head
+        var slow = dummy
+        var fast = dummy
+
+        for _ in 0..<n {
+            fast = fast?.next
+        }
+
+        while fast?.next != nil {
+            slow = slow?.next
+            fast = fast?.next
+        }
+
+
+        slow?.next = slow?.next?.next
+
+        return dummy?.next
+
+    }
+
+    public func oddEvenList(_ head: ListNode?) -> ListNode? {
+
+        var odd = head
+        var even = head?.next
+        let evenHead = even
+
+        while even != nil || even?.next != nil {
+            print("value", even?.next?.val, even?.next?.next?.val)
+            odd?.next = odd?.next?.next
+            even?.next = even?.next?.next
+            even = even?.next
+            odd = odd?.next
+        }
+        
+//        print("odd", odd?.next?.val, odd?.val, evenHead?.val, evenHead?.next?.val)
+        odd?.next = evenHead
+        return head
+    }
+
+    public func reverseBetween(_ head: ListNode?, _ left: Int, _ right: Int) -> ListNode? {
+
+        var dummyNode = ListNode(0)
+        dummyNode.next = head
+        var prev: ListNode? = dummyNode
+
+        for i in 1..<left {
+            prev = prev?.next
+        }
+        var start = prev?.next
+        var tail = start?.next
+
+        for i in 0..<(right - left) {
+
+            start?.next = tail?.next
+            tail?.next = prev?.next
+            prev?.next = tail
+            tail = start?.next
+
+        }
+        return dummyNode.next
+       }
+
+    public func swapNodes(head: ListNode?, pos1: Int, pos2: Int) {
+
+        guard let head = head, pos1 != pos2 else { return } // Edge cases
+        var node1: ListNode? = head
+        var node2: ListNode? = head
+        var index1 = 0
+        var index2 = 0
+
+        while index1 < pos1 && node1 != nil {
+            node1 = node1?.next
+            index1 += 1
+        }
+
+        // Traverse the list to find the node at pos2
+
+        while index2 < pos2 && node2 != nil {
+            node2 = node2?.next
+            index2 += 1
+        }
+
+        if node1 == nil || node2 == nil {
+            print("One or both positions are out of bounds.")
+            return
+        }
+        // Swap the values of the two nodes
+
+        let temp = node1?.val
+        node1?.val = node2?.val ?? 0
+        node2?.val = temp ?? 0
+    }
+
+   public func detectCycle1(_ head: ListNode?) -> ListNode? {
+//        guard let head = head else { return nil }
+
+        var slow: ListNode?  = head
+        var fast: ListNode?  = head
+
+        while fast != nil,fast?.next != nil {
+            slow = slow?.next
+            fast = fast?.next?.next
+
+            if slow === fast {
+//                slow = head
+//
+//                while slow !== fast {
+//                    slow = slow?.next
+//                    fast = fast?.next
+//                }
+                return slow
+            }
+        }
+        return nil
+    }
+
+
+
+    public func mergeTwoLists1(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+
+        var l1 = l1
+        var l2 = l2
+        let dummy = ListNode(0)
+        var current = dummy
+
+        while let node1 = l1, let node2 = l2 {
+
+            if node1.val < node1.val {
+                current.next = node1
+                l1 = node1.next
+            } else {
+                current.next = node2
+                l2 = node2.next
+            }
+            current = current.next!
+        }
+        current.next = l1 ?? l2
+
+
+
+        return dummy.next
+
+    }
+
+    public func sortList1(_ head: ListNode?) -> ListNode? {
+
+        // Base case: if head is nil or there is only one node, return head
+         if head == nil || head?.next == nil {
+             return head
+         }
+
+        let midleNode = getMidle(head)
+        let nextOfMiddle = midleNode?.next
+        midleNode?.next = nil
+
+        let left = sortList(head)
+        let right = sortList(nextOfMiddle)
+
+        return mergeTwoLists(left, right)
+    }
+
+    func getMidle(_ head: ListNode?) -> ListNode?  {
+
+        if head == nil {
+            return nil
+        }
+
+        var slow = head
+        var fast = head?.next
+        while fast != nil && fast?.next != nil {
+            slow = slow?.next
+            fast = fast?.next?.next
+        }
+
+        return slow
+    }
+
+    public func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+
+        // Base cases: if one list is nil, return the other
+           if l1 == nil {
+               return l2
+           }
+           if l2 == nil {
+               return l1
+           }
+
+           // Compare the values of the two lists and merge
+           if let value1 = l1?.val, let value2 = l2?.val, value1 < value2 {
+               l1?.next = mergeTwoLists(l1?.next, l2)
+               return l1
+           } else {
+               l2?.next = mergeTwoLists(l1, l2?.next)
+               return l2
+           }
+    }
+
+//    func sortedListToBST(_ head: ListNode?) -> TreeNode<<#T: Comparable#>>? {
+//        if head == nil {
+//               return nil
+//           }
+//
+//        let (middleNode, startNode) = findMiddle(head)
+//        if middleNode == nil {
+//            return nil
+//        }
+//        let root = TreeNode(value: middleNode!.val)
+//
+//        if middleNode !== startNode {
+//            root.left = sortedListToBST(startNode)
+//        }
+//        root.right = sortedListToBST(middleNode?.next)
+//        return root		
+//    }
+
+    func findMiddle(_ head: ListNode?) -> (ListNode?, ListNode?) {
+        var slow = head
+        var fast = head?.next
+        var prev: ListNode? = nil
+        while fast != nil && fast?.next != nil {
+            prev = slow
+            slow = slow?.next
+            fast = fast?.next?.next
+        }
+        prev?.next = nil
+        return (slow, head)
+    }
+
+   public func detectCycle2(_ head: ListNode?) -> ListNode? {
+       var slow = head
+       var fast = head
+       while fast != nil {
+           slow = slow?.next
+           fast = fast?.next?.next
+           if slow === fast {
+               break
+           }
+       }
+       if fast == nil || fast?.next == nil {
+           return nil
+       }
+
+
+       while slow !== fast {
+           slow = slow?.next
+           fast = fast?.next
+       }
+
+       return slow
+    }
+
+    public func searchInsert(_ nums: [Int], _ target: Int) -> Int {
+
+        var left = 0
+        var right = nums.count - 1
+
+        while left <= right {
+            let mid = left+(right-left)/2
+            if nums[mid] == target {
+                return mid
+            } else if nums[mid] < target {
+                left = mid+1
+            } else {
+                right = mid-1
+            }
+        }
+
+        return left
+    }
+
+    public func search(_ nums: [Int], _ target: Int) -> Int {
+
+        var left = 0
+        var right = nums.count - 1
+
+        while left < right {
+            let mid = left+(right - left)/2
+            if nums[mid] == target {
+                return mid
+            }
+            if nums[left] <= nums[mid] {
+                if nums[left] <= target  && target < nums[mid] {
+                    right = mid - 1
+                } else {
+                    left = mid + 1
+                }
+            } else if nums[mid] < target && target <= nums[right] {
+                left = mid+1
+            } else {
+                right = mid-1
+            }
+        }
+        return -1
+     }
+
+    //MARK: 2130. Maximum Twin Sum of a Linked List
+    public func pairSum(_ head: ListNode?) -> Int {
+
+        guard let head = head else { return 0}
+        // Step 1: Use fast and slow pointers to reach the middle of the list
+           var slow = head
+           var fast: ListNode? = head
+           while fast != nil && fast?.next != nil {
+               slow = slow.next!
+               fast = fast?.next?.next
+           }
+        print("slow node")
+        // Step 2: Reverse the second half of the list
+           var prev: ListNode? = nil
+           var curr: ListNode? = slow
+           while curr != nil {
+               let nextNode = curr?.next
+               curr?.next = prev
+               prev = curr
+               curr = nextNode
+           }
+
+        // Step 3: Calculate twin sums and find the maximum
+          var maxSum = 0
+          var first: ListNode? = head
+          var second: ListNode? = prev
+
+        while second != nil {
+            maxSum = max(maxSum, (first?.val ?? 0) + (second?.val ?? 0))
+            first = first?.next
+            second = second?.next
+        }
+        
+        return maxSum
+
+    }
+
+    public func rotateRight(_ head: ListNode?, _ k: Int) -> ListNode? {
+
+        guard let head = head else { return nil }
+        if head.next == nil || k == 0 { return head }
+
+        // Step 1: Find the length and link the last node to the head
+           var length = 1
+           var tail: ListNode? = head
+           while tail?.next != nil {
+               tail = tail?.next
+               length += 1
+           }
+        tail?.next = head // Form a circular linked list
+        let stepToNewHead = length - k % length
+
+
+        // Step 2: Calculate the effective rotations needed
+        let rotations = k % length
+        if rotations == 0 {
+            tail?.next = nil // Break the circular link
+            return head
+        }
+
+//        print("list tail")
+//        printList(tail)
+//        print("head ")
+        printList(head)
+        var newTail = head
+        for _ in 0..<stepToNewHead - 1 {
+            newTail = (newTail.next)!
+        }
+
+        let newHead = newTail.next
+                // Step 4: Break the circle
+//        newTail.next = nil
+        return newHead
+    }
+
+    public func mySqrt(_ x: Int) -> Int {
+
+        let square = sqrt(Double(x))
+        return Int(square)
+    }
+
+    public func search(_ nums: [Int], _ target: Int) -> Bool {
+             var left = 0
+            var right = nums.count - 1
+
+            while left <= right {
+                let mid = left+(right - left)/2
+
+                if nums[mid] == target {
+                    return true
+                }
+                if nums[left] == nums[mid], nums[mid] == nums[right] {
+                    left += 1
+                    right -= 1
+                } else if nums[left] <= nums[mid] {
+                    if nums[left] <= target  && target < nums[mid] {
+                        right = mid - 1
+                    } else {
+                        left = mid + 1
+                    }
+                } else if nums[mid] < target && target <= nums[right] {
+                    left = mid+1
+                } else {
+                    right = mid-1
+                }
+            }
+            return false
+        }
+
+    public func getIntersectionNode(_ headA: ListNode?, _ headB: ListNode?) -> ListNode? {
+        var pointerA = headA
+        var pointerB = headB
+
+        // Traverse until they either meet or reach the end (both become nil)
+        while pointerA !== pointerB {
+            pointerA = (pointerA == nil) ? headB : pointerA?.next
+            pointerB = (pointerB == nil) ? headA : pointerB?.next
+        }
+
+        return pointerA
+    }
+
+    //MARK: 1019. Next Greater Node In Linked List
+    public func nextLargerNodes(_ head: ListNode?) -> [Int] {
+        var current = head
+        var stack: [Int] = []
+        var values = [Int]()
+
+        while current != nil {
+            values.append(current?.val ?? 0)
+            current = current?.next
+        }
+
+        var results = Array(repeating: 0, count: values.count)
+
+        for i  in 0..<values.count {
+
+            for j in i + 1..<values.count {
+                if values[j] > values[i] {
+                    results[i] = values[j]
+                    break
+                }
+            }
+
+//            while let last = stack.last, values[i] > values[last] {
+//
+//                results[stack.removeLast()] = values[i]
+//            }
+//            stack.append(i)
+
+        }
+
+        return results
+    }
+
+    public  func searchMatrix(_ matrix: [[Int]], _ target: Int) -> Bool {
+
+
+        
+
+        let oneWayArray = matrix.flatMap {$0}.sorted()
+
+        var left = 0
+        var right = oneWayArray.count - 1
+
+        while left < right {
+
+            let mid = left + (right - left) / 2
+
+            if oneWayArray[mid] == mid {
+
+                return true
+            } else if oneWayArray[mid] < target {
+                left = mid + 1
+            } else {
+                right = mid - 1
+            }
+        }
+
+        for col in 0..<matrix.count {
+            for row in 0..<matrix[col].count {
+                if matrix[col][row] == target {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+
+
+    public func sortKMessedArray(arr: [Int], k: Int) -> [Int] {
+
+        var result = arr.sorted()
+//        var n = arr.count
+        var low = 0
+        var fast = result.count
+
+        while low < fast {
+
+            let mid = (low + fast) / 2
+
+            if mid < k {
+                low = mid + 1
+            } else {
+                fast = mid
+            }
+        }
+        
+        if !result.contains(k) {
+            result.insert(k, at: low)
+        }
+
+        return result
+    }
+    
+    //MARK: Min Heap 
+    public func sortKMessedArray2(_ arr: [Int], _ k: Int) -> [Int] {
+        var result: [Int] = []
+        var minHeap = Array(arr.prefix(k+1))
+        minHeap.sort()
+        for i in k+1..<arr.count {
+
+            result.append(minHeap.removeFirst()) // Add the smallest element from the heap
+            minHeap.append(arr[i])
+            minHeap.sort()
+
+        }
+        while !minHeap.isEmpty {
+            result.append(minHeap.removeFirst())
+        }
+
+        return result
+    }
+
+    public func maxDepth(_ root: TreeNode<Int>?) -> Int {
+
+        guard let root = root else { return 0}
+
+        var queue: [TreeNode<Int>?] = [root]
+        print("queue", queue.count)
+        var level = 0
+        while !queue.isEmpty {
+            for _ in 0..<queue.count {
+                let currentNode = queue.removeFirst()
+                print("current node", currentNode ?? 0)
+
+                if let left = currentNode?.left {
+                    print("right", left)
+                    queue.append(left)
+                }
+
+                if let right = currentNode?.right {
+                    print("right", right)
+                    queue.append(right)
+                }
+
+            }
+
+            level += 1
+
+        }
+
+        return level
+
+    }
+
+    public func maxDepth2(_ root: TreeNode<Int>?) -> Int {
+
+        guard let root = root else { return 0 }
+
+        var level = 0
+        var queue:[(Int, TreeNode<Int>)] = [(1, root)]
+
+        while !queue.isEmpty  {
+
+            let (lenght, currentNode) = queue.removeFirst()
+            level = lenght
+
+            if let left = currentNode.left {
+                queue.append((lenght+1, left))
+            }
+
+            if let right = currentNode.right {
+                queue.append((lenght+1, right))
+            }
+
+        }
+
+        return level
+    }
+
+    public func areSentencesSimilar(_ sentence1: [String], _ sentence2: [String], _ similarPairs: [[String]]) -> Bool {
+
+        for pair in similarPairs {
+
+        }
+
+        return true
+    }
+
+    //MARK: Tree
+
+    func preorderTraversal(_ root: TreeNode<Int>?) -> [Int] {
+
+        var results: [Int] = []
+
+        func dfs(_ node: TreeNode<Int>?) {
+            guard let node = node else { return }
+            results.append(node.val)
+            dfs(node.left)
+            dfs(node.right)
+        }
+        dfs(root)
+
+        return results
+    }
+    //MARK: 112. Path Sum
+    public func hasPathSum(_ root: TreeNode<Int>?, _ targetSum: Int) -> Bool {
+
+        func dfs(_ root: TreeNode<Int>?) -> Bool {
+            var sum = 0
+            guard let newNode = root else { return false}
+
+            let newSum = sum + newNode.val
+
+            if newNode.left == nil && newNode.right == nil {
+                print(newNode.val)
+                return newSum == targetSum
+            }
+
+
+            return dfs(newNode.left) || dfs(newNode.right)
+
+        }
+
+        return dfs(root)
+    }
+
+    public func pathSum(_ root: TreeNode<Int>?, _ targetSum: Int) -> [[Int]] {
+
+        var results: [[Int]] = []
+        var paths: [Int] = []
+        func dfs(_ node: TreeNode<Int>?,
+                 _ newSum: Int,
+                 paths: inout [Int],
+                 allPaths: inout [[Int]]) {
+
+            guard let node = node else { return }
+            paths.append(node.val)
+            let sum = newSum + node.val
+
+            if node.left == nil && node.right == nil {
+                allPaths.append(paths)
+            }
+
+            dfs(node.left, newSum, paths: &paths, allPaths: &allPaths)
+            dfs(node.right, newSum, paths: &paths, allPaths: &allPaths)
+
+
+        }
+
+        dfs(root, 0, paths: &paths, allPaths: &results)
+
+
+        return results
+    }
+
+
+
+}
+
+
+public func printList(_ head: ListNode?) {
+    var current = head
+    while current != nil {
+        print(current?.val, terminator: " -> ")
+        current = current?.next
+    }
+    print("nil")
 }
