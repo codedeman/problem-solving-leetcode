@@ -70,7 +70,38 @@ let k = 2
 //anotherSolution.addTwoNumbers2(l1, l2)
 //let result = anotherSolution.oddEvenList(node1)
 
+func buildTree<T: Comparable>(_ values: [T?]) -> TreeNode<T>? {
+    // Ensure the array is non-empty and the first value exists
+    guard !values.isEmpty, let rootValue = values[0] else { return nil }
 
+    // Initialize the root node
+    let root = TreeNode(value: rootValue)
+    var queue: [TreeNode<T>] = [root]
+    var index = 1
+
+    // Build the tree level by level
+    while index < values.count {
+        let currentNode = queue.removeFirst()
+
+        // Process left child
+        if let leftValue = values[index] {
+            let leftNode = TreeNode(value: leftValue)
+            currentNode.left = leftNode
+            queue.append(leftNode)
+        }
+        index += 1
+
+        // Process right child, if within bounds
+        if index < values.count, let rightValue = values[index] {
+            let rightNode = TreeNode(value: rightValue)
+            currentNode.right = rightNode
+            queue.append(rightNode)
+        }
+        index += 1
+    }
+
+    return root
+}
 //print("Result Linked List:")
 //printList(result)  // Expected Output: 7 -> 0 -> 8 (represents 807)
 //[1,3,5,6], target = 5
@@ -119,12 +150,22 @@ anotherSolution.searchRange([5,7,7,8,8,10], 8)
 //anotherSolution.findKthLargest(array, 2)
 
 // Manually creating the nodes
-let root = TreeNode<Int>(value: 3)
-root.left = TreeNode<Int>(value: 9)
-root.right = TreeNode<Int>(value: 20)
-root.right?.left = TreeNode<Int>(value: 15)
-root.right?.right = TreeNode<Int>(value: 7)
+//let root = TreeNode<Int>(value: 3)
+//root.left = TreeNode<Int>(value: 9)
+//root.right = TreeNode<Int>(value: 20)
+//root.right?.left = TreeNode<Int>(value: 15)
+//root.right?.right = TreeNode<Int>(value: 7)
+//
+//test.maxDepth(root)
 
-test.maxDepth(root)
+
+print(test.subsets2([1, 2, 2]))
+
+anotherSolution.minimumDeletions("aababbab")
 
 //anotherSolution.maxDepth2(root)
+let values: [Int?] = [3, 9, 20, nil, nil, 15, 7]
+
+let root = buildTree(values)
+
+anotherSolution.levelOrder(root)

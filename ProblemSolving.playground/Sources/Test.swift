@@ -1439,7 +1439,202 @@ public class Test {
 
         return results
     }
+    //MARK: 46. Permutations
+//Input: nums = [1,2,3]
+//Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+    public func permute2(_ nums: [Int]) -> [[Int]] {
 
+        var arr = nums
+        var results: [[Int]] = []
+        func dfs(_ level: Int)  {
+
+            if level == arr.count {
+                results.append(arr)
+                return
+            }
+
+            for i in level..<arr.count {
+                arr.swapAt(i, level)
+                dfs(i+1)
+                arr.swapAt(i, level)
+            }
+        }
+
+        dfs(0)
+
+
+        return results
+
+
+    }
+
+    public func permuteUnique2(_ nums: [Int]) -> [[Int]] {
+
+        var sorted = nums.sorted()
+        var results: [[Int]] = []
+        var paths: [Int] = []
+        var used = Array(repeating: false, count: sorted.count)
+        func dfs() {
+
+            if paths.count == sorted.count {
+                results.append(sorted)
+            }
+
+            for i in 0..<sorted.count {
+
+                if i > 0 && nums[i] == nums[i - 1] && !used[i] {
+                    continue
+                }
+                if !used[i] {
+                    used[i] = true
+                    paths.append(sorted[i])
+                    dfs()
+                    paths.popLast()
+                    used[i] = false
+
+                }
+            }
+        }
+
+        dfs()
+
+        return results
+    }
+
+
+    public func permute3(_ nums: [Int]) -> [[Int]] {
+
+        var results: [[Int]] = []
+        var paths: [Int] = []
+
+        var used = Array(repeating: false, count: nums.count)
+
+        func backTracking() {
+            if paths.count == nums.count {
+                results.append(paths)
+                return
+            }
+
+            for i in 0..<nums.count {
+                if used[i] {
+                    continue
+                }
+
+                paths.append(nums[i])
+                used[i] = true
+                backTracking()
+                paths.popLast()
+                used[i] = false
+            }
+        }
+
+        backTracking()
+
+        return results
+    }
+
+    public func lowestCommonAncestor(_ root: TreeNode<Int>?, _ p: TreeNode<Int>?, _ q: TreeNode<Int>?) -> TreeNode<Int>? {
+        guard let root = root else { return nil }
+        if root === p || root === q {
+            return root
+        }
+
+        let left = lowestCommonAncestor(root.left, p, q)
+
+        let right = lowestCommonAncestor(root.right, p, q)
+
+        if left != nil && right != nil {
+            return root
+        }
+
+        return left != nil ? left : right
+      }
+
+    private func lowestCommonAncestorBST(_ root: TreeNode<Int>?, _ p: TreeNode<Int>?, _ q: TreeNode<Int>?) -> TreeNode<Int>? {
+
+        guard let pVal = p?.val, let qVal = q?.val else { return nil }
+
+        var current = root
+        var low = min(pVal, qVal)  // Find the lower value between p and q
+        var high = max(pVal, qVal) // Find the higher value between p and q
+
+
+
+        while let node = current {
+
+            if node.val < low {
+                current = current?.right
+            } else if node.val > high {
+                current = current?.left
+            } else {
+                return node
+            }
+        }
+
+        return nil
+    }
+
+    public func subsets(_ nums: [Int]) -> [[Int]] {
+
+        var results: [[Int]] = []
+        var paths: [Int] = []
+
+        func dfs(level: Int) {
+
+            if paths.count == level {
+                results.append(paths)
+                return
+            }
+
+            paths.append(nums[level])
+            dfs(level: level+1)
+            paths.popLast()
+            dfs(level: level+1)
+        }
+        dfs(level: 0)
+        return results
+
+    }
+
+    public func subsets2(_ nums: [Int]) -> [[Int]] {
+
+        var results: [[Int]] = []
+        var paths: [Int] = []
+        let sortedNums = nums.sorted()
+
+        func dfs(level: Int) {
+            results.append(paths)
+            for i in level..<sortedNums.count {
+                if i > 0 && sortedNums[i] == sortedNums[i-1] {
+                    continue
+                }
+                paths.append(sortedNums[i])
+                dfs(level: i+1)
+                paths.popLast()
+
+            }
+        }
+        dfs(level: 0)
+        return results
+
+    }
+
+    public func levelOrder(_ root: TreeNode<Int>?) -> [[Int]] {
+
+        var results: [[Int]] = []
+        func backTracking(_ root: TreeNode<Int>?, level: Int) {
+           guard let root = root else { return }
+            if results.count == level {
+
+            }
+            results[level].append(root.val)
+            backTracking(root.left, level: level + 1)
+            backTracking(root.right, level: level + 1)
+
+        }
+
+        return results
+    }
 
 
 }

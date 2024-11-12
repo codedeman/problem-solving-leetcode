@@ -3601,7 +3601,65 @@ public func minDepth(_ root: TreeNode<Int>?) -> Int {
         return max(left, right) + 1
     }
 
-    //MARK: 
+    //MARK:  1653. Minimum Deletions to Make String Balanced
+
+    public func minimumDeletions(_ s: String) -> Int {
+//        var arr = Array(s)
+        var countA = s.filter {$0 == "a"}.count
+        var countB = 0
+        if countA == 0 {
+            return 0
+        }
+        var minDeletion = countA
+        for char in s {
+
+            if char == "a" {
+                countA -= 1
+            } else {
+                countB += 1
+            }
+
+            minDeletion = min(minDeletion, countA+countB)
+        }
+
+        return minDeletion
+    }
+
+    //MARK:
+
+   public func levelOrder(_ root: TreeNode<Int>?) -> [[Int]] {
+        var results: [[Int]] = []
+        var queue = [root]
+        while !queue.isEmpty {
+
+            let levelSize = queue.count
+            var currentLevel = [Int]()
+
+            for _ in 0..<levelSize {
+                
+                let currentNode = queue.removeFirst()
+                currentLevel.append(currentNode?.val ?? 0)
+
+                if let left = currentNode?.left {
+                    queue.append(left)
+                }
+
+                if let right = currentNode?.right {
+                    queue.append(right)
+                }
+
+            }
+            print("===>",currentLevel)
+            results.append(currentLevel)
+
+        }
+
+       print(results)
+        return results
+
+
+    }
+
 
 
 }
